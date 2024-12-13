@@ -78,11 +78,11 @@
 		</DockPanel>
 
 		<!-- Right - Active Server -->
-		<Button MinWidth="42" Classes="transparent" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Margin="0,0,36,30" VerticalAlignment="Bottom" MinHeight="42" Padding="5" MaxWidth="42" Command="{Binding OpenDiscordUrl}" MaxHeight="42" CornerRadius="15" ToolTip.Tip="{DynamicResource Text.Main.Discord}" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNull}}">
+		<Button MinWidth="42" Classes="transparent" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Margin="0,0,36,30" VerticalAlignment="Bottom" MinHeight="42" Padding="5" MaxWidth="42" Command="{Binding OpenDiscordUrl}" MaxHeight="42" CornerRadius="30" ToolTip.Tip="{DynamicResource Text.Main.Discord}" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNull}}">
 			<Image Source="/Assets/discord.ico"/>
 		</Button>
 
-		<Button MinWidth="42" Classes="transparent" MinHeight="42" Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,-40,30" HorizontalAlignment="Center" Grid.Column="1" Padding="5" MaxWidth="42" Command="{Binding OpenGithubUrl}" MaxHeight="42" CornerRadius="15" ToolTip.Tip="{DynamicResource Text.Main.Github}" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNull}}">
+		<Button MinWidth="42" Classes="transparent" MinHeight="42" Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,-40,30" HorizontalAlignment="Center" Grid.Column="1" Padding="5" MaxWidth="42" Command="{Binding OpenGithubUrl}" MaxHeight="42" CornerRadius="30" ToolTip.Tip="{DynamicResource Text.Main.Github}" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNull}}">
 			<Image Source="/Assets/github.ico"/>
 		</Button>
 
