@@ -1,177 +1,163 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-  <Design.PreviewWith>
-    <Border Padding="20">
-      <Button Classes="flat primary">Test</Button>
-    </Border>
-  </Design.PreviewWith>
+	<Design.PreviewWith>
+		<Border Padding="20">
+			<Button Classes="flat primary">Test</Button>
+		</Border>
+	</Design.PreviewWith>
 
-  <!-- Path -->
-  <Style Selector="Path">
-    <Setter Property="Fill" Value="{StaticResource Color.FG1}"/>
-    <Setter Property="Stretch" Value="Uniform"/>
-    <Setter Property="VerticalAlignment" Value="Center"/>
-    <Setter Property="HorizontalAlignment" Value="Center"/>
-  </Style>
+	<!-- Path -->
+	<Style Selector="Path">
+		<Setter Property="Fill" Value="{StaticResource Color.FG1}"/>
+		<Setter Property="Stretch" Value="Uniform"/>
+		<Setter Property="VerticalAlignment" Value="Center"/>
+		<Setter Property="HorizontalAlignment" Value="Center"/>
+	</Style>
 
-  <Style Selector="Path[IsVisible=True].rotating">
-    <Setter Property="Opacity" Value="0"/>
-    <Style.Animations>
-      <Animation Duration="0:0:1" IterationCount="Infinite">
-        <KeyFrame Cue="0%">
-          <Setter Property="Opacity" Value="1"/>
-          <Setter Property="RotateTransform.Angle" Value="0.0"/>
-        </KeyFrame>
-        <KeyFrame Cue="100%">
-          <Setter Property="Opacity" Value="1"/>
-          <Setter Property="RotateTransform.Angle" Value="360.0"/>
-        </KeyFrame>
-      </Animation>
-    </Style.Animations>
-  </Style>
+	<Style Selector="Path[IsVisible=True].rotating">
+		<Setter Property="Opacity" Value="0"/>
+		<Style.Animations>
+			<Animation Duration="0:0:1" IterationCount="Infinite">
+				<KeyFrame Cue="0%">
+					<Setter Property="Opacity" Value="1"/>
+					<Setter Property="RotateTransform.Angle" Value="0.0"/>
+				</KeyFrame>
+				<KeyFrame Cue="100%">
+					<Setter Property="Opacity" Value="1"/>
+					<Setter Property="RotateTransform.Angle" Value="360.0"/>
+				</KeyFrame>
+			</Animation>
+		</Style.Animations>
+	</Style>
 
-  <!-- TextBlock -->
-  <Style Selector="TextBlock">
-    <Setter Property="VerticalAlignment" Value="Center"/>
-    <Setter Property="HorizontalAlignment" Value="Left"/>
-    <Setter Property="Foreground" Value="{StaticResource Color.FG1}"/>
-  </Style>
+	<!-- TextBlock -->
+	<Style Selector="TextBlock">
+		<Setter Property="VerticalAlignment" Value="Center"/>
+		<Setter Property="HorizontalAlignment" Value="Left"/>
+		<Setter Property="Foreground" Value="{StaticResource Color.FG1}"/>
+	</Style>
 
-  <!-- TextBox -->
-  <Style Selector="TextBox">
-    <Setter Property="Padding" Value="4,0"/>
-    <Setter Property="MinHeight" Value="16"/>
-    <Setter Property="CornerRadius" Value="0"/>
-    <Setter Property="BorderThickness" Value="1"/>
-    <Setter Property="VerticalContentAlignment" Value="Center"/>
-    <Setter Property="Background" Value="{StaticResource Color.Contents}"/>
-    <Setter Property="BorderBrush" Value="{StaticResource Color.Border1}"/>
-    <Setter Property="ContextFlyout">
-      <Setter.Value>
-        <MenuFlyout>
-          <MenuItem Header="{DynamicResource Text.Cut}" Command="{Binding $parent[TextBox].Cut}" IsEnabled="{Binding $parent[TextBox].CanCut}" InputGesture="{x:Static TextBox.CutGesture}">
-            <MenuItem.Icon>
-              <Path Width="11" Height="11" Data="{StaticResource Icons.Cut}" VerticalAlignment="Center" Stretch="Fill" />
-            </MenuItem.Icon>
-          </MenuItem>
+	<!-- TextBox -->
+	<Style Selector="TextBox">
+		<Setter Property="Padding" Value="4,0"/>
+		<Setter Property="MinHeight" Value="16"/>
+		<Setter Property="CornerRadius" Value="0"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="Background" Value="{StaticResource Color.Contents}"/>
+		<Setter Property="BorderBrush" Value="{StaticResource Color.Border1}"/>
+		<Setter Property="ContextFlyout">
+			<Setter.Value>
+				<MenuFlyout>
+					<MenuItem Header="{DynamicResource Text.Cut}" Command="{Binding $parent[TextBox].Cut}" IsEnabled="{Binding $parent[TextBox].CanCut}" InputGesture="{x:Static TextBox.CutGesture}">
+						<MenuItem.Icon>
+							<Path Width="11" Height="11" Data="{StaticResource Icons.Cut}" VerticalAlignment="Center" Stretch="Fill" />
+						</MenuItem.Icon>
+					</MenuItem>
 
-          <MenuItem Header="{DynamicResource Text.Copy}" Command="{Binding $parent[TextBox].Copy}" IsEnabled="{Binding $parent[TextBox].CanCopy}" InputGesture="{x:Static TextBox.CopyGesture}">
-            <MenuItem.Icon>
-              <Path Width="11" Height="11" Data="{StaticResource Icons.Copy}" VerticalAlignment="Center" Stretch="Fill" />
-            </MenuItem.Icon>
-          </MenuItem>
+					<MenuItem Header="{DynamicResource Text.Copy}" Command="{Binding $parent[TextBox].Copy}" IsEnabled="{Binding $parent[TextBox].CanCopy}" InputGesture="{x:Static TextBox.CopyGesture}">
+						<MenuItem.Icon>
+							<Path Width="11" Height="11" Data="{StaticResource Icons.Copy}" VerticalAlignment="Center" Stretch="Fill" />
+						</MenuItem.Icon>
+					</MenuItem>
 
-          <MenuItem Header="{DynamicResource Text.Paste}" Command="{Binding $parent[TextBox].Paste}" IsEnabled="{Binding $parent[TextBox].CanPaste}" InputGesture="{x:Static TextBox.PasteGesture}">
-            <MenuItem.Icon>
-              <Path Width="11" Height="11" Data="{StaticResource Icons.Paste}" VerticalAlignment="Center" Stretch="Fill" />
-            </MenuItem.Icon>
-          </MenuItem>
-        </MenuFlyout>
-      </Setter.Value>
-    </Setter>
-  </Style>
+					<MenuItem Header="{DynamicResource Text.Paste}" Command="{Binding $parent[TextBox].Paste}" IsEnabled="{Binding $parent[TextBox].CanPaste}" InputGesture="{x:Static TextBox.PasteGesture}">
+						<MenuItem.Icon>
+							<Path Width="11" Height="11" Data="{StaticResource Icons.Paste}" VerticalAlignment="Center" Stretch="Fill" />
+						</MenuItem.Icon>
+					</MenuItem>
+				</MenuFlyout>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
-  <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
-    <Setter Property="Background" Value="{StaticResource Color.Contents}"/>
-    <Setter Property="BorderBrush" Value="{StaticResource Color.Accent1}"/>
-  </Style>
+	<Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
+		<Setter Property="Background" Value="{StaticResource Color.Contents}"/>
+		<Setter Property="BorderBrush" Value="{StaticResource Color.Accent1}"/>
+	</Style>
 
-  <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
-    <Setter Property="BorderThickness" Value="1"/>
-    <Setter Property="Background" Value="{StaticResource Color.Contents}"/>
-    <Setter Property="BorderBrush" Value="{StaticResource Color.Accent1}"/>
-  </Style>
+	<Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="Background" Value="{StaticResource Color.Contents}"/>
+		<Setter Property="BorderBrush" Value="{StaticResource Color.Accent1}"/>
+	</Style>
 
-  <Style Selector="TextBox:disabled /template/ Border#PART_BorderElement">
-    <Setter Property="Opacity" Value=".6"/>
-    <Setter Property="Background" Value="Transparent"/>
-  </Style>
+	<Style Selector="TextBox:disabled /template/ Border#PART_BorderElement">
+		<Setter Property="Opacity" Value=".6"/>
+		<Setter Property="Background" Value="Transparent"/>
+	</Style>
 
-  <Style Selector="TextBox.no_background">
-    <Setter Property="Background" Value="Transparent"/>
-  </Style>
-  
-  <Style Selector="TextBox.no_background:pointerover /template/ Border#PART_BorderElement">
-    <Setter Property="Background" Value="Transparent"/>
-  </Style>
-  
-  <Style Selector="TextBox.no_background:focus /template/ Border#PART_BorderElement">
-    <Setter Property="Background" Value="Transparent"/>
-  </Style>
-  
-  <Style Selector="TextBox.no_border">
-    <Setter Property="BorderBrush" Value="Transparent"/>
-  </Style>
-  
-  <Style Selector="TextBox.no_border:pointerover /template/ Border#PART_BorderElement">
-    <Setter Property="BorderBrush" Value="Transparent"/>
-  </Style>
-  
-  <Style Selector="TextBox.no_border:focus /template/ Border#PART_BorderElement">
-    <Setter Property="BorderBrush" Value="Transparent"/>
-  </Style>
+	<Style Selector="TextBox.no_background">
+		<Setter Property="Background" Value="Transparent"/>
+	</Style>
 
-  <!-- DataValidationErrors -->
-  <Style Selector="DataValidationErrors">
-    <Setter Property="Theme" Value="{DynamicResource TooltipDataValidationErrors}" />
-  </Style>
+	<Style Selector="TextBox.no_background:pointerover /template/ Border#PART_BorderElement">
+		<Setter Property="Background" Value="Transparent"/>
+	</Style>
 
-  <Style Selector="DataValidationErrors Path">
-    <Setter Property="Stroke" Value="Red"/>
-    <Setter Property="Fill" Value="Transparent" />
-  </Style>
+	<Style Selector="TextBox.no_background:focus /template/ Border#PART_BorderElement">
+		<Setter Property="Background" Value="Transparent"/>
+	</Style>
 
-  <!-- Button -->
-  <Style Selector="Button">
-    <Setter Property="Cursor" Value="Hand"/>
-  </Style>
+	<Style Selector="TextBox.no_border">
+		<Setter Property="BorderBrush" Value="Transparent"/>
+	</Style>
 
-  <Style Selector="Button.flat">
-    <Setter Property="FontWeight" Value="Bold"/>
-    <Setter Property="BorderThickness" Value="0"/>
-    <Setter Property="TextBlock.TextAlignment" Value="Center"/>
-    <Setter Property="Foreground" Value="{StaticResource Color.FG1}"/>
-    <Setter Property="Background" Value="{StaticResource Color.FlatButton.Background}"/>
-    <Setter Property="VerticalContentAlignment" Value="Center"/>
-    <Setter Property="Template">
-      <ControlTemplate>
-        <Grid>
-          <Border x:Name="PART_Border"
-                  Margin="2"
-                  Background="{TemplateBinding Background}"
-                  BorderBrush="{TemplateBinding BorderBrush}"
-                  BorderThickness="{TemplateBinding BorderThickness}"
-                  CornerRadius="{TemplateBinding CornerRadius}"
-                  Effect="drop-shadow(0 0 2 #80000000)"/>
+	<Style Selector="TextBox.no_border:pointerover /template/ Border#PART_BorderElement">
+		<Setter Property="BorderBrush" Value="Transparent"/>
+	</Style>
 
-          <ContentPresenter x:Name="PART_ContentPresenter"
-                            Margin="2"
-                            Background="Transparent"
-                            Padding="{TemplateBinding Padding}"
-                            Content="{TemplateBinding Content}"
-                            ContentTemplate="{TemplateBinding ContentTemplate}"
-                            HorizontalContentAlignment="Center"
-                            VerticalContentAlignment="Center"/>
-        </Grid>
-      </ControlTemplate>
-    </Setter>
-  </Style>
-  <Style Selector="Button.flat:pointerover /template/ Border#PART_Border">
-    <Setter Property="Background" Value="{StaticResource Color.FlatButton.BackgroundHovered}"/>
-  </Style>
-  <Style Selector="Button.flat:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-    <Setter Property="Background" Value="Transparent"/>
-  </Style>
+	<Style Selector="TextBox.no_border:focus /template/ Border#PART_BorderElement">
+		<Setter Property="BorderBrush" Value="Transparent"/>
+	</Style>
 
-  <Style Selector="Button.flat.primary">
-    <Setter Property="Background" Value="{StaticResource Color.FlatButton.PrimaryBackground}"/>
-  </Style>
-  <Style Selector="Button.flat.primary:pointerover /template/ Border#PART_Border">
-    <Setter Property="Background" Value="{StaticResource Color.FlatButton.PrimaryBackgroundHovered}"/>
-  </Style>
-  <Style Selector="Button.flat.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-    <Setter Property="Background" Value="Transparent"/>
-  </Style>
+	<!-- DataValidationErrors -->
+	<Style Selector="DataValidationErrors">
+		<Setter Property="Theme" Value="{DynamicResource TooltipDataValidationErrors}" />
+	</Style>
 
+	<Style Selector="DataValidationErrors Path">
+		<Setter Property="Stroke" Value="Red"/>
+		<Setter Property="Fill" Value="Transparent" />
+	</Style>
+
+	<!-- Button -->
+	<Style Selector="Button">
+		<Setter Property="Cursor" Value="Hand"/>
+	</Style>
+
+	<Style Selector="CheckBox">
+		<Setter Property="Cursor" Value="Hand"/>
+	</Style>
+
+	<Style Selector="Button.flat.primary">
+		<Setter Property="Background" Value="{StaticResource Color.FlatButton.PrimaryBackground}"/>
+	</Style>
+	<Style Selector="Button.flat.primary:pointerover /template/ Border#PART_Border">
+		<Setter Property="Background" Value="{StaticResource Color.FlatButton.PrimaryBackgroundHovered}"/>
+	</Style>
+	<Style Selector="Button.flat.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{StaticResource Color.FlatButton.PrimaryBackgroundHovered}"/>
+	</Style>
+
+	<Style Selector="Button.no_background">
+		<Setter Property="Background" Value="Transparent"/>
+	</Style>
+	<Style Selector="Button.no_background:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="Transparent"/>
+	</Style>
+	<Style Selector="Button.no_background:pointerover /template/ Border#PART_Border">
+		<Setter Property="Background" Value="Transparent"/>
+	</Style>
+
+	<Style Selector="Button.transparent">
+		<Setter Property="Background" Value="Transparent"/>
+	</Style>
+	<Style Selector="Button.transparent:pointerover /template/ Border#PART_Border">
+		<Setter Property="Background" Value="{StaticResource Color.FlatButton.PrimaryBackgroundHovered}"/>
+	</Style>
+	<Style Selector="Button.transparent:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{StaticResource Color.FlatButton.PrimaryBackgroundHovered}"/>
+	</Style>
 </Styles>

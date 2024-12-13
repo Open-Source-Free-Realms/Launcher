@@ -1,17 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Diagnostics;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.ComponentModel.DataAnnotations;
-
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
-
-using Launcher.Models;
 using Launcher.Helpers;
+using Launcher.Models;
 
 namespace Launcher.ViewModels;
 
@@ -35,6 +33,9 @@ public partial class Login : Popup
     [ObservableProperty]
     private bool rememberUsername;
 
+    [ObservableProperty]
+    private bool rememberPassword;
+
     public Login(Server server)
     {
         _server = server;
@@ -43,8 +44,13 @@ public partial class Login : Popup
 
         RememberUsername = _server.Info.RememberUsername;
 
+        RememberPassword = _server.Info.RememberPassword;
+
         if (RememberUsername && !string.IsNullOrEmpty(_server.Info.Username))
             Username = _server.Info.Username;
+
+        if (RememberPassword && !string.IsNullOrEmpty(_server.Info.Password))
+            Password = _server.Info.Password;
 
         View = new Views.Login()
         {
@@ -71,11 +77,28 @@ public partial class Login : Popup
         Settings.Instance.Save();
     }
 
+    partial void OnRememberPasswordChanged(bool value)
+    {
+        _server.Info.RememberPassword = value;
+
+        if (!value)
+            _server.Info.Password = null;
+
+        Settings.Instance.Save();
+    }
+
     public override async Task<bool> ProcessAsync()
     {
         if (RememberUsername)
         {
             _server.Info.Username = Username;
+
+            Settings.Instance.Save();
+        }
+
+        if (RememberPassword)
+        {
+            _server.Info.Password = Password;
 
             Settings.Instance.Save();
         }

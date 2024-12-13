@@ -19,5 +19,4 @@ public sealed class ServerManifest
     public required string LoginApiUrl { get; set; }
 
     public string? RegisterUrl { get; set; }
-    public string? BackgroundImageUrl { get; set; }
 }

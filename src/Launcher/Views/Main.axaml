@@ -10,8 +10,8 @@
         xmlns:vm="using:Launcher.ViewModels"
 
         mc:Ignorable="d"
-        d:DesignWidth="800"
-        d:DesignHeight="400"
+        d:DesignWidth="700"
+        d:DesignHeight="500"
 
         x:DataType="vm:Main"
         x:Class="Launcher.Views.Main"
@@ -19,172 +19,200 @@
         Icon="/App.ico"
         Title="{DynamicResource Text.Title}"
         WindowStartupLocation="CenterScreen"
+		CanResize="False"
 
-        Width="800" Height="400"
-        MinWidth="800" MinHeight="400">
+        Width="700" Height="500"
+        MinWidth="700" MinHeight="500">
 
-  <Design.DataContext>
-    <vm:Main />
-  </Design.DataContext>
+	<Window.Background>
+		<ImageBrush Source="/Assets/background.png" Stretch="UniformToFill"/>
+	</Window.Background>
 
-  <Grid RowDefinitions="*" ColumnDefinitions="200,*">
+	<Design.DataContext>
+		<vm:Main />
+	</Design.DataContext>
 
-    <!-- Left - Server List -->
-    <DockPanel LastChildFill="True" Background="{StaticResource Color.Popup}">
-      <TextBlock DockPanel.Dock="Top" FontWeight="Bold" FontSize="18" Margin="9" Text="{DynamicResource Text.Servers}" />
-      <StackPanel Margin="5" Orientation="Horizontal" DockPanel.Dock="Bottom" Spacing="5">
-        <Button Classes="flat" Command="{Binding ShowSettingsCommand}" ToolTip.Tip="{DynamicResource Text.Settings}">
-          <Path Width="18" Height="18" Data="{StaticResource Icons.Settings}" Stretch="Fill" />
-        </Button>
+	<Grid RowDefinitions="*" ColumnDefinitions="200,*">
 
-        <Button Classes="flat" Command="{Binding OpenFolderCommand}" ToolTip.Tip="{DynamicResource Text.OpenFolder}">
-          <Path Width="18" Height="18" Data="{StaticResource Icons.Folder}" Stretch="Fill" />
-        </Button>
+		<!-- Left - Server List -->
+		<DockPanel LastChildFill="True" Background="{StaticResource Color.Server}" Opacity="0.1">
+			<TextBlock DockPanel.Dock="Top" Opacity="100" HorizontalAlignment="Center" FontWeight="DemiBold" FontSize="13" Margin="18" Text="{DynamicResource Text.Servers}" />
+			<StackPanel Margin="10" HorizontalAlignment="Center" Orientation="Horizontal" DockPanel.Dock="Bottom" Spacing="1">
 
-        <Button Classes="flat primary" Command="{Binding AddServerCommand}" ToolTip.Tip="{DynamicResource Text.Add_Server}">
-          <Path Width="18" Height="18" Data="{StaticResource Icons.Add}" Stretch="Fill" />
-        </Button>
+				<Button Classes="transparent" Opacity="100" Command="{Binding ShowSettingsCommand}" ToolTip.Tip="{DynamicResource Text.Settings}">
+					<Path Width="16" Height="16" Data="{StaticResource Icons.Settings}" Stretch="Fill" />
+				</Button>
 
-        <Button Classes="flat" Command="{Binding DeleteServerCommand}" ToolTip.Tip="{DynamicResource Text.Delete_Server}" IsVisible="{Binding ActiveServer, Converter={x:Static ObjectConverters.IsNotNull}}">
-          <Path Width="18" Height="18" Data="{StaticResource Icons.Delete}" Stretch="Fill" />
-        </Button>
-      </StackPanel>
+				<Button Classes="transparent" Opacity="100" Command="{Binding OpenFolderCommand}" ToolTip.Tip="{DynamicResource Text.OpenCurrentDirectory}">
+					<Path Width="16" Height="16" Data="{StaticResource Icons.Folder}" Stretch="Fill" />
+				</Button>
 
-      <ListBox Grid.Row="1" ItemsSource="{Binding Servers, Mode=TwoWay}" SelectedItem="{Binding ActiveServer, Mode=TwoWay}" SelectionMode="Toggle">
-        <ListBox.ItemTemplate>
-          <DataTemplate x:DataType="vm:Server">
-            <TextBlock Text="{Binding Info.Name}" />
-          </DataTemplate>
-        </ListBox.ItemTemplate>
-      </ListBox>
-    </DockPanel>
+				<Button Classes="transparent" Opacity="100" Command="{Binding AddServerCommand}" ToolTip.Tip="{DynamicResource Text.Add_Server}">
+					<Path Width="16" Height="16" Data="{StaticResource Icons.Add}" Stretch="Fill" />
+				</Button>
 
-    <!-- Right - Active Server -->
-    <v:Server DataContext="{Binding ActiveServer, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNotNull}}" />
+				<Button Classes="transparent" Opacity="100" Command="{Binding DeleteServerCommand}" ToolTip.Tip="{DynamicResource Text.Delete_Server}" IsVisible="{Binding ActiveServer, Converter={x:Static ObjectConverters.IsNotNull}}">
+					<Path Width="16" Height="16" Data="{StaticResource Icons.Delete}" Stretch="Fill" />
+				</Button>
+			</StackPanel>
 
-    <!-- Popups -->
-    <Grid Grid.Row="0" Grid.ColumnSpan="2" IsVisible="{Binding Popup, Converter={x:Static ObjectConverters.IsNotNull}}">
-      <Border Background="{StaticResource Color.Popup}" Opacity="50" PointerPressed="OnPopupCancelByClickMask"/>
+			<ListBox Grid.Row="1" ItemsSource="{Binding Servers, Mode=TwoWay}" SelectedItem="{Binding ActiveServer, Mode=TwoWay}" SelectionMode="Toggle">
+				<ListBox.ItemTemplate>
+					<DataTemplate x:DataType="vm:Server">
+						<TextBlock Text="{Binding Info.Name}" Opacity="100" Cursor="Hand"/>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+				<ListBox.Styles>
+					<Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+						<Setter Property="Background" Value="{StaticResource Color.FlatButton.PrimaryBackground}"/>
+						<Setter Property="Cursor" Value="Hand"/>
+					</Style>
+				</ListBox.Styles>
+				<ListBox.Styles>
+					<Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
+						<Setter Property="Background" Value="{StaticResource Color.FlatButton.PrimaryBackgroundHovered}"/>
+						<Setter Property="Cursor" Value="Hand"/>
+					</Style>
+				</ListBox.Styles>
+			</ListBox>
+		</DockPanel>
 
-      <Grid Width="500" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <ContentControl Content="{Binding Popup}" ClipToBounds="False">
+		<!-- Right - Active Server -->
+		<Button MinWidth="42" Classes="transparent" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Margin="0,0,36,30" VerticalAlignment="Bottom" MinHeight="42" Padding="5" MaxWidth="42" Command="{Binding OpenDiscordUrl}" MaxHeight="42" CornerRadius="15" ToolTip.Tip="{DynamicResource Text.Main.Discord}" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNull}}">
+			<Image Source="/Assets/discord.ico"/>
+		</Button>
 
-          <ContentControl.DataTemplates>
-            <DataTemplate DataType="vm:Popup">
-              <Border Margin="8,0,8,8"
-                      Background="{StaticResource Color.Popup}"
-                      BorderBrush="{StaticResource Color.Border0}">
-                <Border.CornerRadius>
-                  <OnPlatform Default="0,0,4,4" Linux="0"/>
-                </Border.CornerRadius>
+		<Button MinWidth="42" Classes="transparent" MinHeight="42" Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,-40,30" HorizontalAlignment="Center" Grid.Column="1" Padding="5" MaxWidth="42" Command="{Binding OpenGithubUrl}" MaxHeight="42" CornerRadius="15" ToolTip.Tip="{DynamicResource Text.Main.Github}" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNull}}">
+			<Image Source="/Assets/github.ico"/>
+		</Button>
 
-                <Border.BorderThickness>
-                  <OnPlatform Default="0" Linux="1,0,1,1"/>
-                </Border.BorderThickness>
+		<Label Grid.Row="0" Grid.Column="1" Margin="0,0,0,10" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="12" FontWeight="DemiBold" Foreground="White" Opacity="0.5" Content="{Binding Message}" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNull}}"/>
 
-                <Border.Effect>
-                  <OnPlatform>
-                    <On Options="Windows, macOS">
-                      <DropShadowEffect BlurRadius="8" OffsetX="0" OffsetY="0" Color="Black" Opacity=".5"/>
-                    </On>
-                  </OnPlatform>
-                </Border.Effect>
+		<Label Grid.Row="0" Grid.Column="1" Margin="0,100,0,0" FontWeight="DemiBold" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5" Foreground="White" Content="{Binding Version, StringFormat='v{0}'}" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNull}}"/>
 
-                <StackPanel Margin="8" Orientation="Vertical">
-                  <!-- Popup Widget -->
-                  <ContentPresenter Margin="0,8"
-                                    Content="{Binding View}"
-                                    IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}"/>
+		<Image Source="/Assets/osfrlogo.png" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNull}}"/>
 
-                  <!-- Options -->
-                  <StackPanel Margin="0,8,0,0"
-                              Height="32"
-                              Orientation="Horizontal"
-                              HorizontalAlignment="Center"
-                              IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
-                    <Button Classes="flat primary"
-                            Width="80"
-                            Content="{DynamicResource Text.Ok}"
-                            Click="OnPopupSure"
-                            HotKey="Enter"/>
-                    <Button Classes="flat"
-                            Width="80"
-                            Margin="8,0,0,0"
-                            Content="{DynamicResource Text.Cancel}"
-                            Click="OnPopupCancel" />
-                  </StackPanel>
+		<v:Server DataContext="{Binding ActiveServer, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNotNull}}" />
 
-                  <!-- Running -->
-                  <StackPanel Orientation="Vertical" Margin="8" IsVisible="{Binding InProgress}">
-                    <Rectangle Height="1" Margin="-8,0" HorizontalAlignment="Stretch" Fill="{StaticResource Color.Border1}" />
-                    <StackPanel Orientation="Horizontal" Margin="0,8">
+		<!-- Popups -->
+		<Grid Grid.Row="0" Grid.ColumnSpan="2" IsVisible="{Binding Popup, Converter={x:Static ObjectConverters.IsNotNull}}">
+			<Border Background="{StaticResource Color.Window}" Opacity="0.5" PointerPressed="OnPopupCancelByClickMask"/>
 
-                      <Path Width="12" Height="12" Classes="rotating" Data="{StaticResource Icons.Loading}" IsVisible="{Binding InProgress}" Stretch="Fill" />
-                      <TextBlock Margin="6,0,0,0" FontSize="14" FontWeight="Bold" Text="{DynamicResource Text.Running}"/>
-                    </StackPanel>
+			<Grid Width="500" HorizontalAlignment="Center" VerticalAlignment="Center">
+				<ContentControl Content="{Binding Popup}" Opacity="0.9" ClipToBounds="False">
 
-                    <TextBlock HorizontalAlignment="Stretch"
-                               TextWrapping="Wrap"
-                               FontStyle="Italic"
-                               Text="{Binding ProgressDescription}"/>
-                    <ProgressBar Margin="0,8,0,0"
-                                 HorizontalAlignment="Stretch"
-                                 IsIndeterminate="True"
-                                 Background="{StaticResource Color.FG2}" Foreground="{StaticResource Color.Accent1}"
-                                 Minimum="0" Maximum="100"/>
-                  </StackPanel>
-                </StackPanel>
-              </Border>
-            </DataTemplate>
-          </ContentControl.DataTemplates>
-        </ContentControl>
-      </Grid>
-    </Grid>
+					<ContentControl.DataTemplates>
+						<DataTemplate DataType="vm:Popup">
+							<Border Margin="8,0,8,8"
+									BorderBrush="{StaticResource Color.Border0}"
+									BorderThickness="1"
+									Background="{StaticResource Color.Window}">
+								<Border.CornerRadius>
+									<OnPlatform Default="5,5,5,5" Linux="0"/>
+								</Border.CornerRadius>
 
-    <!-- Notifications -->
-    <Grid Grid.Row="0" Grid.ColumnSpan="2" Width="360" HorizontalAlignment="Right" VerticalAlignment="Top">
-      <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <ItemsControl ItemsSource="{Binding Notifications}">
-          <ItemsControl.ItemTemplate>
-            <DataTemplate DataType="m:Notification">
-              <Grid Width="320" Margin="8">
-                <Border Background="{StaticResource Color.Window}" Opacity="90" BorderBrush="{StaticResource Color.Border0}" BorderThickness="1" CornerRadius="4" Effect="drop-shadow(0 0 8 #40000000)" />
+								<StackPanel Margin="8" Orientation="Vertical">
 
-                <Grid Margin="8" RowDefinitions="26,Auto,Auto">
-                  <StackPanel Grid.Row="0" Margin="8,0,0,0" Orientation="Horizontal" IsVisible="{Binding IsError}">
-                    <Path Width="14" Height="14" Data="{StaticResource Icons.Error}" Fill="Red" Stretch="Fill" />
-                    <TextBlock Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Main.Error}" />
-                  </StackPanel>
-                  <StackPanel Grid.Row="0" Margin="8,0,0,0" Orientation="Horizontal" IsVisible="{Binding !IsError}">
-                    <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="Green" Stretch="Fill" />
-                    <TextBlock Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Main.Info}" />
-                  </StackPanel>
+									<!-- Popup Widget -->
+									<ContentPresenter Margin="0,8"
+													  Content="{Binding View}"
+													  IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}"/>
 
-                  <TextBox Grid.Row="1"
-                           Classes="no_background no_border"
-                           IsReadOnly="True"
-                           TextWrapping="Wrap"
-                           ScrollViewer.VerticalScrollBarVisibility="Auto"
-                           MaxHeight="100"
-                           Margin="8" Padding="0"
-                           VerticalContentAlignment="Top"
-                           Text="{Binding Message}"/>
-                  <Button Grid.Row="3"
-                          Classes="flat primary"
-                          Height="30"
-                          Margin="4,0"
-                          Command="{Binding $parent[Window].((vm:Main)DataContext).DismissNotification}"
-                          CommandParameter="{Binding}"
-                          Content="{DynamicResource Text.Close}"
-                          HorizontalAlignment="Right"
-                          HorizontalContentAlignment="Center"
-                          VerticalContentAlignment="Center"/>
-                </Grid>
-              </Grid>
-            </DataTemplate>
-          </ItemsControl.ItemTemplate>
-        </ItemsControl>
-      </ScrollViewer>
-    </Grid>
-  </Grid>
+									<!-- Options -->
+									<StackPanel Orientation="Horizontal"
+												HorizontalAlignment="Center"
+												VerticalAlignment="Center"
+												IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
+
+										<Button Classes="flat primary"
+												Click="OnPopupSure"
+												Width="65"
+												CornerRadius="5"
+												VerticalContentAlignment="Center"
+												HorizontalContentAlignment="Center"
+												Content="{DynamicResource Text.Ok}"
+												HotKey="Enter"/>
+
+										<Button Classes="flat primary"
+												Margin="10,0,0,0"
+												CornerRadius="5"
+												VerticalContentAlignment="Center"
+												HorizontalContentAlignment="Center"
+												Content="{DynamicResource Text.Cancel}"
+												Click="OnPopupCancel" />
+									</StackPanel>
+
+									<!-- Running -->
+									<StackPanel Orientation="Vertical" Margin="8" IsVisible="{Binding InProgress}">
+										<Rectangle Height="1" Margin="-8,0" HorizontalAlignment="Stretch" Fill="{StaticResource Color.Border1}" />
+										<StackPanel Orientation="Horizontal" Margin="0,8">
+
+											<Path Width="12" Height="12" Classes="rotating" Data="{StaticResource Icons.Loading}" IsVisible="{Binding InProgress}" Stretch="Fill" />
+											<TextBlock Margin="6,0,0,0" FontSize="14" FontWeight="Bold" Text="{DynamicResource Text.Running}"/>
+										</StackPanel>
+
+										<TextBlock HorizontalAlignment="Stretch"
+												   TextWrapping="Wrap"
+												   FontStyle="Italic"
+												   Text="{Binding ProgressDescription}"/>
+										<ProgressBar Margin="0,8,0,0"
+													 HorizontalAlignment="Stretch"
+													 IsIndeterminate="True"
+													 Background="{StaticResource Color.FG2}" Foreground="{StaticResource Color.ProgressBar}"
+													 Minimum="0" Maximum="100"/>
+									</StackPanel>
+								</StackPanel>
+							</Border>
+						</DataTemplate>
+					</ContentControl.DataTemplates>
+				</ContentControl>
+			</Grid>
+		</Grid>
+
+		<!-- Notifications -->
+		<Grid Grid.Row="0" Grid.ColumnSpan="2" Width="360" HorizontalAlignment="Center" VerticalAlignment="Top">
+			<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+				<ItemsControl ItemsSource="{Binding Notifications}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate DataType="m:Notification">
+							<Grid Width="320" Margin="8">
+								<Border Background="{StaticResource Color.Window}" Opacity="90" BorderBrush="{StaticResource Color.Border0}" BorderThickness="1" CornerRadius="4" Effect="drop-shadow(0 0 8 #40000000)" />
+
+								<Grid Margin="8" RowDefinitions="26,Auto,Auto">
+									<StackPanel Grid.Row="0" Margin="8,0,0,0" Orientation="Horizontal" IsVisible="{Binding IsError}">
+										<Path Width="14" Height="14" Data="{StaticResource Icons.Error}" Fill="Red" Stretch="Fill" />
+										<TextBlock Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Main.Error}" />
+									</StackPanel>
+									<StackPanel Grid.Row="0" Margin="8,0,0,0" Orientation="Horizontal" IsVisible="{Binding !IsError}">
+										<Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="Green" Stretch="Fill" />
+										<TextBlock Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Main.Info}" />
+									</StackPanel>
+
+									<TextBox Grid.Row="1"
+											 Classes="no_background no_border"
+											 IsReadOnly="True"
+											 TextWrapping="Wrap"
+											 ScrollViewer.VerticalScrollBarVisibility="Auto"
+											 MaxHeight="100"
+											 Margin="8" Padding="0"
+											 VerticalContentAlignment="Top"
+											 Text="{Binding Message}"/>
+									<Button Grid.Row="3"
+											Classes="no_background"
+											Height="30"
+											Margin="4,0"
+											Command="{Binding $parent[Window].((vm:Main)DataContext).DismissNotification}"
+											CommandParameter="{Binding}"
+											Content="{DynamicResource Text.Close}"
+											HorizontalAlignment="Right"
+											HorizontalContentAlignment="Center"
+											VerticalContentAlignment="Center"/>
+								</Grid>
+							</Grid>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</ScrollViewer>
+		</Grid>
+	</Grid>
 </Window>

@@ -1,75 +1,76 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-  <Design.PreviewWith>
-    <Border Padding="20">
-      <TextBlock Text="{DynamicResource Text.Ok}" />
-    </Border>
-  </Design.PreviewWith>
+	<Design.PreviewWith>
+		<Border Padding="20">
+			<TextBlock Text="{DynamicResource Text.Ok}" />
+		</Border>
+	</Design.PreviewWith>
 
-  <x:String x:Key="Text.Ok" xml:space="preserve">OK</x:String>
-  <x:String x:Key="Text.Cancel" xml:space="preserve">Cancel</x:String>
+	<x:String x:Key="Text.Ok" xml:space="preserve">Ok</x:String>
+	<x:String x:Key="Text.Cancel" xml:space="preserve">Cancel</x:String>
 
-  <x:String x:Key="Text.Cut" xml:space="preserve">Cut</x:String>
-  <x:String x:Key="Text.Copy" xml:space="preserve">Copy</x:String>
-  <x:String x:Key="Text.Paste" xml:space="preserve">Paste</x:String>
+	<x:String x:Key="Text.Cut" xml:space="preserve">Cut</x:String>
+	<x:String x:Key="Text.Copy" xml:space="preserve">Copy</x:String>
+	<x:String x:Key="Text.Paste" xml:space="preserve">Paste</x:String>
 
-  <x:String x:Key="Text.Play" xml:space="preserve">Play</x:String>
+	<x:String x:Key="Text.Connect" xml:space="preserve">Connect</x:String>
 
-  <x:String x:Key="Text.Running" xml:space="preserve">Running. Please wait ...</x:String>
+	<x:String x:Key="Text.Running" xml:space="preserve">Running. Please wait...</x:String>
 
-  <x:String x:Key="Text.Servers" xml:space="preserve">Server List</x:String>
+	<x:String x:Key="Text.Servers" xml:space="preserve">Server List</x:String>
 
-  <x:String x:Key="Text.Title" xml:space="preserve">OSFR Launcher</x:String>
+	<x:String x:Key="Text.Title" xml:space="preserve">OSFRLauncher</x:String>
 
-  <x:String x:Key="Text.Close" xml:space="preserve">CLOSE</x:String>
+	<x:String x:Key="Text.Close" xml:space="preserve">×</x:String>
 
-  <x:String x:Key="Text.Main.Info" xml:space="preserve">NOTICE</x:String>
-  <x:String x:Key="Text.Main.Error" xml:space="preserve">ERROR</x:String>
+	<x:String x:Key="Text.Main.Info" xml:space="preserve">NOTICE</x:String>
+	<x:String x:Key="Text.Main.Error" xml:space="preserve">ERROR</x:String>
 
-  <x:String x:Key="Text.OpenFolder" xml:space="preserve">Open Folder</x:String>
-  
-  <x:String x:Key="Text.Splash.Launcher" xml:space="preserve">Launcher</x:String>
-  <x:String x:Key="Text.Splash.CheckForUpdates" xml:space="preserve">Checking for updates....</x:String>
-  <x:String x:Key="Text.Splash.RestartLauncher" xml:space="preserve">Restarting launcher...</x:String>
-  <x:String x:Key="Text.Splash.LauncherUpToDate" xml:space="preserve">Launcher is up to date.</x:String>
-  <x:String x:Key="Text.Splash.DownloadProgress" xml:space="preserve">Downloading {0}... ({1}%)</x:String>
+	<x:String x:Key="Text.OpenCurrentDirectory" xml:space="preserve">Open Current Directory</x:String>
+	<x:String x:Key="Text.OpenClientFolder" xml:space="preserve">Open Client Folder</x:String>
 
-  <x:String x:Key="Text.Login" xml:space="preserve">Login</x:String>
-  <x:String x:Key="Text.Login.Username" xml:space="preserve">Username</x:String>
-  <x:String x:Key="Text.Login.Password" xml:space="preserve">Password</x:String>
-  <x:String x:Key="Text.Login.Unauthorized" xml:space="preserve">Incorrect username or password.</x:String>
-  <x:String x:Key="Text.Login.RememberUsername" xml:space="preserve">Remember Username</x:String>
-  <x:String x:Key="Text.Login.SecureApiWarning" xml:space="preserve">This server does not use HTTPS.
-Your credentials may not be securely transmitted.
-Proceed at your own risk.</x:String>
+	<x:String x:Key="Text.Main.CheckForUpdates" xml:space="preserve">Checking For Updates...</x:String>
+	<x:String x:Key="Text.Main.RestartLauncher" xml:space="preserve">Restarting Launcher...</x:String>
+	<x:String x:Key="Text.Main.LauncherUpToDate" xml:space="preserve">Launcher is up-to-date</x:String>
+	<x:String x:Key="Text.Main.DownloadProgress" xml:space="preserve">Downloading: {0} ({1}%)</x:String>
 
-  <x:String x:Key="Text.Server.DownloadingFile" xml:space="preserve">Downloading: {0}</x:String>
-  <x:String x:Key="Text.Server.VerifyClientFiles" xml:space="preserve">Verifying client files...</x:String>
-  
-  <x:String x:Key="Text.Settings" xml:space="preserve">Settings</x:String>
-  <x:String x:Key="Text.Settings.General" xml:space="preserve">General</x:String>
-  <x:String x:Key="Text.Settings.General.Locale" xml:space="preserve">Language</x:String>
-  <x:String x:Key="Text.Settings.General.DiscordActivity" xml:space="preserve">Discord Activity</x:String>
+	<x:String x:Key="Text.Login" xml:space="preserve">Login</x:String>
+	<x:String x:Key="Text.Login.Username" xml:space="preserve">Username:</x:String>
+	<x:String x:Key="Text.Login.Password" xml:space="preserve">Password:</x:String>
+	<x:String x:Key="Text.Login.Unauthorized" xml:space="preserve">Incorrect username or password.</x:String>
+	<x:String x:Key="Text.Login.RememberUsername" xml:space="preserve">Remember Username</x:String>
+	<x:String x:Key="Text.Login.RememberPassword" xml:space="preserve">Remember Password</x:String>
+	<x:String x:Key="Text.Login.SecureApiWarning" xml:space="preserve">This server does not use HTTPS. Proceed at your own risk.</x:String>
 
-  <x:String x:Key="Text.Add_Server" xml:space="preserve">Add Server</x:String>
-  <x:String x:Key="Text.Add_Server.ServerUrl" xml:space="preserve">Server Url :</x:String>
-  <x:String x:Key="Text.Add_Server.ServerUrl.Placeholder" xml:space="preserve">https://freerealms.com/</x:String>
-  <x:String x:Key="Text.Add_Server.Loading" xml:space="preserve">Adding server...</x:String>
-  <x:String x:Key="Text.Add_Server.InvalidServerUrl1" xml:space="preserve">Invalid url format. {0}</x:String>
-  <x:String x:Key="Text.Add_Server.InvalidServerUrl2" xml:space="preserve">Invalid url, only http/https is supported. {0}</x:String>
+	<x:String x:Key="Text.Server.DownloadingFile" xml:space="preserve">Downloading: {0}</x:String>
+	<x:String x:Key="Text.Server.VerifyClientFiles" xml:space="preserve">Verifying Client Files...</x:String>
 
-  <x:String x:Key="Text.Delete_Server" xml:space="preserve">Delete Server</x:String>
-  <x:String x:Key="Text.Delete_Server.Loading" xml:space="preserve">Deleting Server...</x:String>
-  <x:String x:Key="Text.Delete_Server.Confirm" xml:space="preserve">Are you sure you want to delete the server?
-This will delete the files, this cannot be undone.</x:String>
+	<x:String x:Key="Text.Settings" xml:space="preserve">Settings</x:String>
+	<x:String x:Key="Text.Settings.General" xml:space="preserve">General</x:String>
+	<x:String x:Key="Text.Settings.General.Locale" xml:space="preserve">Language:</x:String>
+	<x:String x:Key="Text.Settings.General.DiscordActivity" xml:space="preserve">Discord Activity</x:String>
 
-  <x:String x:Key="Text.ServerStatus" xml:space="preserve">Status: </x:String>
-  <x:String x:Key="Text.OnlinePlayers" xml:space="preserve">Players: </x:String>
-  <x:String x:Key="Text.ServerStatus.Online" xml:space="preserve">Online</x:String>
-  <x:String x:Key="Text.ServerStatus.Locked" xml:space="preserve">Locked</x:String>
-  <x:String x:Key="Text.ServerStatus.Offline" xml:space="preserve">Offline</x:String>
+	<x:String x:Key="Text.Add_Server" xml:space="preserve">Add Server</x:String>
+	<x:String x:Key="Text.Add_Server.ServerUrl" xml:space="preserve">Server URL:</x:String>
+	<x:String x:Key="Text.Add_Server.ServerUrl.Placeholder" xml:space="preserve">https://freerealms.com/</x:String>
+	<x:String x:Key="Text.Add_Server.Loading" xml:space="preserve">Adding Server...</x:String>
+	<x:String x:Key="Text.Add_Server.InvalidServerUrl1" xml:space="preserve">Invalid url format. {0}</x:String>
+	<x:String x:Key="Text.Add_Server.InvalidServerUrl2" xml:space="preserve">Invalid url, only http/https is supported. {0}</x:String>
 
-  <x:String x:Key="Text.Discord.Playing" xml:space="preserve">Playing on server(s)</x:String>
-  <x:String x:Key="Text.Discord.Idle" xml:space="preserve">Hanging out in the Launcher</x:String>
+	<x:String x:Key="Text.Delete_Server" xml:space="preserve">Delete Server</x:String>
+	<x:String x:Key="Text.Delete_Server.Loading" xml:space="preserve">Deleting Server...</x:String>
+	<x:String x:Key="Text.Delete_Server.Confirm" xml:space="preserve">Are you sure you want to delete the server? This cannot be undone.</x:String>
+
+	<x:String x:Key="Text.ServerStatus" xml:space="preserve">Status: </x:String>
+	<x:String x:Key="Text.OnlinePlayers" xml:space="preserve">Players: </x:String>
+	<x:String x:Key="Text.ServerStatus.Online" xml:space="preserve">Online</x:String>
+	<x:String x:Key="Text.ServerStatus.Locked" xml:space="preserve">Locked</x:String>
+	<x:String x:Key="Text.ServerStatus.Offline" xml:space="preserve">Offline</x:String>
+
+	<x:String x:Key="Text.Main.Discord" xml:space="preserve">OSFR Discord Server</x:String>
+	<x:String x:Key="Text.Main.Github" xml:space="preserve">OSFR Github Page</x:String>
+
+	<x:String x:Key="Text.Discord.Playing" xml:space="preserve">Playing on: </x:String>
+	<x:String x:Key="Text.Discord.Idle" xml:space="preserve">Idling in the OSFR Launcher</x:String>
 </ResourceDictionary>

@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Launcher.Models;
+﻿namespace Launcher.Models;
 
 public sealed class LoginResponse
 {

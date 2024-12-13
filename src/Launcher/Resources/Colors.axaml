@@ -1,24 +1,27 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-  <Design.PreviewWith>
-    <Border Padding="20" Background="{StaticResource Color.FG1}" />
-  </Design.PreviewWith>
+	<Design.PreviewWith>
+		<Border Padding="20" Background="{StaticResource Color.FG1}" />
+	</Design.PreviewWith>
 
-  <SolidColorBrush x:Key="Color.Window">#FF252525</SolidColorBrush>
-  <SolidColorBrush x:Key="Color.Popup">#FF2B2B2B</SolidColorBrush>
-  <SolidColorBrush x:Key="Color.Contents">#FF181818</SolidColorBrush>
+	<SolidColorBrush x:Key="Color.Window">#FF252525</SolidColorBrush>
+	<SolidColorBrush x:Key="Color.Popup">#2A3A61</SolidColorBrush>
+	<SolidColorBrush x:Key="Color.Contents">#FF181818</SolidColorBrush>
 
-  <SolidColorBrush x:Key="Color.Border0">#FF181818</SolidColorBrush>
-  <SolidColorBrush x:Key="Color.Border1">#FF7C7C7C</SolidColorBrush>
+	<SolidColorBrush x:Key="Color.Server">#FF2B2B2B</SolidColorBrush>
+	<SolidColorBrush x:Key="Color.Description">#FF2B2B2B</SolidColorBrush>
 
-  <SolidColorBrush x:Key="Color.FlatButton.Background">#FF303030</SolidColorBrush>
-  <SolidColorBrush x:Key="Color.FlatButton.BackgroundHovered">#FF333333</SolidColorBrush>
-  <SolidColorBrush x:Key="Color.FlatButton.PrimaryBackground">#FF3A3A3A</SolidColorBrush>
-  <SolidColorBrush x:Key="Color.FlatButton.PrimaryBackgroundHovered">#FF404040</SolidColorBrush>
+	<SolidColorBrush x:Key="Color.Border0">#4C5C85</SolidColorBrush>
+	<SolidColorBrush x:Key="Color.Border1">#4C5C85</SolidColorBrush>
 
-  <SolidColorBrush x:Key="Color.FG1">#FFF1F1F1</SolidColorBrush>
-  <SolidColorBrush x:Key="Color.FG2">#40F1F1F1</SolidColorBrush>
+	<SolidColorBrush x:Key="Color.FlatButton.PrimaryBackground">#3D4C74</SolidColorBrush>
+	<SolidColorBrush x:Key="Color.FlatButton.PrimaryBackgroundHovered">#4C5C85</SolidColorBrush>
 
-  <SolidColorBrush x:Key="Color.Accent1">#FF007ACC</SolidColorBrush>
+	<SolidColorBrush x:Key="Color.FG1">#ffffff</SolidColorBrush>
+	<SolidColorBrush x:Key="Color.FG2">#40F1F1F1</SolidColorBrush>
+
+	<SolidColorBrush x:Key="Color.Accent1">#3C4C74</SolidColorBrush>
+
+	<SolidColorBrush x:Key="Color.ProgressBar">#2B6E14</SolidColorBrush>
 </ResourceDictionary>

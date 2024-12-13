@@ -1,5 +1,5 @@
-using Avalonia.Input;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 
 namespace Launcher.Views;

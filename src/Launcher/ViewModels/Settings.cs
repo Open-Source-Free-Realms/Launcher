@@ -1,13 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Serialization;
-
 using Avalonia.Collections;
-
 using CommunityToolkit.Mvvm.ComponentModel;
-
-using Launcher.Models;
 using Launcher.Helpers;
+using Launcher.Models;
 using Launcher.Services;
 
 namespace Launcher.ViewModels;

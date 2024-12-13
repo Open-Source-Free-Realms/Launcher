@@ -14,57 +14,70 @@
              x:Class="Launcher.Views.Login">
 
 
-  <StackPanel Spacing="8"
-              Margin="8,0,0,0"
-              Orientation="Vertical">
+	<StackPanel Spacing="5"
+				Margin="8,0,0,0"
+				Orientation="Vertical">
 
-    <TextBlock FontSize="18"
-               Classes="bold"
-               HorizontalAlignment="Center"
-               Text="{DynamicResource Text.Login}" />
+		<TextBlock FontSize="18"
+				   FontWeight="Medium"
+				   HorizontalAlignment="Center"
+				   Text="{DynamicResource Text.Login}" />
 
-    <TextBlock Classes="bold"
-               Foreground="Yellow"
-               Text="{Binding Warning}"
-               TextAlignment="Center"
-               HorizontalAlignment="Center"
-               IsVisible="{Binding Warning, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+		<TextBlock Classes="bold"
+				   Foreground="Yellow"
+				   Text="{Binding Warning}"
+				   TextAlignment="Center"
+				   HorizontalAlignment="Center"
+				   IsVisible="{Binding Warning, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
 
-    <Grid RowDefinitions="32"
-          ColumnDefinitions="120,*">
+		<Grid RowDefinitions="25"
+			  ColumnDefinitions="120,*">
 
-      <TextBlock Grid.Column="0"
-                 Margin="0,0,8,0"
-                 HorizontalAlignment="Right"
-                 Text="{DynamicResource Text.Login.Username}" />
+			<TextBlock Grid.Column="0"
+					   Margin="0,0,8,0"
+					   HorizontalAlignment="Right"
+					   Text="{DynamicResource Text.Login.Username}" />
 
-      <TextBox Grid.Column="1"
-               CornerRadius="3"
-               v:AutoFocusBehaviour.IsEnabled="{Binding RememberUsername, Converter={x:Static BoolConverters.Not}}"
-               Text="{Binding Username, Mode=TwoWay}" />
-    </Grid>
+			<TextBox Grid.Column="1"
+					 CornerRadius="3"
+					 v:AutoFocusBehaviour.IsEnabled="{Binding RememberUsername, Converter={x:Static BoolConverters.Not}}"
+					 Text="{Binding Username, Mode=TwoWay}" />
+		</Grid>
 
-    <Grid RowDefinitions="32"
-          ColumnDefinitions="120,*">
+		<Grid RowDefinitions="25"
+			  ColumnDefinitions="120,*">
 
-      <TextBlock Grid.Column="0"
-                 Margin="0,0,8,0"
-                 HorizontalAlignment="Right"
-                 Text="{DynamicResource Text.Login.Password}" />
+			<TextBlock Grid.Column="0"
+					   Margin="0,0,8,0"
+					   HorizontalAlignment="Right"
+					   Text="{DynamicResource Text.Login.Password}" />
 
-      <TextBox Grid.Column="1"
-               CornerRadius="3"
-               PasswordChar="•"
-               v:AutoFocusBehaviour.IsEnabled="{Binding RememberUsername}"
-               Text="{Binding Password, Mode=TwoWay}" />
-    </Grid>
+			<TextBox Grid.Column="1"
+				CornerRadius="3"
+				v:AutoFocusBehaviour.IsEnabled="{Binding RememberPassword, Converter={x:Static BoolConverters.Not}}"
+				Text="{Binding Password, Mode=TwoWay}" />
 
-    <Grid RowDefinitions="32"
-          ColumnDefinitions="120,*">
 
-      <CheckBox Grid.Column="1" Content="{DynamicResource Text.Login.RememberUsername}" IsChecked="{Binding RememberUsername}" />
-    </Grid>
+			<TextBox Grid.Column="1"
+					 CornerRadius="3"
+					 PasswordChar="•"
+					 v:AutoFocusBehaviour.IsEnabled="{Binding RememberPassword}"
+					 Text="{Binding Password, Mode=TwoWay}" />
+		</Grid>
 
-  </StackPanel>
+		<Grid RowDefinitions="20"
+			  ColumnDefinitions="120,*">
+
+			<CheckBox Grid.Column="1" FontSize="13" Content="{DynamicResource Text.Login.RememberUsername}" IsChecked="{Binding RememberUsername}" />
+
+		</Grid>
+
+		<Grid RowDefinitions="20"
+				  ColumnDefinitions="120,*">
+
+			<CheckBox Grid.Column="1" FontSize="13" Content="{DynamicResource Text.Login.RememberPassword}" IsChecked="{Binding RememberPassword}" />
+
+		</Grid>
+	</StackPanel>
 
 </UserControl>

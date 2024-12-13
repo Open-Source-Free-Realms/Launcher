@@ -13,27 +13,27 @@
              x:DataType="vm:AddServer"
              x:Class="Launcher.Views.AddServer">
 
-  <StackPanel Margin="8,0,0,0"
-              Orientation="Vertical">
+	<StackPanel Margin="8,0,0,0"
+				Orientation="Vertical">
 
-    <TextBlock FontSize="18"
-               Classes="bold"
-               HorizontalAlignment="Center"
-               Text="{DynamicResource Text.Add_Server}" />
+		<TextBlock FontSize="18"
+				   FontWeight="Medium"
+				   HorizontalAlignment="Center"
+				   Text="{DynamicResource Text.Add_Server}" />
 
-    <Grid Margin="8,16,0,0"
-          RowDefinitions="32"
-          ColumnDefinitions="120,*">
+		<Grid Margin="8,10,0,0"
+			  RowDefinitions="32"
+			  ColumnDefinitions="120,*">
 
-      <TextBlock Margin="0,0,8,0"
-                 HorizontalAlignment="Right"
-                 Text="{DynamicResource Text.Add_Server.ServerUrl}" />
+			<TextBlock Margin="0,0,8,0"
+					   HorizontalAlignment="Right"
+					   Text="{DynamicResource Text.Add_Server.ServerUrl}" />
 
-      <TextBox Grid.Column="1"
-               CornerRadius="3"
-               v:AutoFocusBehaviour.IsEnabled="True"
-               Text="{Binding ServerUrl, Mode=TwoWay}"
-               Watermark="{DynamicResource Text.Add_Server.ServerUrl.Placeholder}" />
-    </Grid>
-  </StackPanel>
+			<TextBox Grid.Column="1"
+					 CornerRadius="3"
+					 v:AutoFocusBehaviour.IsEnabled="True"
+					 Text="{Binding ServerUrl, Mode=TwoWay}"
+					 Watermark="{DynamicResource Text.Add_Server.ServerUrl.Placeholder}" />
+		</Grid>
+	</StackPanel>
 </UserControl>

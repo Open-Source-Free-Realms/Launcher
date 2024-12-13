@@ -1,13 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-
 using CommunityToolkit.Mvvm.ComponentModel;
-
-using Launcher.Models;
-using Launcher.Helpers;
 using Launcher.Extensions;
+using Launcher.Helpers;
+using Launcher.Models;
 
 namespace Launcher.ViewModels;
 

@@ -1,19 +1,14 @@
 ﻿using System;
-using System.IO;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using System.Collections.Generic;
-
-using HashDepot;
-
-using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
-
+using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 using Avalonia.Media;
-
-using Launcher.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using HashDepot;
 using Launcher.Helpers;
-using Launcher.Services;
+using Launcher.Models;
 
 namespace Launcher.ViewModels;
 
@@ -114,7 +109,7 @@ public partial class Server : ObservableObject
 
             OnlinePlayers = 0;
 
-            ServerStatusFill = new SolidColorBrush(Color.FromRgb(125, 128, 138));
+            ServerStatusFill = new SolidColorBrush(Color.FromRgb(242, 63, 67));
         }
 
         IsRefreshing = false;
