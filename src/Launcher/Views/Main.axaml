@@ -36,7 +36,7 @@
 
 		<!-- Left - Server List -->
 		<DockPanel LastChildFill="True" Background="{StaticResource Color.Server}" Opacity="0.1">
-			<TextBlock DockPanel.Dock="Top" Opacity="100" HorizontalAlignment="Center" FontWeight="DemiBold" FontSize="13" Margin="18" Text="{DynamicResource Text.Servers}" />
+			<TextBlock DockPanel.Dock="Top" Opacity="100" HorizontalAlignment="Center" FontSize="13" Margin="17" Text="{DynamicResource Text.Servers}" />
 			<StackPanel Margin="10" HorizontalAlignment="Center" Orientation="Horizontal" DockPanel.Dock="Bottom" Spacing="1">
 
 				<Button Classes="transparent" Opacity="100" Command="{Binding ShowSettingsCommand}" ToolTip.Tip="{DynamicResource Text.Settings}">
@@ -59,17 +59,11 @@
 			<ListBox Grid.Row="1" ItemsSource="{Binding Servers, Mode=TwoWay}" SelectedItem="{Binding ActiveServer, Mode=TwoWay}" SelectionMode="Toggle">
 				<ListBox.ItemTemplate>
 					<DataTemplate x:DataType="vm:Server">
-						<TextBlock Text="{Binding Info.Name}" Opacity="100" Cursor="Hand"/>
+						<TextBlock Text="{Binding Info.Name}" Opacity="100"/>
 					</DataTemplate>
 				</ListBox.ItemTemplate>
 				<ListBox.Styles>
 					<Style Selector="ListBoxItem:selected /template/ ContentPresenter">
-						<Setter Property="Background" Value="{StaticResource Color.FlatButton.PrimaryBackground}"/>
-						<Setter Property="Cursor" Value="Hand"/>
-					</Style>
-				</ListBox.Styles>
-				<ListBox.Styles>
-					<Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
 						<Setter Property="Background" Value="{StaticResource Color.FlatButton.PrimaryBackgroundHovered}"/>
 						<Setter Property="Cursor" Value="Hand"/>
 					</Style>
@@ -78,17 +72,17 @@
 		</DockPanel>
 
 		<!-- Right - Active Server -->
-		<Button MinWidth="42" Classes="transparent" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Margin="0,0,36,30" VerticalAlignment="Bottom" MinHeight="42" Padding="5" MaxWidth="42" Command="{Binding OpenDiscordUrl}" MaxHeight="42" CornerRadius="30" ToolTip.Tip="{DynamicResource Text.Main.Discord}" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNull}}">
+		<Button MinWidth="42" Classes="no_background" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Margin="0,0,36,30" VerticalAlignment="Bottom" MinHeight="42" Padding="5" MaxWidth="42" Command="{Binding OpenDiscordUrl}" MaxHeight="42" CornerRadius="30" ToolTip.Tip="{DynamicResource Text.Main.Discord}" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNull}}">
 			<Image Source="/Assets/discord.ico"/>
 		</Button>
 
-		<Button MinWidth="42" Classes="transparent" MinHeight="42" Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,-40,30" HorizontalAlignment="Center" Grid.Column="1" Padding="5" MaxWidth="42" Command="{Binding OpenGithubUrl}" MaxHeight="42" CornerRadius="30" ToolTip.Tip="{DynamicResource Text.Main.Github}" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNull}}">
+		<Button MinWidth="42" Classes="no_background" MinHeight="42" Grid.Row="0" VerticalAlignment="Bottom" Margin="0,0,-40,30" HorizontalAlignment="Center" Grid.Column="1" Padding="5" MaxWidth="42" Command="{Binding OpenGithubUrl}" MaxHeight="42" CornerRadius="30" ToolTip.Tip="{DynamicResource Text.Main.Github}" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNull}}">
 			<Image Source="/Assets/github.ico"/>
 		</Button>
 
-		<Label Grid.Row="0" Grid.Column="1" Margin="0,0,0,10" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="12" FontWeight="DemiBold" Foreground="White" Opacity="0.5" Content="{Binding Message}" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNull}}"/>
+		<Label Grid.Row="0" Grid.Column="1" Margin="0,0,0,10" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="12" Foreground="White" Opacity="0.5" Content="{Binding Message}" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNull}}"/>
 
-		<Label Grid.Row="0" Grid.Column="1" Margin="0,100,0,0" FontWeight="DemiBold" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5" Foreground="White" Content="{Binding Version, StringFormat='v{0}'}" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNull}}"/>
+		<Label Grid.Row="0" Grid.Column="1" Margin="0,100,0,0" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5" Foreground="White" Content="{Binding Version, StringFormat='v{0}'}" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNull}}"/>
 
 		<Image Source="/Assets/osfrlogo.png" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="1" IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNull}}"/>
 
@@ -108,7 +102,7 @@
 									BorderThickness="1"
 									Background="{StaticResource Color.Window}">
 								<Border.CornerRadius>
-									<OnPlatform Default="5,5,5,5" Linux="0"/>
+									<OnPlatform Default="10,10,10,10" Linux="0"/>
 								</Border.CornerRadius>
 
 								<StackPanel Margin="8" Orientation="Vertical">

@@ -20,7 +20,7 @@
 
 	<x:String x:Key="Text.Servers" xml:space="preserve">Server List</x:String>
 
-	<x:String x:Key="Text.Title" xml:space="preserve">OSFRLauncher</x:String>
+	<x:String x:Key="Text.Title" xml:space="preserve">OSFR Launcher</x:String>
 
 	<x:String x:Key="Text.Close" xml:space="preserve">×</x:String>
 

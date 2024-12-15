@@ -16,15 +16,12 @@
 	</Style>
 
 	<Style Selector="Path[IsVisible=True].rotating">
-		<Setter Property="Opacity" Value="0"/>
 		<Style.Animations>
 			<Animation Duration="0:0:1" IterationCount="Infinite">
 				<KeyFrame Cue="0%">
-					<Setter Property="Opacity" Value="1"/>
 					<Setter Property="RotateTransform.Angle" Value="0.0"/>
 				</KeyFrame>
 				<KeyFrame Cue="100%">
-					<Setter Property="Opacity" Value="1"/>
 					<Setter Property="RotateTransform.Angle" Value="360.0"/>
 				</KeyFrame>
 			</Animation>
@@ -33,6 +30,7 @@
 
 	<!-- TextBlock -->
 	<Style Selector="TextBlock">
+		<Setter Property="FontWeight" Value="Regular"/>
 		<Setter Property="VerticalAlignment" Value="Center"/>
 		<Setter Property="HorizontalAlignment" Value="Left"/>
 		<Setter Property="Foreground" Value="{StaticResource Color.FG1}"/>
@@ -132,6 +130,7 @@
 	</Style>
 
 	<Style Selector="Button.flat.primary">
+		<Setter Property="FontWeight" Value="SemiBold"/>
 		<Setter Property="Background" Value="{StaticResource Color.FlatButton.PrimaryBackground}"/>
 	</Style>
 	<Style Selector="Button.flat.primary:pointerover /template/ Border#PART_Border">

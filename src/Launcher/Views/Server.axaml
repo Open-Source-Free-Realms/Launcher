@@ -20,14 +20,14 @@
 	<Grid RowDefinitions="40,40,*" ColumnDefinitions="*,40" Margin="10">
 
 		<!-- Title -->
-		<StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="20,10,0,0">
-			<TextBlock FontWeight="Medium" FontSize="16" Text="{Binding Info.Name}" />
+		<StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="20,25,0,0">
+			<TextBlock FontSize="16" Text="{Binding Info.Name}" />
 		</StackPanel>
 
 		<!-- Server Status -->
-		<StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="20,11,0,0">
-			<StackPanel Spacing="10" Orientation="Horizontal">
-				<Button Classes="transparent" Command="{Binding RefreshServerStatusCommand}">
+		<StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="20,15,0,0">
+			<StackPanel Spacing="2" Orientation="Horizontal">
+				<Button Classes="no_background" Command="{Binding RefreshServerStatusCommand}">
 					<Path Width="13" Height="13" Opacity="40" Classes.rotating="{Binding IsRefreshing}" Data="{StaticResource Icons.Loading}" Stretch="Fill" />
 				</Button>
 				<StackPanel Orientation="Horizontal">
@@ -53,7 +53,7 @@
 		<!-- Server Play/Update Status -->
 		<StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
 			<Button Classes="flat primary" Background="{StaticResource Color.FlatButton.PrimaryBackground}" Margin="1"  Width="80" Height="30" Command="{Binding PlayCommand}" IsEnabled="{Binding Process, Converter={x:Static ObjectConverters.IsNull}}">
-				<TextBlock Text="{StaticResource Text.Connect}" Opacity="40" HorizontalAlignment="Center" FontWeight="DemiBold" FontSize="12" />
+				<TextBlock Text="{StaticResource Text.Connect}" FontWeight="SemiBold" Opacity="40" HorizontalAlignment="Center" FontSize="12" />
 			</Button>
 		</StackPanel>
 
@@ -62,7 +62,7 @@
 			<Path Width="16" Height="16" Data="{StaticResource Icons.Folder}" Stretch="Fill" />
 		</Button>
 
-		<TextBlock Text="{Binding StatusMessage}" FontWeight="Regular" Grid.Row="4" FontSize="12" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,40"/>
+		<TextBlock Text="{Binding StatusMessage}" FontWeight="Regular" FontStyle="Italic" Grid.Row="4" FontSize="12" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,40"/>
 
 	</Grid>
 
