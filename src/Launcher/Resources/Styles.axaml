@@ -125,10 +125,6 @@
 		<Setter Property="Cursor" Value="Hand"/>
 	</Style>
 
-	<Style Selector="CheckBox">
-		<Setter Property="Cursor" Value="Hand"/>
-	</Style>
-
 	<Style Selector="Button.flat.primary">
 		<Setter Property="FontWeight" Value="SemiBold"/>
 		<Setter Property="Background" Value="{StaticResource Color.FlatButton.PrimaryBackground}"/>
