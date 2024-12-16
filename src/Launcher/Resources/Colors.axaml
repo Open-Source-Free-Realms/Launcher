@@ -9,8 +9,8 @@
 	<SolidColorBrush x:Key="Color.Popup">#2A3A61</SolidColorBrush>
 	<SolidColorBrush x:Key="Color.Contents">#FF181818</SolidColorBrush>
 
-	<SolidColorBrush x:Key="Color.Server">#FF2B2B2B</SolidColorBrush>
-	<SolidColorBrush x:Key="Color.Description">#FF2B2B2B</SolidColorBrush>
+	<SolidColorBrush x:Key="Color.Server">#000000</SolidColorBrush>
+	<SolidColorBrush x:Key="Color.Description">#000000</SolidColorBrush>
 
 	<SolidColorBrush x:Key="Color.Border0">#4C5C85</SolidColorBrush>
 	<SolidColorBrush x:Key="Color.Border1">#4C5C85</SolidColorBrush>

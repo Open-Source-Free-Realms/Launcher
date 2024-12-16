@@ -20,14 +20,14 @@
 	<Grid RowDefinitions="40,40,*" ColumnDefinitions="*,40" Margin="10">
 
 		<!-- Title -->
-		<StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="20,25,0,0">
+		<StackPanel Grid.Row="1" Grid.ColumnSpan="1" Margin="0,8,0,0">
 			<TextBlock FontSize="16" Text="{Binding Info.Name}" />
 		</StackPanel>
 
 		<!-- Server Status -->
-		<StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="20,15,0,0">
-			<StackPanel Spacing="2" Orientation="Horizontal">
-				<Button Classes="no_background" Command="{Binding RefreshServerStatusCommand}">
+		<StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,0">
+			<StackPanel Spacing="5" Orientation="Horizontal">
+				<Button Classes="flat primary" Command="{Binding RefreshServerStatusCommand}">
 					<Path Width="13" Height="13" Opacity="40" Classes.rotating="{Binding IsRefreshing}" Data="{StaticResource Icons.Loading}" Stretch="Fill" />
 				</Button>
 				<StackPanel Orientation="Horizontal">
@@ -42,8 +42,8 @@
 		</StackPanel>
 
 		<!-- Server Description -->
-		<StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="20,50,0,0">
-			<Border Padding="10" CornerRadius="8" Background="{StaticResource Color.Description}" Opacity="0.1" IsVisible="{Binding Info.Description, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+		<StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,40,0,0">
+			<Border Padding="15" CornerRadius="8" Background="{StaticResource Color.Description}" Opacity="0.1" IsVisible="{Binding Info.Description, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
 				<ScrollViewer MaxHeight="180">
 					<md:MarkdownScrollViewer Markdown="{Binding Info.Description}" Opacity="100"/>
 				</ScrollViewer>
