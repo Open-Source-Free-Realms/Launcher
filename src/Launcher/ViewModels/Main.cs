@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Linq;
-using System.Diagnostics;
 using System.Collections.Specialized;
-
+using System.Diagnostics;
+using System.Linq;
 using Avalonia.Collections;
-
-using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
-
+using CommunityToolkit.Mvvm.Input;
 using Launcher.Models;
 using Launcher.Services;
+using NuGet.Versioning;
 
 namespace Launcher.ViewModels;
 
@@ -20,6 +18,12 @@ public partial class Main : ObservableObject
 
     [ObservableProperty]
     private Server? activeServer;
+
+    [ObservableProperty]
+    private string? message;
+
+    [ObservableProperty]
+    private SemanticVersion version = App.CurrentVersion;
 
     public AvaloniaList<Server> Servers { get; set; } = [];
     public AvaloniaList<Notification> Notifications { get; set; } = [];
@@ -105,6 +109,26 @@ public partial class Main : ObservableObject
             Verb = "open",
             UseShellExecute = true,
             FileName = Environment.CurrentDirectory
+        });
+    }
+
+    [RelayCommand]
+    public void OpenGithubUrl()
+    {
+        Process.Start(new ProcessStartInfo()
+        {
+            FileName = "https://github.com/Open-Source-Free-Realms",
+            UseShellExecute = true
+        });
+    }
+
+    [RelayCommand]
+    public void OpenDiscordUrl()
+    {
+        Process.Start(new ProcessStartInfo()
+        {
+            FileName = "https://discord.gg/Zu5mCyDVaB",
+            UseShellExecute = true
         });
     }
 

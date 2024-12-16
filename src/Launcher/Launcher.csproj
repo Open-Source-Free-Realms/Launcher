@@ -8,6 +8,8 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+	<AssemblyName>OSFRLauncher</AssemblyName>
+	<RootNamespace>OSFRLauncher</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -21,6 +23,7 @@
   <ItemGroup>
     <AvaloniaResource Include="App.ico" />
     <EmbeddedResource Include="Models\*.xsd" />
+	<AvaloniaResource Include="Assets\**" />
     <EmbeddedResource Include="Resources\NLog.config" />
   </ItemGroup>
 

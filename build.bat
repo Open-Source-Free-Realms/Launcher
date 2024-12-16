@@ -16,4 +16,4 @@ dotnet publish .\src\Launcher.sln -c Release --no-self-contained -r win-x64 --pr
 
 echo.
 echo Building Velopack Release v%version%
-vpk pack --packTitle "OSFR Launcher" --packAuthors "OSFR Team" -u OSFRLauncher -e Launcher.exe -o "%~dp0releases" -p "%~dp0publish" -i "%~dp0publish/App.ico" -f net9-x64-desktop -v %*
+vpk pack --packTitle "OSFRLauncher" --packAuthors "OSFR Team" -u OSFRLauncher -e OSFRLauncher.exe -o "%~dp0releases" -p "%~dp0publish" -i "%~dp0publish/App.ico" -f net9-x64-desktop -v %*

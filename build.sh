@@ -45,4 +45,4 @@ dotnet publish ./src/Launcher.sln -c Release --self-contained -r "$RID" -o "$PUB
 
 echo ""
 echo "Building Velopack Release v$BUILD_VERSION"
-vpk pack --packTitle "OSFR Launcher" --packAuthors "OSFR Team" -u OSFRLauncher -e Launcher.exe -o "$RELEASE_DIR" -p "$PUBLISH_DIR" -v $BUILD_VERSION
+vpk pack --packTitle "OSFRLauncher" --packAuthors "OSFR Team" -u OSFRLauncher -e OSFRLauncher.exe -o "$RELEASE_DIR" -p "$PUBLISH_DIR" -v $BUILD_VERSION

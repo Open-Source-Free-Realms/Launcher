@@ -1,11 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-
 using CommunityToolkit.Mvvm.ComponentModel;
-
-using Launcher.Models;
 using Launcher.Helpers;
+using Launcher.Models;
 
 namespace Launcher.ViewModels;
 

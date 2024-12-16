@@ -1,6 +1,6 @@
 ﻿using Avalonia;
-using Avalonia.Input;
 using Avalonia.Controls;
+using Avalonia.Input;
 
 namespace Launcher.Views;
 

@@ -9,43 +9,45 @@
 
         mc:Ignorable="d"
         d:DesignWidth="400"
-        d:DesignHeight="200"
+        d:DesignHeight="180"
 
         x:DataType="vm:Settings"
         x:Class="Launcher.Views.Settings"
-
+       
         Icon="/App.ico"
         CanResize="False"
         WindowStartupLocation="CenterScreen"
         Title="{DynamicResource Text.Settings}"
+		Background="{StaticResource Color.Window}"
 
-        Width="400" Height="200"
-        MinWidth="400" MinHeight="200">
+        Width="400" Height="180"
+        MinWidth="400" MinHeight="180">
 
-  <TabControl>
-    <TabItem>
-      <TabItem.Header>
-        <TextBlock Text="{DynamicResource Text.Settings.General}" />
-      </TabItem.Header>
+	<TabControl>
+		<TabItem>
+			<TabItem.Header>
+				<TextBlock Text="{DynamicResource Text.Settings.General}" />
+			</TabItem.Header>
 
-      <Grid Margin="8" RowDefinitions="32,32" ColumnDefinitions="Auto, *">
-        <CheckBox Grid.Row="0" Grid.ColumnSpan="2"
-                      Content="{DynamicResource Text.Settings.General.DiscordActivity}"
-                      IsChecked="{Binding DiscordActivity, Mode=TwoWay}"/>
+			<Grid Margin="8" RowDefinitions="32,32" ColumnDefinitions="Auto, *">
+				<CheckBox Grid.Row="0" Grid.ColumnSpan="2"
+							  Content="{DynamicResource Text.Settings.General.DiscordActivity}"
+							  IsChecked="{Binding DiscordActivity, Mode=TwoWay}"/>
 
-        <TextBlock Grid.Row="1" Grid.Column="0"
-                       Text="{DynamicResource Text.Settings.General.Locale}"
-                       HorizontalAlignment="Right"
-                       Margin="0,0,16,0" />
+				<TextBlock Grid.Row="1" Grid.Column="0"
+							   Text="{DynamicResource Text.Settings.General.Locale}"
+							   HorizontalAlignment="Right"
+							   Margin="0,0,16,0" />
 
-        <ComboBox Grid.Row="1" Grid.Column="1"
-          MinHeight="28"
-          Padding="8,0"
-          HorizontalAlignment="Stretch"
-          ItemsSource="{Binding Source={x:Static m:Locale.Supported}}"
-          DisplayMemberBinding="{Binding Name, x:DataType=m:Locale}"
-          SelectedItem="{Binding Locale, Mode=TwoWay, Converter={x:Static c:StringConverter.ToLocale}}" />
-      </Grid>
-    </TabItem>
-  </TabControl>
+				<ComboBox Grid.Row="1" Grid.Column="1"
+				  MinHeight="28"
+				  Padding="8,0"
+				  HorizontalAlignment="Stretch"
+				  VerticalAlignment="Center"
+				  ItemsSource="{Binding Source={x:Static m:Locale.Supported}}"
+				  DisplayMemberBinding="{Binding Name, x:DataType=m:Locale}"
+				  SelectedItem="{Binding Locale, Mode=TwoWay, Converter={x:Static c:StringConverter.ToLocale}}" />
+			</Grid>
+		</TabItem>
+	</TabControl>
 </Window>
