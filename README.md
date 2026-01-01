@@ -5,7 +5,7 @@
 #### Installation
 1.  Navigate to the **[Releases page](https://github.com/suxhi-space/OSFR-Mac-Launcher/releases)**.
 2.  Download the latest `OSFR Launcher_#.zip`.
-3.  Open the zip then drag the app to your applications folder.
+3.  extract then drag the app to your applications folder.
 
 #### How to Play
 1.  Launch the application.
