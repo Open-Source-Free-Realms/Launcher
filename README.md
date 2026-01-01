@@ -1,5 +1,7 @@
 ### Modified fork of [OSFR Launcher Source](https://github.com/Open-Source-Free-Realms/Launcher).
 
+Reminder that this is still in testing phases and things might not work as planned.
+
 ### Getting Started
 
 #### Installation
