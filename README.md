@@ -1,10 +1,11 @@
+### Modified fork of [OSFR Launcher Source](https://github.com/Open-Source-Free-Realms/Launcher).
+
 ### Getting Started
 
 #### Installation
-1.  Navigate to the **[Releases page](https://github.com/Open-Source-Free-Realms/Launcher/releases)**.
-2.  Download the latest `OSFRLauncher-win-Setup.exe`.
-    > **Note:** We recommend the setup version for the best experience, but portable builds are also available for convenience.
-3.  Run the installer and follow the on-screen instructions.
+1.  Navigate to the **[Releases page](https://github.com/suxhi-space/OSFR-Mac-Launcher/releases)**.
+2.  Download the latest `OSFR Launcher_#.zip`.
+3.  Open the zip then drag the app to your applications folder.
 
 #### How to Play
 1.  Launch the application.
@@ -14,8 +15,19 @@
 
 ### Building from Source
 
-To compile the launcher from source, you will first need to clone the repository. Then, navigate into the project's directory using the command line and run the `build.bat` script.
+To compile the launcher from source on mac, you will first need to clone the repository. Then, navigate into the project's directory using the command line and run the `MacBuild.sh` script.
 
 ### How to Contribute
+**[Discord](https://discord.com/invite/qgVJ5Z7xEq)**
 
 If you have an idea for an improvement or have found a bug, feel free to fork the repository, make your changes, and submit a pull request.
+
+<br><br>
+
+> AI Assistance Disclosure (very sad)
+> 
+> Tools: Modified using Gemini.
+> 
+> Scope: Assisted with refactoring [describe specific area] and implementing [specific feature].
+> 
+> Validation: All changes were manually reviewed, tested, and verified for project standards
