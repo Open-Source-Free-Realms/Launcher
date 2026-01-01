@@ -8,6 +8,7 @@ using Launcher.ViewModels;
 using NLog;
 using NuGet.Versioning;
 using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using Velopack;
 using Velopack.Sources;
@@ -22,7 +23,20 @@ public partial class App : Application
     private const string GitHubRepoUrl = "https://github.com/Open-Source-Free-Realms/Launcher";
     private static readonly UpdateManager _updateManager = new(new GithubSource(GitHubRepoUrl, null, false));
 
-    public static SemanticVersion CurrentVersion => _updateManager.CurrentVersion ?? new SemanticVersion(0, 0, 0);
+    // FIXED: Reads the Assembly Version (from the build script) instead of defaulting to 0.0.0
+    public static SemanticVersion CurrentVersion
+    {
+        get
+        {
+            if (_updateManager.CurrentVersion != null)
+                return _updateManager.CurrentVersion;
+
+            var asmVersion = Assembly.GetExecutingAssembly().GetName().Version;
+            return asmVersion != null 
+                ? new SemanticVersion(asmVersion.Major, asmVersion.Minor, asmVersion.Build) 
+                : new SemanticVersion(0, 0, 0);
+        }
+    }
 
     public App()
     {

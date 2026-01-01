@@ -41,7 +41,8 @@ PUBLISH_DIR="$SCRIPT_DIR/publish"
 
 echo ""
 echo "Compiling Launcher with dotnet..."
-dotnet publish ./src/Launcher.sln -c Release --self-contained -r "$RID" -o "$PUBLISH_DIR"
+# CHANGED: Pointing to Launcher.csproj instead of Launcher.sln fixes the output path issue
+dotnet publish ./src/Launcher/Launcher.csproj -c Release --self-contained -r "$RID" -o "$PUBLISH_DIR"
 
 echo ""
 echo "Building Velopack Release v$BUILD_VERSION"

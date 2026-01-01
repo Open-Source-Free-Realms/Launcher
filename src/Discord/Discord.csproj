@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Platforms>x64;x86</Platforms>
@@ -24,6 +24,14 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(OS)' == 'OSX' And '$(Platform)' == 'x64'">
+    <None Include="lib\x86_64\discord_game_sdk.dylib" />
+    <ContentWithTargetPath Include="lib\x86_64\discord_game_sdk.dylib">
+      <TargetPath>discord_game_sdk.dylib</TargetPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </ContentWithTargetPath>
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(OS)' == 'OSX' And '$(Platform)' == 'arm64'">
     <None Include="lib\x86_64\discord_game_sdk.dylib" />
     <ContentWithTargetPath Include="lib\x86_64\discord_game_sdk.dylib">
       <TargetPath>discord_game_sdk.dylib</TargetPath>

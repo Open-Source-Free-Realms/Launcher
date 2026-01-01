@@ -1,0 +1,65 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Launcher.ViewModels"
+        x:Class="Launcher.Views.GraphicsSettings"
+        x:DataType="vm:GraphicsSettings"
+        Width="450" Height="650" CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        Title="Graphics Settings"
+        Background="{StaticResource Color.Window}">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="Game.Orange">#FF7F00</SolidColorBrush>
+    </Window.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="30" Spacing="15">
+            <TextBlock Text="GRAPHICS SETTINGS" FontSize="18" FontWeight="Black" HorizontalAlignment="Center" Foreground="{StaticResource Color.Primary}"/>
+            <Separator Background="{StaticResource Color.Border}" Height="1"/>
+
+            <StackPanel Spacing="5">
+                <TextBlock Text="Display Mode" FontWeight="Bold" Opacity="0.6"/>
+                <ComboBox ItemsSource="{Binding ModeOptions}" SelectedItem="{Binding WindowMode}" HorizontalAlignment="Stretch"/>
+            </StackPanel>
+
+            <StackPanel Spacing="5">
+                <TextBlock Text="Resolution" FontWeight="Bold" Opacity="0.6"/>
+                <ComboBox ItemsSource="{Binding ResolutionOptions}" SelectedItem="{Binding Resolution}" HorizontalAlignment="Stretch"/>
+            </StackPanel>
+
+            <Separator Background="{StaticResource Color.Border}" Height="1"/>
+
+            <StackPanel Spacing="12">
+                <TextBlock Text="Render Distance" FontWeight="Bold" Opacity="0.6"/>
+                <Slider Minimum="0" Maximum="100" Value="{Binding RenderDistance}"/>
+
+                <TextBlock Text="Brightness" FontWeight="Bold" Opacity="0.6"/>
+                <Slider Minimum="0" Maximum="100" Value="{Binding Brightness}"/>
+
+                <CheckBox Content="Draw Flora" IsChecked="{Binding RenderFlora}" FontWeight="Bold"/>
+                <CheckBox Content="Use Auto-detect Settings" IsChecked="{Binding UseAutoDetect}" FontWeight="Bold" Foreground="{StaticResource Game.Orange}"/>
+
+                <StackPanel Spacing="10" IsEnabled="{Binding !UseAutoDetect}">
+                    <StackPanel.Styles>
+                        <Style Selector="StackPanel[IsEnabled=False]">
+                            <Setter Property="Opacity" Value="0.5"/>
+                        </Style>
+                    </StackPanel.Styles>
+
+                    <TextBlock Text="Graphic Quality" FontWeight="Bold"/>
+                    <Slider Minimum="0" Maximum="3" Value="{Binding GraphicQuality}" IsSnapToTickEnabled="True" TickFrequency="1"/>
+
+                    <TextBlock Text="Texture Quality" FontWeight="Bold"/>
+                    <Slider Minimum="0" Maximum="2" Value="{Binding TextureQuality}" IsSnapToTickEnabled="True" TickFrequency="1"/>
+
+                    <TextBlock Text="Shadow Quality" FontWeight="Bold"/>
+                    <Slider Minimum="0" Maximum="3" Value="{Binding ShadowQuality}" IsSnapToTickEnabled="True" TickFrequency="1"/>
+                </StackPanel>
+            </StackPanel>
+
+            <Button Content="SAVE SETTINGS" Command="{Binding SaveSettingsCommand}" 
+                    HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                    Background="{StaticResource Game.Orange}" Foreground="White" FontWeight="Bold" Margin="0,10,0,0"/>
+        </StackPanel>
+    </ScrollViewer>
+</Window>
