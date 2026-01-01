@@ -7,7 +7,7 @@ Reminder that this is still in testing phases and things might not work as plann
 #### Installation
 1.  Navigate to the **[Releases page](https://github.com/suxhi-space/OSFR-Mac-Launcher/releases)**.
 2.  Download the latest `OSFR Launcher_#.zip`.
-3.  extract then drag the app to your applications folder.
+3.  Extract then drag the app to your applications folder.
 
 #### How to Play
 1.  Launch the application.
@@ -28,7 +28,7 @@ If you have an idea for an improvement or have found a bug, feel free to fork th
 
 > AI Assistance Disclosure (very sad)
 > 
-> Tools: Modified using Gemini.
+> Tools: Modified using Gemini and some others.
 > 
 > Scope: Assisted with refactoring [describe specific area] and implementing [specific feature].
 > 
