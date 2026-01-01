@@ -57,9 +57,15 @@ public partial class Login : Popup
 
     public override async Task<bool> ProcessAsync()
     {
+        // FIX: We must update the boolean flags in the ServerInfo BEFORE saving!
+        _server.Info.RememberUsername = RememberUsername;
+        _server.Info.RememberPassword = RememberPassword;
+
         _server.Info.Username = RememberUsername ? Username : null;
         _server.Info.Password = RememberPassword ? Password : null;
+        
         Settings.Instance.Save();
+        
         try
         {
             using var client = HttpHelper.CreateHttpClient();
@@ -110,7 +116,6 @@ public partial class Login : Popup
             _server.Process.StartInfo.FileName = bin;
             _server.Process.StartInfo.Arguments = $"\"{Constants.ClientExecutableName}\" {argsStr}";
             _server.Process.StartInfo.EnvironmentVariables["WINEPREFIX"] = WineSetupService.PrefixPath;
-            // FIX: Prevent winedbg popup on crash
             _server.Process.StartInfo.EnvironmentVariables["WINE_NOCRASHDIALOG"] = "1";
             
             string wineBase = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(bin))) ?? string.Empty;
