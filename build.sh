@@ -41,7 +41,7 @@ PUBLISH_DIR="$SCRIPT_DIR/publish"
 
 echo ""
 echo "Compiling Launcher with dotnet..."
-dotnet publish ./src/Launcher.sln -c Release --self-contained -r "$RID" -o "$PUBLISH_DIR"
+dotnet publish ./src/Launcher.slnx -c Release --self-contained -r "$RID" -o "$PUBLISH_DIR"
 
 echo ""
 echo "Building Velopack Release v$BUILD_VERSION"

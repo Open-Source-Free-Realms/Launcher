@@ -12,7 +12,7 @@ set "version=%~1"
 echo.
 echo Compiling Launcher with dotnet...
 echo %~dp0publish
-dotnet publish .\src\Launcher.sln -c Release --no-self-contained -r win-x64 --property:PublishDir="%~dp0publish"
+dotnet publish .\src\Launcher.slnx -c Release --no-self-contained -r win-x64 --property:PublishDir="%~dp0publish"
 
 echo.
 echo Building Velopack Release v%version%
