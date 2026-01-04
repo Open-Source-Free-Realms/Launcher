@@ -1,96 +1,71 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<UserControl
-    xmlns="https://github.com/avaloniaui"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:v="using:Launcher.Views"
-    xmlns:vm="using:Launcher.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    mc:Ignorable="d"
-    d:DesignWidth="500"
-    d:DesignHeight="100"
-    x:DataType="vm:DeleteServer"
-    x:Class="Launcher.Views.DeleteServer">
+<?xml version="1.0" encoding="UTF-8" ?>
+<UserControl x:Class="Launcher.Views.DeleteServer"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:v="using:Launcher.Views"
+             xmlns:vm="using:Launcher.ViewModels"
+             d:DesignHeight="100"
+             d:DesignWidth="500"
+             x:DataType="vm:DeleteServer"
+             mc:Ignorable="d">
 
-	<Grid>
-		<!-- Define rows: 
-             1 for title, 
-             1 for confirmation text, 
-             1 for buttons -->
-		<Grid.RowDefinitions>
-			<RowDefinition Height="30"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
+  <Grid RowDefinitions="Auto,Auto,Auto">
 
-		<!-- Title TextBlock -->
-		<TextBlock
-            Grid.Row="0"
-            FontSize="18"
-            HorizontalAlignment="Center"
-            Text="{StaticResource Text.Delete_Server}"
-            FontFamily="{StaticResource FontDefault}" />
+    <!-- Header -->
+    <Grid Grid.Row="0"
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center">
+      <TextBlock FontFamily="{StaticResource FontDefault}"
+                 FontSize="18"
+                 Text="{StaticResource Text.Delete_Server}" />
+    </Grid>
 
-		<!-- Confirmation TextBlock -->
-		<TextBlock
-            Grid.Row="1"
-            HorizontalAlignment="Center"
-            Text="{StaticResource Text.Delete_Server.Confirm}"
-            FontFamily="{StaticResource FontDefault}"
-            Margin="5"
-			Foreground="Yellow"
-            FontSize="15" />
+    <!-- Warning -->
+    <TextBlock Grid.Row="1"
+               Margin="5"
+               HorizontalAlignment="Center"
+               FontFamily="{StaticResource FontDefault}"
+               FontSize="15"
+               Foreground="Yellow"
+               Text="{StaticResource Text.Delete_Server.Confirm}" />
 
-		<!-- Buttons area: use a Grid with three columns: Yes, or, No -->
-		<Grid Grid.Row="2" HorizontalAlignment="Center"  Margin="0,10,0,0">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto"/>
-				<ColumnDefinition Width="Auto"/>
-				<ColumnDefinition Width="Auto"/>
-			</Grid.ColumnDefinitions>
+    <!-- Buttons -->
+    <Grid Grid.Row="2"
+          Margin="0,10,0,0"
+          HorizontalAlignment="Center"
+          ColumnDefinitions="Auto,Auto">
 
-			<!-- Yes Button -->
-			<Button
-                Grid.Column="0"
-                Classes="flat primary"
-                Command="{Binding DeleteServerCommand}"
-                Content="{StaticResource Text.Yes}"
-                FontFamily="{StaticResource FontDefault}"
-                Margin="0,0,10,0">
-				<!-- Right margin -->
-				<Button.Background>
-					<LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
-						<GradientStop Color="#96B9D9" Offset="0.0"/>
-						<GradientStop Color="#202959" Offset="4.0"/>
-						<GradientStop Color="#37538C" Offset="0.8"/>
-					</LinearGradientBrush>
-				</Button.Background>
-			</Button>
+      <Button Grid.Column="0"
+              Margin="0,0,10,0"
+              Classes="flat primary"
+              Command="{Binding DeleteServerCommand}"
+              Content="{StaticResource Text.Yes}"
+              FontFamily="{StaticResource FontDefault}">
 
-			<!-- "or" TextBlock -->
-			<TextBlock
-				Grid.Column="1"
-				VerticalAlignment="Center"
-				FontSize="15"
-				FontFamily="{StaticResource FontDefault}"
-				Text="or"
-				Margin="0,0,10,0" />
+        <Button.Background>
+          <LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
+            <GradientStop Offset="0.0" Color="#96B9D9" />
+            <GradientStop Offset="4.0" Color="#202959" />
+            <GradientStop Offset="0.8" Color="#37538C" />
+          </LinearGradientBrush>
+        </Button.Background>
+      </Button>
 
-			<!-- No Button -->
-			<Button
-                Grid.Column="2"
-                Classes="flat primary"
-                Command="{Binding CancelDeleteServerCommand}"
-                Content="{StaticResource Text.No}"
-                FontFamily="{StaticResource FontDefault}">
-				<Button.Background>
-					<LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
-						<GradientStop Color="#96B9D9" Offset="0.0"/>
-						<GradientStop Color="#202959" Offset="4.0"/>
-						<GradientStop Color="#37538C" Offset="0.8"/>
-					</LinearGradientBrush>
-				</Button.Background>
-			</Button>
-		</Grid>
-	</Grid>
+      <Button Grid.Column="1"
+              Classes="flat primary"
+              Command="{Binding CancelDeleteServerCommand}"
+              Content="{StaticResource Text.No}"
+              FontFamily="{StaticResource FontDefault}">
+        <Button.Background>
+          <LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
+            <GradientStop Offset="0.0" Color="#96B9D9" />
+            <GradientStop Offset="4.0" Color="#202959" />
+            <GradientStop Offset="0.8" Color="#37538C" />
+          </LinearGradientBrush>
+        </Button.Background>
+      </Button>
+    </Grid>
+  </Grid>
 </UserControl>

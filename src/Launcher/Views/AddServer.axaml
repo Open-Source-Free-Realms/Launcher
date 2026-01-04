@@ -1,86 +1,83 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<UserControl
-    xmlns="https://github.com/avaloniaui"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:v="using:Launcher.Views"
-    xmlns:vm="using:Launcher.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    mc:Ignorable="d"
-    d:DesignWidth="500"
-    d:DesignHeight="100"
-    x:DataType="vm:AddServer"
-    x:Class="Launcher.Views.AddServer">
+<?xml version="1.0" encoding="UTF-8" ?>
+<UserControl x:Class="Launcher.Views.AddServer"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:v="using:Launcher.Views"
+             xmlns:vm="using:Launcher.ViewModels"
+             d:DesignHeight="100"
+             d:DesignWidth="500"
+             x:DataType="vm:AddServer"
+             mc:Ignorable="d">
 
-	<Grid>
-		<!-- Define rows for the header, input section, and buttons -->
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
+  <Grid RowDefinitions="Auto,Auto,Auto">
 
-		<!-- Header TextBlock centered -->
-		<Grid Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-			<TextBlock FontSize="18" Text="{StaticResource Text.Add_Server.ServerUrl}" FontFamily="{StaticResource FontDefault}" />
-		</Grid>
+    <!-- Header -->
+    <Grid Grid.Row="0"
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center">
+      <TextBlock FontFamily="{StaticResource FontDefault}"
+                 FontSize="18"
+                 Text="{StaticResource Text.Add_Server.ServerUrl}" />
+    </Grid>
 
-		<!-- Input section with overlayed TextBox over image -->
-		<Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-			<!-- Place both image and textbox in the same Grid -->
-			<Image Source="/Assets/fr_asset4.png" Stretch="None"/>
-			<TextBox
-                CaretBrush="Black"
-                v:AutoFocusBehaviour.IsEnabled="True"
-                Foreground="Black"
-                FontSize="13"
-                FontWeight="SemiBold"
-                Width="254"
-                Height="22"
-                Text="{Binding ServerUrl, Mode=TwoWay}"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Background="Transparent"
-                BorderBrush="Transparent"/>
-		</Grid>
+    <!-- Input -->
+    <Grid Grid.Row="1"
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center">
 
-		<!-- Buttons row -->
-		<Grid Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto"/>
-				<ColumnDefinition Width="Auto"/>
-			</Grid.ColumnDefinitions>
+      <Image Source="/Assets/fr_asset4.png" Stretch="None" />
 
-			<Button
-                Classes="flat primary"
-                Command="{Binding AddServerCommand}"
-                Content="{StaticResource Text.Add}"
-                FontFamily="{StaticResource FontDefault}"
-                HotKey="Enter"
-                Grid.Column="0" Margin="5,0">
-				<Button.Background>
-					<LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
-						<GradientStop Color="#96B9D9" Offset="0.0"/>
-						<GradientStop Color="#202959" Offset="4.0"/>
-						<GradientStop Color="#37538C" Offset="0.8"/>
-					</LinearGradientBrush>
-				</Button.Background>
-			</Button>
+      <TextBox Width="254"
+               Height="22"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               v:AutoFocusBehaviour.IsEnabled="True"
+               CaretBrush="Black"
+               FontSize="13"
+               FontWeight="SemiBold"
+               Foreground="Black"
+               Text="{Binding ServerUrl, Mode=TwoWay}" />
+    </Grid>
 
-			<Button
-                Classes="flat primary"
-                Command="{Binding CancelAddServerCommand}"
-                Content="{StaticResource Text.Cancel}"
-                FontFamily="{StaticResource FontDefault}"
-                Grid.Column="1" Margin="5,0">
-				<Button.Background>
-					<LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
-						<GradientStop Color="#96B9D9" Offset="0.0"/>
-						<GradientStop Color="#202959" Offset="4.0"/>
-						<GradientStop Color="#37538C" Offset="0.8"/>
-					</LinearGradientBrush>
-				</Button.Background>
-			</Button>
-		</Grid>
-	</Grid>
+    <!-- Buttons -->
+    <Grid Grid.Row="2"
+          Margin="0,10,0,0"
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center"
+          ColumnDefinitions="Auto,Auto">
+
+      <Button Grid.Column="0"
+              Margin="5,0"
+              Classes="flat primary"
+              Command="{Binding AddServerCommand}"
+              Content="{StaticResource Text.Add}"
+              FontFamily="{StaticResource FontDefault}"
+              HotKey="Enter">
+        <Button.Background>
+          <LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
+            <GradientStop Offset="0.0" Color="#96B9D9" />
+            <GradientStop Offset="4.0" Color="#202959" />
+            <GradientStop Offset="0.8" Color="#37538C" />
+          </LinearGradientBrush>
+        </Button.Background>
+      </Button>
+
+      <Button Grid.Column="1"
+              Margin="5,0"
+              Classes="flat primary"
+              Command="{Binding CancelAddServerCommand}"
+              Content="{StaticResource Text.Cancel}"
+              FontFamily="{StaticResource FontDefault}">
+        <Button.Background>
+          <LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
+            <GradientStop Offset="0.0" Color="#96B9D9" />
+            <GradientStop Offset="4.0" Color="#202959" />
+            <GradientStop Offset="0.8" Color="#37538C" />
+          </LinearGradientBrush>
+        </Button.Background>
+      </Button>
+    </Grid>
+  </Grid>
 </UserControl>

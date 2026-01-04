@@ -1,93 +1,149 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<UserControl
-    xmlns="https://github.com/avaloniaui"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:md="https://github.com/whistyun/Markdown.Avalonia"
-    xmlns:vm="using:Launcher.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    mc:Ignorable="d"
-    d:DesignWidth="650"
-    d:DesignHeight="550"
-    x:DataType="vm:Server"
-    xmlns:m="using:Launcher.Models"
-    x:Class="Launcher.Views.Server">
+<?xml version="1.0" encoding="UTF-8" ?>
+<UserControl x:Class="Launcher.Views.Server"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:m="using:Launcher.Models"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:md="https://github.com/whistyun/Markdown.Avalonia"
+             xmlns:vm="using:Launcher.ViewModels"
+             d:DesignHeight="550"
+             d:DesignWidth="650"
+             x:DataType="vm:Server"
+             mc:Ignorable="d">
 
-	<Design.DataContext>
-		<vm:Server />
-	</Design.DataContext>
+  <Design.DataContext>
+    <vm:Server />
+  </Design.DataContext>
 
-	<Grid RowDefinitions="50,40,250,20" ColumnDefinitions="*,Auto">
+  <Grid ColumnDefinitions="*,Auto" RowDefinitions="50,40,250,20">
 
-		<!-- Title & Refresh Row -->
-		<Grid Grid.Row="1" ColumnDefinitions="Auto,Auto" Margin="0,0,30,10" VerticalAlignment="Center" HorizontalAlignment="Center">
+    <!-- Title & Refresh Row -->
+    <Grid Grid.Row="1"
+          Margin="0,0,30,10"
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center"
+          ColumnDefinitions="Auto,Auto">
 
-			<!-- Refresh Status  -->
-			<Button Grid.Column="0" Classes="no_background" VerticalAlignment="Center" Command="{Binding RefreshServerStatusCommand}">
-				<Path Width="18"  Height="18" Classes.rotating="{Binding IsRefreshing}" Data="{StaticResource Icons.Loading}" Stretch="Fill" />
-			</Button>
+      <!-- Refresh Status -->
+      <Button Grid.Column="0"
+              VerticalAlignment="Center"
+              Classes="no_background"
+              Command="{Binding RefreshServerStatusCommand}">
+        <Path Width="18"
+              Height="18"
+              Classes.rotating="{Binding IsRefreshing}"
+              Data="{StaticResource Icons.Loading}"
+              Stretch="Fill" />
+      </Button>
 
-			<!-- Title -->
-			<Border Grid.Column="1">
-				<TextBlock FontSize="24" Text="{Binding Info.Name, Mode=OneWay}" FontFamily="{StaticResource FontDefault}" />
-			</Border>
-		</Grid>
+      <!-- Title -->
+      <Border Grid.Column="1">
+        <TextBlock FontFamily="{StaticResource FontDefault}"
+                   FontSize="24"
+                   Text="{Binding Info.Name, Mode=OneWay}" />
+      </Border>
+    </Grid>
 
-		<!-- Server Status / Player Count -->
-		<Grid Grid.Row="2" HorizontalAlignment="Center" Margin="10,0,0,230">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto"/>
-				<ColumnDefinition Width="Auto"/>
-			</Grid.ColumnDefinitions>
-			<StackPanel Orientation="Horizontal" Grid.Column="0" Spacing="2.5" Margin="0,0,10,0" HorizontalAlignment="Center">
-				<TextBlock Text="{StaticResource Text.ServerStatus}" FontFamily="{StaticResource FontDefault}" FontSize="15" />
-				<TextBlock Text="{Binding Status, Mode=OneWay}" FontFamily="{StaticResource FontDefault}" FontSize="15" Foreground="{Binding ServerStatusFill}" />
-			</StackPanel>
-			<StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Center">
-				<TextBlock Text="{StaticResource Text.OnlinePlayers}" FontFamily="{StaticResource FontDefault}" FontSize="15" />
-				<TextBlock Text="{Binding OnlinePlayers, Mode=OneWay}" FontFamily="{StaticResource FontDefault}" Width="30" FontSize="15" />
-			</StackPanel>
-		</Grid>
+    <!-- Server Status / Player Count -->
+    <Grid Grid.Row="2"
+          Margin="10,0,0,230"
+          HorizontalAlignment="Center"
+          ColumnDefinitions="Auto,Auto">
+      <StackPanel Grid.Column="0"
+                  Margin="0,0,10,0"
+                  HorizontalAlignment="Center"
+                  Orientation="Horizontal"
+                  Spacing="2.5">
+        <TextBlock FontFamily="{StaticResource FontDefault}"
+                   FontSize="15"
+                   Text="{StaticResource Text.ServerStatus}" />
+        <TextBlock FontFamily="{StaticResource FontDefault}"
+                   FontSize="15"
+                   Foreground="{Binding ServerStatusFill}"
+                   Text="{Binding Status, Mode=OneWay}" />
+      </StackPanel>
 
-		<!-- Server Description -->
-		<Grid Grid.Row="2">
-			<Border Margin="0,35,0,0" Width="580"
-					IsVisible="{Binding Info.Description, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
-					BorderBrush="{StaticResource Color.Border}" BorderThickness="1" CornerRadius="5">
-				<Border Padding="15" CornerRadius="5" Opacity="0.050" Background="{StaticResource Color.Description}">
-					<ScrollViewer Opacity="200" HorizontalAlignment="Center" VerticalAlignment="Center">
-						<md:MarkdownScrollViewer HorizontalAlignment="Center" VerticalAlignment="Center" Markdown="{Binding Info.Description}"/>
-					</ScrollViewer>
-				</Border>
-			</Border>
-		</Grid>
+      <StackPanel Grid.Column="1"
+                  HorizontalAlignment="Center"
+                  Orientation="Horizontal">
+        <TextBlock FontFamily="{StaticResource FontDefault}"
+                   FontSize="15"
+                   Text="{StaticResource Text.OnlinePlayers}" />
+        <TextBlock Width="30"
+                   FontFamily="{StaticResource FontDefault}"
+                   FontSize="15"
+                   Text="{Binding OnlinePlayers, Mode=OneWay}" />
+      </StackPanel>
+    </Grid>
 
-		<!-- Server Play / Update Status -->
-		<StackPanel Grid.Row="3" Margin="0,20,0,0">
-			<Grid HorizontalAlignment="Center">
-				<Button Classes="no_background" Cursor="Hand" Command="{Binding PlayCommand}" IsVisible="{Binding PlayCommand.IsRunning, Converter={x:Static BoolConverters.Not}}" >
-					<Image Source="/Assets/fr_asset3.png" Width="165" Stretch="UniformToFill" />
-				</Button>
-			</Grid>
-		</StackPanel>
+    <!-- Server Description -->
+    <Grid Grid.Row="2">
+      <Border Width="580"
+              Margin="0,35,0,0"
+              BorderBrush="{StaticResource Color.Border}"
+              BorderThickness="1"
+              CornerRadius="5"
+              IsVisible="{Binding Info.Description, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+        <Border Padding="15"
+                Background="{StaticResource Color.Description}"
+                CornerRadius="5"
+                Opacity="0.050">
+          <ScrollViewer HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Opacity="200">
+            <md:MarkdownScrollViewer HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     Markdown="{Binding Info.Description}" />
+          </ScrollViewer>
+        </Border>
+      </Border>
+    </Grid>
 
-		<!-- Status Info -->
-		<StackPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,80">
-			<TextBlock Text="{Binding StatusMessage, Mode=OneWay}" FontFamily="{StaticResource FontDefault}" FontSize="14" />
-		</StackPanel>
+    <!-- Server Play / Update Status -->
+    <StackPanel Grid.Row="3" Margin="0,20,0,0">
+      <Grid HorizontalAlignment="Center">
+        <Button Classes="no_background"
+                Command="{Binding PlayCommand}"
+                Cursor="Hand"
+                IsVisible="{Binding PlayCommand.IsRunning, Converter={x:Static BoolConverters.Not}}">
+          <Image Width="165"
+                 Source="/Assets/fr_asset3.png"
+                 Stretch="UniformToFill" />
+        </Button>
+      </Grid>
+    </StackPanel>
 
-		<!-- Client Folder -->
-		<StackPanel Grid.Row="4" HorizontalAlignment="Right" Margin="0,170,15,0">
-			<Button Classes="flat primary" ToolTip.Tip="{StaticResource Text.Server.ClientFolder.Tooltip}" CornerRadius="5" Command="{Binding OpenClientFolderCommand}" >
-				<Button.Background>
-					<LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
-						<GradientStop Color="#96B9D9" Offset="0.0"/>
-						<GradientStop Color="#202959" Offset="4.0"/>
-						<GradientStop Color="#37538C" Offset="0.8"/>
-					</LinearGradientBrush>
-				</Button.Background>
-				<Path Width="16" Height="16" Data="{StaticResource Icons.Folder}" Stretch="Fill" />
-			</Button>
-		</StackPanel>
-	</Grid>
+    <!-- Status Info -->
+    <StackPanel Grid.Row="3"
+                Margin="0,0,0,80"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+      <TextBlock FontFamily="{StaticResource FontDefault}"
+                 FontSize="14"
+                 Text="{Binding StatusMessage, Mode=OneWay}" />
+    </StackPanel>
+
+    <!-- Client Folder -->
+    <StackPanel Grid.Row="4"
+                Margin="0,170,15,0"
+                HorizontalAlignment="Right">
+      <Button Classes="flat primary"
+              Command="{Binding OpenClientFolderCommand}"
+              CornerRadius="5"
+              ToolTip.Tip="{StaticResource Text.Server.ClientFolder.Tooltip}">
+        <Button.Background>
+          <LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
+            <GradientStop Offset="0.0" Color="#96B9D9" />
+            <GradientStop Offset="4.0" Color="#202959" />
+            <GradientStop Offset="0.8" Color="#37538C" />
+          </LinearGradientBrush>
+        </Button.Background>
+        <Path Width="16"
+              Height="16"
+              Data="{StaticResource Icons.Folder}"
+              Stretch="Fill" />
+      </Button>
+    </StackPanel>
+  </Grid>
 </UserControl>

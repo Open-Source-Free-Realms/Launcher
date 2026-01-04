@@ -7,7 +7,7 @@
     <ApplicationIcon>App.ico</ApplicationIcon>
     <TieredPGO>true</TieredPGO>
     <PublishReadyToRun>true</PublishReadyToRun>
-	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>

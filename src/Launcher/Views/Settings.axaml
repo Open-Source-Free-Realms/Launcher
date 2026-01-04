@@ -1,107 +1,112 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Window
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:avalonia="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls"
-    xmlns:c="using:Launcher.Converters"
-    xmlns:m="using:Launcher.Models"
-    xmlns:vm="using:Launcher.ViewModels"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    x:Class="Launcher.Views.Settings"
-    x:DataType="vm:Settings"
-    mc:Ignorable="d"
-    d:DesignWidth="400"
-    d:DesignHeight="220"
-    Icon="/App.ico"
-    CanResize="False"
-    WindowStartupLocation="CenterScreen"
-    Title="{StaticResource Text.Settings}"
-    Background="{StaticResource Color.Window}"
-    Width="400"
-    Height="220"
-    MinWidth="400"
-    MinHeight="220">
+<?xml version="1.0" encoding="utf-8" ?>
+<Window x:Class="Launcher.Views.Settings"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:avalonia="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls"
+        xmlns:c="using:Launcher.Converters"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:m="using:Launcher.Models"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:Launcher.ViewModels"
+        Title="{StaticResource Text.Settings}"
+        Width="400"
+        Height="220"
+        MinWidth="400"
+        MinHeight="220"
+        d:DesignHeight="220"
+        d:DesignWidth="400"
+        x:DataType="vm:Settings"
+        Background="{StaticResource Color.Window}"
+        CanResize="False"
+        Icon="/App.ico"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d">
 
-	<TabControl>
-		<TabItem>
-			<TabItem.Header>
-				<TextBlock Text="{StaticResource Text.Settings}" />
-			</TabItem.Header>
+  <TabControl>
+    <TabItem>
+      <TabItem.Header>
+        <TextBlock Text="{StaticResource Text.Settings}" />
+      </TabItem.Header>
 
-			<Grid Margin="10"
-                RowDefinitions="30,30,40,40"
-				ColumnDefinitions="Auto,*">
+      <Grid Margin="10"
+            ColumnDefinitions="Auto,*"
+            RowDefinitions="30,30,40,40">
 
-				<!-- Discord Activity Checkbox -->
-				<CheckBox Grid.Row="0" Grid.ColumnSpan="2"
-					Content="{StaticResource Text.Settings.General.DiscordActivity}"
-				    ToolTip.Tip="{StaticResource Text.Settings.General.DiscordActivity.Tooltip}"
-					IsChecked="{Binding DiscordActivity, Mode=TwoWay}" />
+        <!-- Discord Activity Checkbox -->
+        <CheckBox Grid.Row="0"
+                  Grid.ColumnSpan="2"
+                  Content="{StaticResource Text.Settings.General.DiscordActivity}"
+                  IsChecked="{Binding DiscordActivity, Mode=TwoWay}"
+                  ToolTip.Tip="{StaticResource Text.Settings.General.DiscordActivity.Tooltip}" />
 
-				<!-- Parallel Download Checkbox -->
-				<CheckBox Grid.Row="1" Grid.ColumnSpan="2"
-					Content="{StaticResource Text.Settings.General.ParallelDownload}"
-				    ToolTip.Tip="{StaticResource Text.Settings.General.ParallelDownload.Tooltip}"
-					IsChecked="{Binding ParallelDownload, Mode=TwoWay}" />
+        <!-- Parallel Download Checkbox -->
+        <CheckBox Grid.Row="1"
+                  Grid.ColumnSpan="2"
+                  Content="{StaticResource Text.Settings.General.ParallelDownload}"
+                  IsChecked="{Binding ParallelDownload, Mode=TwoWay}"
+                  ToolTip.Tip="{StaticResource Text.Settings.General.ParallelDownload.Tooltip}" />
 
-				<!-- Download Threads Label -->
-				<TextBlock Grid.Row="2" Grid.Column="0"
-					VerticalAlignment="Center"
-					Margin="0,8,0,0"
-					FontSize="13"
-					Text="{StaticResource Text.Settings.General.ParallelDownloads}"/>
+        <!-- Download Threads Label -->
+        <TextBlock Grid.Row="2"
+                   Grid.Column="0"
+                   Margin="0,8,0,0"
+                   VerticalAlignment="Center"
+                   FontSize="13"
+                   Text="{StaticResource Text.Settings.General.ParallelDownloads}" />
 
-				<!-- Download Threads NumericUpDown -->
-				<avalonia:NumericUpDown Grid.Row="2" Grid.Column="1"
-					Margin="5,8,0,0"
-					Minimum="2"
-					Maximum="10"
-					FormatString="F0"
-					Value="{Binding DownloadThreads, Mode=TwoWay}"
-					HorizontalAlignment="Left"
-					VerticalAlignment="Center"
-					Width="120"
-					ToolTip.Tip="{StaticResource Text.Settings.General.ParallelDownloads.Tooltip}">
-				
-					<!-- TextBox Parallel Downloads (Readonly) -->
-					<avalonia:NumericUpDown.Styles>
-						<Style Selector="TextBox">
-							<Setter Property="IsReadOnly" Value="True"/>
-							<Setter Property="SelectionBrush" Value="Transparent"/>
-						</Style>
+        <!-- Download Threads NumericUpDown -->
+        <avalonia:NumericUpDown Grid.Row="2"
+                                Grid.Column="1"
+                                Width="120"
+                                Margin="5,8,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FormatString="F0"
+                                Maximum="10"
+                                Minimum="2"
+                                ToolTip.Tip="{StaticResource Text.Settings.General.ParallelDownloads.Tooltip}"
+                                Value="{Binding DownloadThreads, Mode=TwoWay}">
 
-						<Style Selector="TextBox:pointerover">
-							<Setter Property="IsReadOnly" Value="True"/>
-							<Setter Property="SelectionBrush" Value="Transparent"/>
-						</Style>
+          <!-- TextBox Parallel Downloads (Readonly) -->
+          <avalonia:NumericUpDown.Styles>
+            <Style Selector="TextBox">
+              <Setter Property="IsReadOnly" Value="True" />
+              <Setter Property="SelectionBrush" Value="Transparent" />
+            </Style>
 
-						<Style Selector="TextBox:focus-within">
-							<Setter Property="IsReadOnly" Value="True"/>
-							<Setter Property="SelectionBrush" Value="Transparent"/>
-						</Style>
-					</avalonia:NumericUpDown.Styles>
-				</avalonia:NumericUpDown>
-				
-				<!-- Game Language -->
-				<TextBlock Grid.Row="3" Grid.Column="0"
-					VerticalAlignment="Center"
-					FontSize="13"
-					Text="{StaticResource Text.Settings.General.Locale}" />
+            <Style Selector="TextBox:pointerover">
+              <Setter Property="IsReadOnly" Value="True" />
+              <Setter Property="SelectionBrush" Value="Transparent" />
+            </Style>
 
-				<!-- Locale ComboBox -->
-				<ComboBox Grid.Row="3" Grid.Column="1"
-					HorizontalAlignment="Left"
-					VerticalAlignment="Center"
-					Width="120"
-					Padding="8,0"
-					Margin="-12,2,0,0"
-				    ToolTip.Tip="{StaticResource Text.Settings.General.Locale.Tooltip}"
-					ItemsSource="{Binding Source={x:Static m:Locale.Supported}}"
-					DisplayMemberBinding="{Binding Name, x:DataType=m:Locale}"
-					SelectedItem="{Binding Locale, Mode=TwoWay, Converter={x:Static c:StringConverter.ToLocale}}" />
+            <Style Selector="TextBox:focus-within">
+              <Setter Property="IsReadOnly" Value="True" />
+              <Setter Property="SelectionBrush" Value="Transparent" />
+            </Style>
+          </avalonia:NumericUpDown.Styles>
+        </avalonia:NumericUpDown>
 
-			</Grid>
-		</TabItem>
-	</TabControl>
+        <!-- Game Language -->
+        <TextBlock Grid.Row="3"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   FontSize="13"
+                   Text="{StaticResource Text.Settings.General.Locale}" />
+
+        <!-- Locale ComboBox -->
+        <ComboBox Grid.Row="3"
+                  Grid.Column="1"
+                  Width="120"
+                  Margin="-12,2,0,0"
+                  Padding="8,0"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Center"
+                  DisplayMemberBinding="{Binding Name, x:DataType=m:Locale}"
+                  ItemsSource="{Binding Source={x:Static m:Locale.Supported}}"
+                  SelectedItem="{Binding Locale, Mode=TwoWay, Converter={x:Static c:StringConverter.ToLocale}}"
+                  ToolTip.Tip="{StaticResource Text.Settings.General.Locale.Tooltip}" />
+
+      </Grid>
+    </TabItem>
+  </TabControl>
 </Window>
