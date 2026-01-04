@@ -60,7 +60,7 @@ public static class ServerStatusHelper
             }
             catch (Exception ex)
             {
-               Console.WriteLine($"Error querying server status: {ex}");
+                Console.WriteLine($"Error querying server status: {ex}");
             }
         }
 

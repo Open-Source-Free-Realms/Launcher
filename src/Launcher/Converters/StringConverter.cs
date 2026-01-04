@@ -1,7 +1,9 @@
-﻿using Avalonia.Data.Converters;
-using Launcher.Models;
-using System;
+﻿using System;
 using System.Globalization;
+
+using Avalonia.Data.Converters;
+
+using Launcher.Models;
 
 namespace Launcher.Converters;
 

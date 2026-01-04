@@ -1,7 +1,8 @@
-using Avalonia.Controls;
-using Avalonia.Threading;
 using System;
 using System.Diagnostics;
+
+using Avalonia.Controls;
+using Avalonia.Threading;
 
 namespace Launcher.Views;
 

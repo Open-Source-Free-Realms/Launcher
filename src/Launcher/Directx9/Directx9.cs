@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 public static partial class D3D9
 {
-    [LibraryImport("d3d9.dll", EntryPoint = "Direct3DCreate9")] 
+    [LibraryImport("d3d9.dll", EntryPoint = "Direct3DCreate9")]
     public static partial nint Direct3DCreate9(uint sdkVersion);
 
     const uint D3D_SDK_VERSION = 0x20;

@@ -1,14 +1,17 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Launcher.Extensions;
-using Launcher.Helpers;
-using Launcher.Models;
-using NLog;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
+
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
+using Launcher.Extensions;
+using Launcher.Helpers;
+using Launcher.Models;
+
+using NLog;
 
 namespace Launcher.ViewModels;
 

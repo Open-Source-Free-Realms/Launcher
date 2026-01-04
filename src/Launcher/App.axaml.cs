@@ -1,14 +1,20 @@
+using System;
+using System.Threading.Tasks;
+
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+
 using CommunityToolkit.Mvvm.Input;
+
 using Launcher.Models;
 using Launcher.ViewModels;
+
 using NLog;
+
 using NuGet.Versioning;
-using System;
-using System.Threading.Tasks;
+
 using Velopack;
 using Velopack.Sources;
 

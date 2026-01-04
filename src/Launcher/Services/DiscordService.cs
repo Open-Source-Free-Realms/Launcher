@@ -1,8 +1,10 @@
-﻿using Discord;
-using NLog;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+
+using Discord;
+
+using NLog;
 
 namespace Launcher.Services;
 
@@ -28,7 +30,7 @@ public static class DiscordService
             }
 
             // Avoid re-initializing if it's already running.
-            if (_discord != null) 
+            if (_discord != null)
                 return;
 
             try

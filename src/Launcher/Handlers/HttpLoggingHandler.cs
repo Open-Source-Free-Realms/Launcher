@@ -1,10 +1,12 @@
-﻿using NLog;
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
+using NLog;
+
 namespace Launcher.Handlers;
+
 public class HttpLoggingHandler : DelegatingHandler
 {
     private readonly Logger _logger;

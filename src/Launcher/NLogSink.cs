@@ -1,9 +1,11 @@
-﻿using Avalonia.Logging;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
+using Avalonia.Logging;
+
 namespace Launcher;
+
 public class NLogSink : ILogSink
 {
     private readonly LogEventLevel _level;

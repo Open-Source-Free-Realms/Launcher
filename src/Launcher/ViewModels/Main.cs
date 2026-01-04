@@ -1,19 +1,24 @@
-﻿using Avalonia.Collections;
-using Avalonia.Threading;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Launcher.Helpers;
-using Launcher.Models;
-using Launcher.Services;
-using NLog;
-using NuGet.Versioning;
-using System;
+﻿using System;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+
+using Avalonia.Collections;
+using Avalonia.Threading;
+
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
+using Launcher.Helpers;
+using Launcher.Models;
+using Launcher.Services;
+
+using NLog;
+
+using NuGet.Versioning;
 
 namespace Launcher.ViewModels;
 
@@ -121,9 +126,9 @@ public partial class Main : ObservableObject
             }
 
             // Platform-specific logic to open a folder
-            var startInfo = new ProcessStartInfo 
-            { 
-                UseShellExecute = true 
+            var startInfo = new ProcessStartInfo
+            {
+                UseShellExecute = true
             };
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))

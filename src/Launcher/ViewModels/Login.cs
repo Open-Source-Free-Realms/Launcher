@@ -1,9 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Launcher.Helpers;
-using Launcher.Models;
-using NLog;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
@@ -13,6 +8,14 @@ using System.Net.Http.Json;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
+
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
+using Launcher.Helpers;
+using Launcher.Models;
+
+using NLog;
 
 namespace Launcher.ViewModels;
 

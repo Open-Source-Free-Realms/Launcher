@@ -1,10 +1,12 @@
-﻿using Launcher.Handlers;
-using Launcher.Models;
-using NLog;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+
+using Launcher.Handlers;
+using Launcher.Models;
+
+using NLog;
 
 namespace Launcher.Helpers;
 

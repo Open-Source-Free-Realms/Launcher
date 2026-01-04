@@ -1,12 +1,4 @@
-﻿using Avalonia.Media;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Downloader;
-using HashDepot;
-using Launcher.Helpers;
-using Launcher.Models;
-using NLog;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,7 +9,22 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Avalonia.Media;
+
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
+using Downloader;
+
+using HashDepot;
+
+using Launcher.Helpers;
+using Launcher.Models;
+
+using NLog;
+
 namespace Launcher.ViewModels;
+
 public partial class Server : ObservableObject
 {
     private readonly Main _main = null!;

@@ -1,17 +1,22 @@
+using System;
+using System.IO;
+
 using Avalonia;
 using Avalonia.Logging;
+
 using Launcher.Extensions;
 using Launcher.Helpers;
 using Launcher.Services;
 using Launcher.ViewModels;
+
 using NLog;
 using NLog.Config;
 using NLog.Targets;
-using System;
-using System.IO;
+
 using Velopack;
 
 namespace Launcher;
+
 internal sealed class Program
 {
     [STAThread]
