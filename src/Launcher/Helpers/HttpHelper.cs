@@ -15,6 +15,8 @@ public static class HttpHelper
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private static readonly HttpClient _httpClient = CreateHttpClient();
 
+    public static string UserAgent => $"{App.GetText("Text.Title")} v{App.CurrentVersion}";
+
     public static HttpClient CreateHttpClient()
     {
         var httpClient = new HttpClient(new HttpLoggingHandler(new HttpClientHandler()
@@ -22,9 +24,7 @@ public static class HttpHelper
             AllowAutoRedirect = true
         }));
 
-        var userAgent = $"{App.GetText("Text.Title")} v{App.CurrentVersion}";
-
-        httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(userAgent);
+        httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent);
 
         return httpClient;
     }

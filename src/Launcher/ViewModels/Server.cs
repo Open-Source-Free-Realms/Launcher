@@ -405,7 +405,7 @@ public partial class Server : ObservableObject
             {
                 RequestConfiguration =
                 {
-                    UserAgent = $"{App.GetText("Text.Title")} v{App.CurrentVersion}"
+                    UserAgent = HttpHelper.UserAgent
                 }
             });
 
