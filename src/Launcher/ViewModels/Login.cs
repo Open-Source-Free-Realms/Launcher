@@ -168,7 +168,7 @@ public partial class Login : Popup
 
     private async Task LaunchClientAsync(string sessionId, string? serverArguments)
     {
-        if (!D3D9.IsAvailable())
+        if (!Dx9Helper.IsAvailable())
         {
             await NotifyDirectX9MissingAsync().ConfigureAwait(false);
             return;
