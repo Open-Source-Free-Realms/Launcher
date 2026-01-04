@@ -1,32 +1,51 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Platforms>x64;x86</Platforms>
+    <Platforms>x64;x86;arm64</Platforms>
     <TargetFramework>net9.0</TargetFramework>
     <!-- Ignore warnings to leave the Discord Game SDK unchanged. -->
     <NoWarn>CS8600,CS8601,CS8602,CS8605,CS8618,CS8625</NoWarn>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(OS)' == 'Windows_NT' And '$(Platform)' == 'x86'">
-    <None Include="lib\x86\discord_game_sdk.dll" />
+  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x86'">
     <ContentWithTargetPath Include="lib\x86\discord_game_sdk.dll">
       <TargetPath>discord_game_sdk.dll</TargetPath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </ContentWithTargetPath>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(OS)' == 'Windows_NT' And '$(Platform)' == 'x64'">
-    <None Include="lib\x86_64\discord_game_sdk.dll" />
+  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
     <ContentWithTargetPath Include="lib\x86_64\discord_game_sdk.dll">
       <TargetPath>discord_game_sdk.dll</TargetPath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </ContentWithTargetPath>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(OS)' == 'OSX' And '$(Platform)' == 'x64'">
-    <None Include="lib\x86_64\discord_game_sdk.dylib" />
+  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'osx-x64'">
     <ContentWithTargetPath Include="lib\x86_64\discord_game_sdk.dylib">
       <TargetPath>discord_game_sdk.dylib</TargetPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\x86_64\discord_game_sdk.bundle">
+      <TargetPath>discord_game_sdk.bundle</TargetPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </ContentWithTargetPath>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'osx-arm64'">
+    <ContentWithTargetPath Include="lib\aarch64\discord_game_sdk.dylib">
+      <TargetPath>discord_game_sdk.dylib</TargetPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\aarch64\discord_game_sdk.bundle">
+      <TargetPath>discord_game_sdk.bundle</TargetPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </ContentWithTargetPath>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+    <ContentWithTargetPath Include="lib\x86_64\discord_game_sdk.so">
+      <TargetPath>discord_game_sdk.so</TargetPath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </ContentWithTargetPath>
   </ItemGroup>
