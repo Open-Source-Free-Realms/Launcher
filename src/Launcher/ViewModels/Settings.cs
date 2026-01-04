@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Threading;
 using System.Xml.Serialization;
 
 using Avalonia.Collections;
@@ -17,10 +16,10 @@ namespace Launcher.ViewModels;
 
 public partial class Settings : ObservableObject
 {
-    private static Settings? _instance;
     private static readonly string _savePath = Path.Combine(Constants.SavePath, Constants.SettingsFile);
-    private static readonly Lock _lock = new();
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+    private static readonly Lazy<Settings> _instance = new(Create());
 
     [ObservableProperty]
     private bool discordActivity = true;
@@ -42,60 +41,29 @@ public partial class Settings : ObservableObject
 
     private Settings() { }
 
-    [XmlIgnore]
-    public static Settings Instance
+    private static Settings Create()
     {
-        get
+        if (!File.Exists(_savePath))
+            return new Settings();
+
+        if (!XmlHelper.TryDeserialize(_savePath, out Settings? settings))
         {
-            if (_instance is not null)
-                return _instance;
+            _logger.Error($"Failed to deserialize settings from '{_savePath}'.");
 
-            // If the instance is null, acquire a lock to ensure only one thread creates it.
-            lock (_lock)
-            {
-                if (_instance is null)
-                {
-                    // If a settings file exists, try to load it.
-                    if (File.Exists(_savePath))
-                    {
-                        if (!XmlHelper.TryDeserialize(_savePath, out _instance))
-                        {
-                            _logger.Error($"Failed to deserialize settings from '{_savePath}'.");
-                        }
-                    }
-
-                    // If loading failed or the file didn't exist, create a new instance with default values.
-                    _instance ??= new Settings();
-                }
-            }
-            return _instance;
+            return new Settings();
         }
+
+        return settings;
     }
+
+    [XmlIgnore]
+    public static Settings Instance => _instance.Value;
 
     public void Save()
     {
-        if (!XmlHelper.TrySerialize(_instance, _savePath))
+        if (!XmlHelper.TrySerialize(Instance, _savePath))
         {
             _logger.Error($"Failed to serialize and save settings to '{_savePath}'.");
-        }
-    }
-
-    partial void OnParallelDownloadChanged(bool value)
-    {
-        Save();
-    }
-
-    partial void OnDownloadThreadsChanged(int value)
-    {
-        int clampedValue = Math.Clamp(value, 2, 10);
-        if (value != clampedValue)
-        {
-            DownloadThreads = clampedValue;
-        }
-        else
-        {
-            // If the value is valid, save the settings.
-            Save();
         }
     }
 
