@@ -7,14 +7,14 @@
     <NoWarn>CS8600,CS8601,CS8602,CS8605,CS8618,CS8625</NoWarn>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+  <ItemGroup Condition="'$(Platform)' == 'x64' And $([MSBuild]::IsOSPlatform('Windows'))">
     <ContentWithTargetPath Include="lib\x86_64\discord_game_sdk.dll">
       <TargetPath>discord_game_sdk.dll</TargetPath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </ContentWithTargetPath>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'osx-x64'">
+  <ItemGroup Condition="'$(Platform)' == 'x64' And $([MSBuild]::IsOSPlatform('OSX'))">
     <ContentWithTargetPath Include="lib\x86_64\discord_game_sdk.dylib">
       <TargetPath>discord_game_sdk.dylib</TargetPath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -25,7 +25,7 @@
     </ContentWithTargetPath>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'osx-arm64'">
+  <ItemGroup Condition="'$(Platform)' == 'arm64' And $([MSBuild]::IsOSPlatform('OSX'))">
     <ContentWithTargetPath Include="lib\aarch64\discord_game_sdk.dylib">
       <TargetPath>discord_game_sdk.dylib</TargetPath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -36,7 +36,7 @@
     </ContentWithTargetPath>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+  <ItemGroup Condition="'$(Platform)' == 'x64' And $([MSBuild]::IsOSPlatform('Linux'))">
     <ContentWithTargetPath Include="lib\x86_64\discord_game_sdk.so">
       <TargetPath>discord_game_sdk.so</TargetPath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
