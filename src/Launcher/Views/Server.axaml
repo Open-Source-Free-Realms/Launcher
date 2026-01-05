@@ -37,8 +37,7 @@
 
 		<StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15" Spacing="10">
 			<Button Classes="flat primary" 
-                    Command="{Binding OpenConfigCommand}" 
-                    IsVisible="{Binding IsMac}" 
+                    Command="{Binding OpenConfigCommand}"  
                     ToolTip.Tip="Graphics Settings">
 				<Path Width="16" Height="16" Data="{StaticResource Icons.Settings}" Stretch="Fill" />
 			</Button>
