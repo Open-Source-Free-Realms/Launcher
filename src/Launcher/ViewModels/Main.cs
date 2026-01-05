@@ -51,8 +51,9 @@ public partial class Main : ObservableObject
 
     public async void OnLoad()
     {
-        // Simple Mac check: Install engine if missing. That's it.
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && !WineSetupService.IsInstalled())
+        bool isUnix = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) || RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+
+        if (isUnix && !WineSetupService.IsInstalled())
         {
             var setup = new WineSetup();
             await App.ShowPopupAsync(setup);
@@ -72,28 +73,49 @@ public partial class Main : ObservableObject
         DiscordService.UpdateActivity(string.IsNullOrEmpty(playingOn) ? "Idle" : "Playing", playingOn);
     }
 
-    // RESTORED: This makes popups/notifications work again
     public async Task OnReceiveNotification(Notification notification)
     {
-        await Dispatcher.UIThread.InvokeAsync(() => { 
-            if (Notifications.Count >= 3) Notifications.RemoveAt(0); 
-            Notifications.Add(notification); 
+        await Dispatcher.UIThread.InvokeAsync(() => {
+            if (Notifications.Count >= 3) Notifications.RemoveAt(0);
+            Notifications.Add(notification);
         });
+
         await Task.Delay(3000);
+
         await Dispatcher.UIThread.InvokeAsync(() => Notifications.Remove(notification));
     }
 
     [RelayCommand] public Task CheckForUpdates() => App.CheckForUpdatesAsync();
     [RelayCommand] public void ShowSettings() => App.ShowSettings();
     [RelayCommand] public Task AddServer() => App.ShowPopupAsync(new AddServer());
-    
-    [RelayCommand] public async Task OpenLogs()
+
+    [RelayCommand]
+    public async Task OpenLogs()
     {
         if (!Directory.Exists(Constants.LogsDirectory)) return;
-        var psi = new ProcessStartInfo { UseShellExecute = true };
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) { psi.FileName = "open"; psi.Arguments = Constants.LogsDirectory; }
-        else { psi.FileName = "explorer.exe"; psi.Arguments = Constants.LogsDirectory; }
-        Process.Start(psi);
+
+        try
+        {
+            var psi = new ProcessStartInfo { UseShellExecute = true };
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                psi.FileName = "open";
+                psi.ArgumentList.Add(Constants.LogsDirectory);
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                psi.FileName = "explorer.exe";
+                psi.Arguments = Constants.LogsDirectory;
+            }
+            else // Linux Fix
+            {
+                psi.FileName = "xdg-open";
+                psi.Arguments = $"\"{Constants.LogsDirectory}\"";
+                psi.UseShellExecute = false;
+            }
+            Process.Start(psi);
+        }
+        catch { await App.AddNotification("Could not open logs folder.", true); }
     }
 
     [RelayCommand] public async Task DeleteServer()

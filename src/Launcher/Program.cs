@@ -17,17 +17,24 @@ internal sealed class Program
     [STAThread]
     internal static void Main(string[] args)
     {
-        SetupNLog();
+        // 1. Run Linux Self-Installer Check First
+        Launcher.Services.LinuxSetup.CheckAndInstall();
 
+        // 2. Setup Logging and Error Handling
+        SetupNLog();
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+        // 3. Start Background Services
         if (Settings.Instance.DiscordActivity)
         {
             DiscordService.Start();
         }
 
-        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+        // 4. Start UI (Only call this ONCE)
+        BuildAvaloniaApp()
+        .StartWithClassicDesktopLifetime(args);
 
+        // 5. Cleanup
         LogManager.Shutdown();
     }
 
@@ -36,12 +43,12 @@ internal sealed class Program
         VelopackApp.Build().Run();
 
         var builder = AppBuilder.Configure<App>()
-            .WithInterFont()
-            .UsePlatformDetect();
+        .WithInterFont()
+        .UsePlatformDetect();
 
-#if DEBUG
+        #if DEBUG
         builder.LogToTrace();
-#endif
+        #endif
 
         builder.LogToNLog(LogEventLevel.Error);
 
@@ -52,12 +59,11 @@ internal sealed class Program
     {
         var config = new LoggingConfiguration();
 
-#if DEBUG
+        #if DEBUG
         var debuggerTarget = new DebuggerTarget("debugger");
         config.AddRule(LogLevel.Debug, LogLevel.Fatal, debuggerTarget);
-#endif
+        #endif
 
-        // Ensure logs directory exists
         var logsDir = Path.Combine(Directory.GetCurrentDirectory(), "logs");
         if (!Directory.Exists(logsDir))
         {

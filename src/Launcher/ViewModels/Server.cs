@@ -113,12 +113,27 @@ public partial class Server : ObservableObject
         {
             string folderPath = Path.Combine(Constants.SavePath, Info.SavePath);
             if (!Directory.Exists(folderPath)) { await App.AddNotification("Folder missing.", true); return; }
-            var psi = new ProcessStartInfo { UseShellExecute = true };
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) { psi.FileName = "open"; psi.ArgumentList.Add(folderPath); }
-            else { psi.FileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "explorer.exe" : "xdg-open"; psi.Arguments = folderPath; }
-            Process.Start(psi);
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                Process.Start(new ProcessStartInfo("explorer.exe", folderPath) { UseShellExecute = true });
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                // Fixed: Added quotes and disabled ShellExecute to handle paths with spaces reliably on macOS
+                Process.Start(new ProcessStartInfo("open", $"\"{folderPath}\"") { UseShellExecute = false });
+            }
+            else // Linux
+            {
+                // Most reliable way on Linux across different File Managers
+                Process.Start(new ProcessStartInfo("xdg-open", $"\"{folderPath}\"") { UseShellExecute = false });
+            }
         }
-        catch { }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to open folder");
+            await App.AddNotification("Could not open folder.", true);
+        }
     }
 
     [RelayCommand(AllowConcurrentExecutions = false)]

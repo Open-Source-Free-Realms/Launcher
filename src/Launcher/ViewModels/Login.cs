@@ -57,20 +57,18 @@ public partial class Login : Popup
 
     public override async Task<bool> ProcessAsync()
     {
-        // FIX: We must update the boolean flags in the ServerInfo BEFORE saving!
         _server.Info.RememberUsername = RememberUsername;
         _server.Info.RememberPassword = RememberPassword;
-
         _server.Info.Username = RememberUsername ? Username : null;
         _server.Info.Password = RememberPassword ? Password : null;
-        
+
         Settings.Instance.Save();
-        
+
         try
         {
             using var client = HttpHelper.CreateHttpClient();
             var resp = await client.PostAsJsonAsync(_server.Info.LoginApiUrl, new LoginRequest { Username = Username, Password = Password });
-            
+
             if (resp.StatusCode == HttpStatusCode.Unauthorized)
             {
                 await App.AddNotification(App.GetText("Text.Login.Unauthorized"), true);
@@ -109,27 +107,51 @@ public partial class Login : Popup
         _server.Process = new Process();
         _server.Process.StartInfo.WorkingDirectory = workingDir;
 
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            string bin = WineSetupService.EngineBin;
-            if (string.IsNullOrEmpty(bin)) { await App.AddNotification("Engine missing.", true); return; }
-            _server.Process.StartInfo.FileName = bin;
-            _server.Process.StartInfo.Arguments = $"\"{Constants.ClientExecutableName}\" {argsStr}";
-            _server.Process.StartInfo.EnvironmentVariables["WINEPREFIX"] = WineSetupService.PrefixPath;
-            _server.Process.StartInfo.EnvironmentVariables["WINE_NOCRASHDIALOG"] = "1";
-            
-            string wineBase = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(bin))) ?? string.Empty;
-            if (Directory.Exists(Path.Combine(wineBase, "lib")))
-                _server.Process.StartInfo.EnvironmentVariables["DYLD_LIBRARY_PATH"] = Path.Combine(wineBase, "lib");
-            _server.Process.StartInfo.UseShellExecute = false;
-        }
-        else
-        {
-            _server.Process.StartInfo.FileName = RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? "wine" : exePath;
-            _server.Process.StartInfo.Arguments = RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? $"{Constants.ClientExecutableName} {argsStr}" : argsStr;
+            _server.Process.StartInfo.FileName = exePath;
+            _server.Process.StartInfo.Arguments = argsStr;
             _server.Process.StartInfo.UseShellExecute = true;
         }
-        
+        else // macOS and Linux Logic
+        {
+            string bin = WineSetupService.EngineBin;
+            if (!File.Exists(bin)) { await App.AddNotification("Wine Engine missing. Please restart.", true); return; }
+
+            _server.Process.StartInfo.FileName = bin;
+            // Using full path (\"{exePath}\") prevents Wine from getting lost if the working dir is subtlely different
+            _server.Process.StartInfo.Arguments = $"\"{exePath}\" {argsStr}";
+            _server.Process.StartInfo.UseShellExecute = false;
+
+            // --- Shared Bottle Environment ---
+            var env = _server.Process.StartInfo.EnvironmentVariables;
+            env["WINEPREFIX"] = WineSetupService.PrefixPath;
+            env["WINE_NOCRASHDIALOG"] = "1";
+            env["WINEDEBUG"] = "-all";
+
+            // --- Linux Specific Optimizations ---
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                // 1. THE CRASH FIX: Forces the game to use the DXVK dlls we installed instead of Wine's broken built-in ones.
+                // "n,b" means "Native first, then Builtin". Without this, you get the Null Pointer crash.
+                env["WINEDLLOVERRIDES"] = "d3d9,dxgi=n,b";
+
+                // 2. UNIVERSAL CACHING (Nvidia, AMD, Intel):
+                // Tells DXVK to save its state cache in your bottle folder.
+                // This prevents stuttering on ALL GPUs by remembering compiled shaders.
+                env["DXVK_STATE_CACHE_PATH"] = WineSetupService.WineRootPath;
+                env["DXVK_LOG_LEVEL"] = "info";
+            }
+
+            // --- macOS Specific Libs ---
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                string wineBase = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(bin))) ?? string.Empty;
+                string libPath = Path.Combine(wineBase, "lib");
+                if (Directory.Exists(libPath)) env["DYLD_LIBRARY_PATH"] = libPath;
+            }
+        }
+
         _server.Process.EnableRaisingEvents = true;
         _server.Process.Exited += _server.ClientProcessExited;
         _server.Process.Start();
