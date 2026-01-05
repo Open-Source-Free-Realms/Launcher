@@ -34,9 +34,7 @@
   <Grid ColumnDefinitions="200,*" RowDefinitions="*">
 
     <!-- Left Panel -->
-    <DockPanel Background="{StaticResource Color.Server}"
-               LastChildFill="True"
-               Opacity="0.050">
+    <DockPanel Background="{StaticResource Color.Server}">
 
       <!-- Header -->
       <TextBlock Margin="17"
@@ -44,7 +42,6 @@
                  DockPanel.Dock="Top"
                  FontFamily="{StaticResource FontDefault}"
                  FontSize="15"
-                 Opacity="100"
                  Text="{StaticResource Text.Servers}" />
 
       <!-- Buttons -->
@@ -56,7 +53,6 @@
         <!-- Settings -->
         <Button Classes="no_background"
                 Command="{Binding ShowSettingsCommand}"
-                Opacity="100"
                 ToolTip.Tip="{StaticResource Text.Settings}">
           <Path Width="16"
                 Height="16"
@@ -68,7 +64,6 @@
         <Button Classes="no_background"
                 Command="{Binding CheckForUpdatesCommand}"
                 IsVisible="{Binding $parent[Window].((vm:Main)DataContext).ActiveServer, Converter={x:Static ObjectConverters.IsNull}}"
-                Opacity="100"
                 ToolTip.Tip="{StaticResource Text.Main.CheckingForUpdatesToolTip}">
           <Path Width="16"
                 Height="16"
@@ -80,8 +75,7 @@
         <!-- Add Server -->
         <Button Classes="flat primary"
                 Command="{Binding AddServerCommand}"
-                FontFamily="{StaticResource FontDefault}"
-                Opacity="100">
+                FontFamily="{StaticResource FontDefault}">
           <Button.Background>
             <LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
               <GradientStop Offset="0.0" Color="#96B9D9" />
@@ -111,25 +105,19 @@
                SelectionMode="Toggle">
         <ListBox.ItemTemplate>
           <DataTemplate x:DataType="vm:Server">
-            <TextBlock MaxWidth="180"
-                       Padding="2,2,2,2"
+            <TextBlock HorizontalAlignment="Stretch"
                        VerticalAlignment="Center"
                        FontFamily="{StaticResource FontDefault}"
                        FontSize="16"
                        FontStyle="Oblique"
-                       Opacity="100"
                        Text="{Binding Info.Name, Mode=OneWay}"
+                       TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
           </DataTemplate>
         </ListBox.ItemTemplate>
         <ListBox.Styles>
           <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
-            <Setter Property="Background" Value="#37538C" />
-            <Setter Property="Opacity" Value="0.8" />
-            <Setter Property="TextBlock.Foreground" Value="White" />
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="BorderBrush" Value="#96B9D9" />
-            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Background" Value="#8037538C" />
           </Style>
           <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
             <Setter Property="Cursor" Value="Hand" />
