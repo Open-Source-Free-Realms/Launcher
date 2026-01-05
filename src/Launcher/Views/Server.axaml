@@ -16,11 +16,11 @@
     <vm:Server />
   </Design.DataContext>
 
-  <Grid ColumnDefinitions="*,Auto" RowDefinitions="50,40,250,20">
+  <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,*,50,Auto">
 
     <!-- Title & Refresh Row -->
-    <Grid Grid.Row="1"
-          Margin="0,0,30,10"
+    <Grid Grid.Row="0"
+          Margin="0,30,30,10"
           HorizontalAlignment="Center"
           VerticalAlignment="Center"
           ColumnDefinitions="Auto,Auto">
@@ -46,8 +46,7 @@
     </Grid>
 
     <!-- Server Status / Player Count -->
-    <Grid Grid.Row="2"
-          Margin="10,0,0,230"
+    <Grid Grid.Row="1"
           HorizontalAlignment="Center"
           ColumnDefinitions="Auto,Auto">
       <StackPanel Grid.Column="0"
@@ -78,55 +77,42 @@
     </Grid>
 
     <!-- Server Description -->
-    <Grid Grid.Row="2">
-      <Border Width="580"
-              Margin="0,35,0,0"
-              BorderBrush="{StaticResource Color.Border}"
-              BorderThickness="1"
+    <Border Grid.Row="2"
+            Margin="20"
+            BorderBrush="{StaticResource Color.Border}"
+            BorderThickness="1"
+            CornerRadius="5">
+      <Border Padding="15"
+              Background="{StaticResource Color.Description}"
               CornerRadius="5"
-              IsVisible="{Binding Info.Description, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-        <Border Padding="15"
-                Background="{StaticResource Color.Description}"
-                CornerRadius="5"
-                Opacity="0.050">
-          <ScrollViewer HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Opacity="200">
-            <md:MarkdownScrollViewer HorizontalAlignment="Center"
-                                     VerticalAlignment="Center"
-                                     Markdown="{Binding Info.Description}" />
-          </ScrollViewer>
-        </Border>
+              Opacity="0.050">
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" Opacity="100">
+          <md:MarkdownScrollViewer Markdown="{Binding Info.Description}" />
+        </ScrollViewer>
       </Border>
-    </Grid>
+    </Border>
 
     <!-- Server Play / Update Status -->
-    <StackPanel Grid.Row="3" Margin="0,20,0,0">
-      <Grid HorizontalAlignment="Center">
-        <Button Classes="no_background"
-                Command="{Binding PlayCommand}"
-                Cursor="Hand"
-                IsVisible="{Binding PlayCommand.IsRunning, Converter={x:Static BoolConverters.Not}}">
-          <Image Width="165"
-                 Source="/Assets/fr_asset3.png"
-                 Stretch="UniformToFill" />
-        </Button>
-      </Grid>
-    </StackPanel>
-
-    <!-- Status Info -->
     <StackPanel Grid.Row="3"
-                Margin="0,0,0,80"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
+      <Button Classes="no_background"
+              Command="{Binding PlayCommand}"
+              Cursor="Hand"
+              IsVisible="{Binding PlayCommand.IsRunning, Converter={x:Static BoolConverters.Not}}">
+        <Image Width="165"
+               Source="/Assets/fr_asset3.png"
+               Stretch="UniformToFill" />
+      </Button>
       <TextBlock FontFamily="{StaticResource FontDefault}"
                  FontSize="14"
+                 IsVisible="{Binding StatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                  Text="{Binding StatusMessage, Mode=OneWay}" />
     </StackPanel>
 
     <!-- Client Folder -->
     <StackPanel Grid.Row="4"
-                Margin="0,170,15,0"
+                Margin="0,0,15,15"
                 HorizontalAlignment="Right">
       <Button Classes="flat primary"
               Command="{Binding OpenClientFolderCommand}"
