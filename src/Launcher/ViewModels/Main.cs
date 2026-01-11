@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
-using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -63,22 +62,19 @@ public partial class Main : ObservableObject
 
     private void ServerInfoList_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        Dispatcher.UIThread.InvokeAsync(() =>
+        if (e.Action == NotifyCollectionChangedAction.Add && e.NewStartingIndex != -1)
         {
-            if (e.Action == NotifyCollectionChangedAction.Add && e.NewStartingIndex != -1)
-            {
-                var serverInfo = Settings.Instance.ServerInfoList[e.NewStartingIndex];
+            var serverInfo = Settings.Instance.ServerInfoList[e.NewStartingIndex];
 
-                Servers.Add(new Server(serverInfo, this));
-            }
-            else if (e.Action == NotifyCollectionChangedAction.Remove && e.OldStartingIndex != -1)
-            {
-                Servers.RemoveAt(e.OldStartingIndex);
-                // If ActiveServer was removed, set to null
-                if (ActiveServer != null && !Servers.Contains(ActiveServer))
-                    ActiveServer = null;
-            }
-        });
+            Servers.Add(new Server(serverInfo, this));
+        }
+        else if (e.Action == NotifyCollectionChangedAction.Remove && e.OldStartingIndex != -1)
+        {
+            Servers.RemoveAt(e.OldStartingIndex);
+            // If ActiveServer was removed, set to null
+            if (ActiveServer != null && !Servers.Contains(ActiveServer))
+                ActiveServer = null;
+        }
     }
 
     public void OnLoad()
@@ -112,7 +108,7 @@ public partial class Main : ObservableObject
     public void ShowSettings() => App.ShowSettings();
 
     [RelayCommand]
-    public Task AddServer() => App.ShowPopupAsync(new AddServer());
+    public void AddServer() => App.ShowPopup(new AddServer());
 
     [RelayCommand]
     public async Task OpenLogs()
@@ -162,7 +158,7 @@ public partial class Main : ObservableObject
     }
 
     [RelayCommand]
-    public async Task DeleteServer()
+    public void DeleteServer()
     {
         if (ActiveServer == null)
             return;
@@ -174,7 +170,7 @@ public partial class Main : ObservableObject
         }
 
         // Show a confirmation dialog before deleting
-        await App.ShowPopupAsync(new DeleteServer(ActiveServer.Info));
+        App.ShowPopup(new DeleteServer(ActiveServer.Info));
     }
 
     public void OnReceiveNotification(Notification notification)

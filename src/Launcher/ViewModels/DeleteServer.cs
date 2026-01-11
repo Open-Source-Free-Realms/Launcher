@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 
 using Launcher.Helpers;
 using Launcher.Models;
@@ -15,29 +13,20 @@ namespace Launcher.ViewModels;
 
 public partial class DeleteServer : Popup
 {
+    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
     [ObservableProperty]
     private ServerInfo info;
-
-    public IAsyncRelayCommand DeleteServerCommand { get; }
-    public ICommand CancelDeleteServerCommand { get; }
-
-    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
     public DeleteServer(ServerInfo info)
     {
         Info = info;
-
-        DeleteServerCommand = new AsyncRelayCommand(OnDeleteServer);
-        CancelDeleteServerCommand = new RelayCommand(OnDeleteServerCancel);
 
         View = new Views.DeleteServer
         {
             DataContext = this
         };
     }
-    private Task OnDeleteServer() => App.ProcessPopupAsync();
-
-    private void OnDeleteServerCancel() => App.CancelPopup();
 
     public override Task<bool> ProcessAsync()
     {
@@ -60,20 +49,8 @@ public partial class DeleteServer : Popup
             return false;
         }
 
-        await UIThreadHelper.InvokeAsync(() =>
-        {
-            try
-            {
-                Settings.Instance.ServerInfoList.Remove(Info);
-                Settings.Instance.Save();
-            }
-            catch (Exception ex)
-            {
-                // This is a secondary failure, but we should still log it.
-                _logger.Error(ex, "Error removing server info from settings after directory deletion.");
-            }
-            return Task.CompletedTask;
-        });
+        Settings.Instance.ServerInfoList.Remove(Info);
+        Settings.Instance.Save();
 
         return true;
     }

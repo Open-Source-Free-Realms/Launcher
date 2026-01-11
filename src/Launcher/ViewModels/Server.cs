@@ -60,12 +60,6 @@ public partial class Server : ObservableObject
     [ObservableProperty]
     private bool isDownloading = false;
 
-    [ObservableProperty]
-    private int filesDownloaded;
-
-    [ObservableProperty]
-    private int totalFilesToDownload;
-
     public Server()
     {
 #if DESIGNMODE
@@ -91,10 +85,11 @@ public partial class Server : ObservableObject
     }
     public async Task<bool> OnShowAsync()
     {
-        if (!await RefreshServerInfoAsync().ConfigureAwait(false))
+        if (!await RefreshServerInfoAsync())
             return false;
 
-        await RefreshServerStatusAsync().ConfigureAwait(false);
+        await RefreshServerStatusAsync();
+
         return true;
     }
 
@@ -107,41 +102,34 @@ public partial class Server : ObservableObject
     [RelayCommand(AllowConcurrentExecutions = false)]
     public async Task RefreshServerStatusAsync()
     {
-        await UIThreadHelper.InvokeAsync(() =>
-        {
-            Status = App.GetText("Text.ServerStatus.Refreshing");
-            ServerStatusFill = new SolidColorBrush(Color.FromRgb(204, 204, 0));
-            IsRefreshing = true;
-            return Task.CompletedTask;
-        });
+        Status = App.GetText("Text.ServerStatus.Refreshing");
+        ServerStatusFill = new SolidColorBrush(Color.FromRgb(204, 204, 0));
+        IsRefreshing = true;
 
         try
         {
-            var serverStatus = await ServerStatusHelper.GetAsync(Info.LoginServer).ConfigureAwait(false);
+            var serverStatus = await ServerStatusHelper.GetAsync(Info.LoginServer);
+
             IsOnline = serverStatus.IsOnline;
 
-            await UIThreadHelper.InvokeAsync(() =>
+            if (serverStatus.IsOnline)
             {
-                if (serverStatus.IsOnline)
-                {
-                    Status = App.GetText(serverStatus.IsLocked
-                        ? "Text.ServerStatus.Locked"
-                        : "Text.ServerStatus.Online");
+                Status = App.GetText(serverStatus.IsLocked
+                    ? "Text.ServerStatus.Locked"
+                    : "Text.ServerStatus.Online");
 
-                    OnlinePlayers = serverStatus.OnlinePlayers;
-                    ServerStatusFill = new SolidColorBrush(
-                        serverStatus.IsLocked
-                            ? Color.FromRgb(242, 63, 67)
-                            : Color.FromRgb(35, 165, 90));
-                }
-                else
-                {
-                    Status = App.GetText("Text.ServerStatus.Offline");
-                    OnlinePlayers = 0;
-                    ServerStatusFill = new SolidColorBrush(Color.FromRgb(242, 63, 67));
-                }
-                return Task.CompletedTask;
-            });
+                OnlinePlayers = serverStatus.OnlinePlayers;
+                ServerStatusFill = new SolidColorBrush(
+                    serverStatus.IsLocked
+                        ? Color.FromRgb(242, 63, 67)
+                        : Color.FromRgb(35, 165, 90));
+            }
+            else
+            {
+                Status = App.GetText("Text.ServerStatus.Offline");
+                OnlinePlayers = 0;
+                ServerStatusFill = new SolidColorBrush(Color.FromRgb(242, 63, 67));
+            }
         }
         catch (Exception ex)
         {
@@ -150,11 +138,7 @@ public partial class Server : ObservableObject
         }
         finally
         {
-            await UIThreadHelper.InvokeAsync(() =>
-            {
-                IsRefreshing = false;
-                return Task.CompletedTask;
-            });
+            IsRefreshing = false;
         }
     }
 
@@ -168,13 +152,13 @@ public partial class Server : ObservableObject
             return;
         }
 
-        var clientManifest = await GetClientManifestAsync().ConfigureAwait(false);
+        var clientManifest = await GetClientManifestAsync();
         if (clientManifest is null)
             return;
 
         StatusMessage = App.GetText("Text.Server.VerifyClientFiles");
 
-        if (!await VerifyClientFilesAsync(clientManifest).ConfigureAwait(false))
+        if (!await VerifyClientFilesAsync(clientManifest))
         {
             App.AddNotification("Failed to verify client files, please try again.", true);
             _logger.Warn($"Failed to verify client files for server: {Info.Name}.");
@@ -190,11 +174,8 @@ public partial class Server : ObservableObject
         }
 
         // All checks passed, show the login popup
-        await UIThreadHelper.InvokeAsync(async () =>
-        {
-            StatusMessage = string.Empty;
-            await App.ShowPopupAsync(new Login(this));
-        });
+        StatusMessage = string.Empty;
+        App.ShowPopup(new Login(this));
     }
 
     [RelayCommand]
@@ -249,24 +230,26 @@ public partial class Server : ObservableObject
     {
         try
         {
-            var result = await HttpHelper.GetServerManifestAsync(Info.Url).ConfigureAwait(false);
+            var result = await HttpHelper.GetServerManifestAsync(Info.Url);
+
             if (!result.Success || result.ServerManifest is null)
             {
                 App.AddNotification(result.Error, true);
+
                 _logger.Error($"Failed to get server manifest for: {Info.Url}: {result.Error}.");
+
                 return false;
             }
+
             var serverManifest = result.ServerManifest;
 
-            // Update properties on the UI thread
-            await UIThreadHelper.InvokeAsync(() =>
-            {
-                Info.Name = serverManifest.Name;
-                Info.Description = serverManifest.Description;
-                Info.LoginServer = serverManifest.LoginServer;
-                Info.LoginApiUrl = serverManifest.LoginApiUrl;
-                return Task.CompletedTask;
-            });
+            Info.Name = serverManifest.Name;
+            Info.Description = serverManifest.Description;
+
+            Info.LoginServer = serverManifest.LoginServer;
+            Info.LoginApiUrl = serverManifest.LoginApiUrl;
+
+            Settings.Instance.Save();
 
             return true;
         }
@@ -282,13 +265,17 @@ public partial class Server : ObservableObject
     {
         try
         {
-            var result = await HttpHelper.GetClientManifestAsync(Info.Url).ConfigureAwait(false);
+            var result = await HttpHelper.GetClientManifestAsync(Info.Url);
+
             if (!result.Success || result.ClientManifest is null)
             {
                 App.AddNotification(result.Error, true);
+
                 _logger.Error($"Failed to get client manifest for: {Info.Url}: {result.Error}.");
+
                 return null;
             }
+
             return result.ClientManifest;
         }
         catch (Exception ex)
@@ -302,62 +289,51 @@ public partial class Server : ObservableObject
     private async Task<bool> VerifyClientFilesAsync(ClientManifest clientManifest)
     {
         _logger.Info($"Starting verifying client files for: {Info.Name}.");
-        var filesToDownload = GetFilesToDownloadRecursively(clientManifest.RootFolder).ToList();
 
-        TotalFilesToDownload = filesToDownload.Count;
-        FilesDownloaded = 0;
+        var filesToDownload = await GetFilesToDownloadAsync(clientManifest.RootFolder);
 
-        if (TotalFilesToDownload == 0)
+        if (filesToDownload.Count == 0)
         {
             _logger.Info("All client files are up to date.");
             return true;
         }
 
-        int success = 1;
-        int filesDownloadedCount = 0;
-        var failedFiles = new ConcurrentBag<string>();
-        var parallelOptions = new ParallelOptions
-        {
-            MaxDegreeOfParallelism = Math.Max(2, Settings.Instance.DownloadThreads)
-        };
-
         IsDownloading = true;
+
+        var failedFiles = new ConcurrentBag<string>();
 
         try
         {
+            var filesDownloaded = 0;
+
             // Choose between parallel and sequential download based on settings
             if (Settings.Instance.ParallelDownload)
             {
+                var parallelOptions = new ParallelOptions
+                {
+                    MaxDegreeOfParallelism = Math.Max(2, Settings.Instance.DownloadThreads)
+                };
+
                 await Parallel.ForEachAsync(filesToDownload, parallelOptions, async (file, ct) =>
                 {
-                    if (!await DownloadFileAsync(file.Path, file.FileName, failedFiles).ConfigureAwait(false))
-                    {
-                        Interlocked.Exchange(ref success, 0);
-                    }
-                    int currentCount = Interlocked.Increment(ref filesDownloadedCount);
-                    await UIThreadHelper.InvokeAsync(() =>
-                    {
-                        FilesDownloaded = currentCount;
-                        StatusMessage = App.GetText("Text.Server.PreparingGameFiles", FilesDownloaded, TotalFilesToDownload);
-                        return Task.CompletedTask;
-                    });
+                    if (!await DownloadFileAsync(file.Path, file.Name))
+                        failedFiles.Add(file.Name);
+
+                    filesDownloaded = Interlocked.Increment(ref filesDownloaded);
+
+                    StatusMessage = App.GetText("Text.Server.PreparingGameFiles", filesDownloaded, filesToDownload.Count);
                 });
             }
             else
             {
                 foreach (var file in filesToDownload)
                 {
-                    if (!await DownloadFileAsync(file.Path, file.FileName, failedFiles).ConfigureAwait(false))
-                    {
-                        success = 0;
-                    }
-                    filesDownloadedCount++;
-                    await UIThreadHelper.InvokeAsync(() =>
-                    {
-                        FilesDownloaded = filesDownloadedCount;
-                        StatusMessage = App.GetText("Text.Server.PreparingGameFiles", FilesDownloaded, TotalFilesToDownload);
-                        return Task.CompletedTask;
-                    });
+                    if (!await DownloadFileAsync(file.Path, file.Name))
+                        failedFiles.Add(file.Name);
+
+                    filesDownloaded++;
+
+                    StatusMessage = App.GetText("Text.Server.PreparingGameFiles", filesDownloaded, filesToDownload.Count);
                 }
             }
         }
@@ -380,10 +356,11 @@ public partial class Server : ObservableObject
         }
 
         _logger.Info($"Finished verifying client files for: {Info.Name}.");
-        return success == 1;
+
+        return failedFiles.IsEmpty;
     }
 
-    private async Task<bool> DownloadFileAsync(string path, string fileName, ConcurrentBag<string> failedFiles)
+    private async Task<bool> DownloadFileAsync(string path, string fileName)
     {
         var downloadFilePath = Path.Combine(path, fileName);
         try
@@ -402,39 +379,41 @@ public partial class Server : ObservableObject
 
             Directory.CreateDirectory(fileDirectory);
 
-            await using var fileStream = await downloadService.DownloadFileTaskAsync(clientFileUri).ConfigureAwait(false);
+            await using var fileStream = await downloadService.DownloadFileTaskAsync(clientFileUri);
             if (fileStream is null || fileStream.Length == 0)
             {
                 _logger.Error($"Failed to get client file or received empty stream: {downloadFilePath}.");
-                failedFiles.Add(downloadFilePath);
                 return false;
             }
 
             await using var writeStream = File.Create(filePath);
-            await fileStream.CopyToAsync(writeStream).ConfigureAwait(false);
+            await fileStream.CopyToAsync(writeStream);
 
             return true;
         }
         catch (Exception ex)
         {
             _logger.Error(ex, $"Error downloading: {downloadFilePath}.");
-            failedFiles.Add(downloadFilePath);
             return false;
         }
     }
 
-    private IEnumerable<(string Path, string FileName)> GetFilesToDownloadRecursively(ClientFolder clientFolder, string path = "")
+    private async Task<List<LocalFile>> GetFilesToDownloadAsync(ClientFolder rootFolder, string path = "")
     {
+        var results = new List<LocalFile>();
+
         // Recurse into subfolders
-        foreach (var folder in clientFolder.Folders)
+        foreach (var folder in rootFolder.Folders)
         {
             var folderPath = Path.Combine(path, folder.Name);
-            foreach (var fileToDownload in GetFilesToDownloadRecursively(folder, folderPath))
-                yield return fileToDownload;
+
+            var folderResults = await GetFilesToDownloadAsync(folder, folderPath);
+
+            results.AddRange(folderResults);
         }
 
         // Check files in the current folder
-        foreach (var file in clientFolder.Files)
+        foreach (var file in rootFolder.Files)
         {
             var fileDirectory = Path.Combine(Constants.SavePath, Info.SavePath, "Client", path);
             var filePath = Path.Combine(fileDirectory, file.Name);
@@ -443,11 +422,11 @@ public partial class Server : ObservableObject
             {
                 try
                 {
-                    using var readStream = File.OpenRead(filePath);
+                    await using var readStream = File.OpenRead(filePath);
                     // First, check if file size matches. This is a quick check before hashing.
                     if (file.Size == readStream.Length)
                     {
-                        var hash = XXHash.Hash64(readStream);
+                        ulong hash = await Task.Run(() => XXHash.Hash64(readStream));
                         // If hash also matches, the file is valid.
                         if (file.Hash == hash)
                             continue;
@@ -459,9 +438,15 @@ public partial class Server : ObservableObject
                 }
             }
 
-            // If file doesn't exist, or size/hash mismatch, yield it for download.
-            yield return (path, file.Name);
+            // If file doesn't exist, or size/hash mismatch, add it for download.
+            results.Add(new LocalFile
+            {
+                Path = path,
+                Name = file.Name
+            });
         }
+
+        return results;
     }
 
     partial void OnProcessChanged(Process? value)

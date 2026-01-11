@@ -2,10 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 
 using Launcher.Extensions;
 using Launcher.Helpers;
@@ -25,22 +23,13 @@ public partial class AddServer : Popup
     [CustomValidation(typeof(AddServer), nameof(ValidateServerUrl))]
     private string serverUrl = string.Empty;
 
-    public IAsyncRelayCommand AddServerCommand { get; }
-    public ICommand CancelAddServerCommand { get; }
-
     public AddServer()
     {
-        AddServerCommand = new AsyncRelayCommand(OnAddServer);
-        CancelAddServerCommand = new RelayCommand(OnAddServerCancel);
-
         View = new Views.AddServer
         {
             DataContext = this
         };
     }
-    private Task OnAddServer() => App.ProcessPopupAsync();
-
-    private void OnAddServerCancel() => App.CancelPopup();
 
     public static ValidationResult? ValidateServerUrl(string serverUrl, ValidationContext context)
     {
@@ -74,7 +63,7 @@ public partial class AddServer : Popup
             ServerUrl = ServerUrl.Trim();
 
             // Fetch the server manifest from the provided URL.
-            var result = await HttpHelper.GetServerManifestAsync(ServerUrl).ConfigureAwait(false);
+            var result = await HttpHelper.GetServerManifestAsync(ServerUrl);
 
             if (!result.Success || result.ServerManifest is null)
             {
@@ -102,10 +91,13 @@ public partial class AddServer : Popup
             var serverInfo = new ServerInfo
             {
                 Url = ServerUrl,
+
                 Name = serverManifest.Name,
                 Description = serverManifest.Description,
+
                 LoginServer = serverManifest.LoginServer,
                 LoginApiUrl = serverManifest.LoginApiUrl,
+
                 SavePath = savePath
             };
 

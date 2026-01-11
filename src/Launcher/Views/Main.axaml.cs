@@ -34,6 +34,7 @@ public partial class Main : Window
             base.OnClosing(e);
         }
     }
+
     protected override void OnKeyDown(KeyEventArgs e)
     {
         if (e.Key == Key.Escape)

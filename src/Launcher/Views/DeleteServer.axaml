@@ -40,7 +40,7 @@
       <Button Grid.Column="0"
               Margin="0,0,10,0"
               Classes="flat primary"
-              Command="{Binding DeleteServerCommand}"
+              Command="{Binding ConfirmCommand}"
               Content="{StaticResource Text.Yes}"
               FontFamily="{StaticResource FontDefault}">
 
@@ -55,7 +55,7 @@
 
       <Button Grid.Column="1"
               Classes="flat primary"
-              Command="{Binding CancelDeleteServerCommand}"
+              Command="{Binding CancelCommand}"
               Content="{StaticResource Text.No}"
               FontFamily="{StaticResource FontDefault}">
         <Button.Background>

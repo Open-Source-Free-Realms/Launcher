@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Launcher.ViewModels;
 
@@ -13,6 +14,12 @@ public partial class Popup : ObservableValidator
 
     [ObservableProperty]
     public string? progressDescription;
+
+    [RelayCommand]
+    public void Confirm() => App.ProcessPopup();
+
+    [RelayCommand]
+    public void Cancel() => App.CancelPopup();
 
     public bool Validate()
     {

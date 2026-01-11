@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 using Avalonia;
@@ -68,7 +69,7 @@ public partial class App : Application
                 app._main.IsRefreshing = true;
                 app._main.Message = GetText("Text.Main.CheckingForUpdates");
 
-                var updateInfo = await _updateManager.CheckForUpdatesAsync().ConfigureAwait(false);
+                var updateInfo = await _updateManager.CheckForUpdatesAsync();
 
                 if (updateInfo is null)
                 {
@@ -150,7 +151,7 @@ public partial class App : Application
         app._main.ActiveServer = null;
     }
 
-    public static async Task ShowPopupAsync(Popup popup, bool process = false)
+    public static void ShowPopup(Popup popup, bool process = false)
     {
         if (Current is not App app || app._main is null)
             return;
@@ -161,33 +162,33 @@ public partial class App : Application
         app._main.Popup = popup;
 
         if (process)
-            await ProcessPopupAsync();
+            ProcessPopup();
     }
 
-    public static async Task ProcessPopupAsync()
+    public static async void ProcessPopup()
     {
-        if (Current is not App app || app._main is null || app._main.Popup is null)
-            return;
-
-        if (!app._main.Popup.Validate())
-            return;
-
-        app._main.Popup.InProgress = true;
-
-        var task = app._main.Popup.ProcessAsync();
-
-        if (task is null)
+        try
         {
-            app._main.Popup = null;
-            return;
+            if (Current is not App app || app._main is null || app._main.Popup is null)
+                return;
+
+            if (!app._main.Popup.Validate())
+                return;
+
+            app._main.Popup.InProgress = true;
+
+            var finished = await app._main.Popup.ProcessAsync();
+
+            if (finished)
+                app._main.Popup = null;
+            else
+                app._main.Popup.InProgress = false;
         }
-
-        var finished = await task.ConfigureAwait(false);
-
-        if (finished)
-            app._main.Popup = null;
-        else
-            app._main.Popup.InProgress = false;
+        catch (Exception ex)
+        {
+            // Catch this, because it's a fire and forget method, to prevent crashes.
+            Debug.WriteLine(ex);
+        }
     }
 
     public static void CancelPopup()

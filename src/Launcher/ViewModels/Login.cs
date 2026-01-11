@@ -7,10 +7,8 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 
 using Launcher.Helpers;
 using Launcher.Models;
@@ -49,9 +47,6 @@ public partial class Login : Popup
     public bool AutoFocusUsername => string.IsNullOrEmpty(Username);
     public bool AutoFocusPassword => !string.IsNullOrEmpty(Username) && string.IsNullOrEmpty(Password);
 
-    public IAsyncRelayCommand LoginCommand { get; }
-    public ICommand LoginCancelCommand { get; }
-
     public Login(Server server)
     {
         _server = server;
@@ -64,18 +59,11 @@ public partial class Login : Popup
         Username = RememberUsername ? _server.Info.Username ?? string.Empty : string.Empty;
         Password = RememberPassword ? _server.Info.Password ?? string.Empty : string.Empty;
 
-        LoginCommand = new AsyncRelayCommand(OnLogin);
-        LoginCancelCommand = new RelayCommand(OnLoginCancel);
-
         View = new Views.Login
         {
             DataContext = this
         };
     }
-
-    private Task OnLogin() => App.ProcessPopupAsync();
-
-    private void OnLoginCancel() => App.CancelPopup();
 
     private void AddSecureWarning()
     {
@@ -124,7 +112,7 @@ public partial class Login : Popup
             ProgressDescription = App.GetText("Text.Login.Loading");
 
             // Send login request to the API
-            var httpResponse = await httpClient.PostAsJsonAsync(_server.Info.LoginApiUrl, loginRequest).ConfigureAwait(false);
+            var httpResponse = await httpClient.PostAsJsonAsync(_server.Info.LoginApiUrl, loginRequest);
 
             if (httpResponse.StatusCode == HttpStatusCode.Unauthorized)
             {
@@ -140,7 +128,7 @@ public partial class Login : Popup
                 return false;
             }
 
-            var loginResponse = await httpResponse.Content.ReadFromJsonAsync<LoginResponse>().ConfigureAwait(false);
+            var loginResponse = await httpResponse.Content.ReadFromJsonAsync<LoginResponse>();
             if (loginResponse == null || string.IsNullOrEmpty(loginResponse.SessionId))
             {
                 App.AddNotification("Invalid login API response.", true);
@@ -150,7 +138,7 @@ public partial class Login : Popup
             }
 
             // If login is successful, launch the client
-            await LaunchClientAsync(loginResponse.SessionId, loginResponse.LaunchArguments).ConfigureAwait(false);
+            await LaunchClientAsync(loginResponse.SessionId, loginResponse.LaunchArguments);
             return true;
         }
         catch (Exception ex)
@@ -165,7 +153,7 @@ public partial class Login : Popup
     {
         if (!Dx9Helper.IsAvailable())
         {
-            await NotifyDirectX9MissingAsync().ConfigureAwait(false);
+            await NotifyDirectX9MissingAsync();
             return;
         }
 

@@ -51,7 +51,7 @@
       <Button Grid.Column="0"
               Margin="5,0"
               Classes="flat primary"
-              Command="{Binding AddServerCommand}"
+              Command="{Binding ConfirmCommand}"
               Content="{StaticResource Text.Add}"
               FontFamily="{StaticResource FontDefault}"
               HotKey="Enter">
@@ -67,7 +67,7 @@
       <Button Grid.Column="1"
               Margin="5,0"
               Classes="flat primary"
-              Command="{Binding CancelAddServerCommand}"
+              Command="{Binding CancelCommand}"
               Content="{StaticResource Text.Cancel}"
               FontFamily="{StaticResource FontDefault}">
         <Button.Background>

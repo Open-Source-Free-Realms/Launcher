@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 
 using Avalonia.Controls;
-using Avalonia.Threading;
 
 namespace Launcher.Views;
 
@@ -23,9 +22,7 @@ public partial class Server : UserControl
             var success = await server.OnShowAsync();
 
             if (!success)
-            {
-                Dispatcher.UIThread.Post(App.ClearServerSelection);
-            }
+                App.ClearServerSelection();
         }
         catch (Exception ex)
         {

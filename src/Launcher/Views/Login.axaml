@@ -92,7 +92,7 @@
                 Spacing="5">
 
       <Button Classes="flat primary"
-              Command="{Binding LoginCommand}"
+              Command="{Binding ConfirmCommand}"
               Content="{StaticResource Text.Login}"
               FontFamily="{StaticResource FontDefault}"
               HotKey="Enter">
@@ -106,7 +106,7 @@
       </Button>
 
       <Button Classes="flat primary"
-              Command="{Binding LoginCancelCommand}"
+              Command="{Binding CancelCommand}"
               Content="{StaticResource Text.Cancel}"
               FontFamily="{StaticResource FontDefault}">
         <Button.Background>
