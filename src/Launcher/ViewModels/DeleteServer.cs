@@ -33,6 +33,7 @@ public partial class DeleteServer : Popup
         ProgressDescription = App.GetText("Text.Delete_Server.Loading");
         return OnDeleteServerAsync();
     }
+
     private async Task<bool> OnDeleteServerAsync()
     {
         try

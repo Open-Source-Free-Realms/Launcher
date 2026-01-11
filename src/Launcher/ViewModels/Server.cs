@@ -85,6 +85,7 @@ public partial class Server : ObservableObject
         Info = info;
         _main = main;
     }
+
     public async Task<bool> OnShowAsync()
     {
         if (!await RefreshServerInfoAsync())
@@ -185,7 +186,7 @@ public partial class Server : ObservableObject
     {
         try
         {
-            string folderPath = Path.Combine(Constants.SavePath, Info.SavePath);
+            var folderPath = Path.Combine(Constants.SavePath, Info.SavePath);
 
             if (!Directory.Exists(folderPath))
             {
@@ -193,32 +194,11 @@ public partial class Server : ObservableObject
                 return;
             }
 
-            // Platform-specific logic to open a folder
             var startInfo = new ProcessStartInfo
             {
+                FileName = folderPath,
                 UseShellExecute = true
             };
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                startInfo.FileName = "explorer.exe";
-                startInfo.Arguments = folderPath;
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                startInfo.FileName = "open";
-                startInfo.Arguments = folderPath;
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                startInfo.FileName = "xdg-open";
-                startInfo.Arguments = folderPath;
-            }
-            else
-            {
-                App.AddNotification("Opening the client folder is not supported on this operating system.", true);
-                return;
-            }
 
             Process.Start(startInfo);
         }
@@ -228,6 +208,7 @@ public partial class Server : ObservableObject
             App.AddNotification($"Failed to open client folder directory. Error: {ex.Message}.", true);
         }
     }
+
     private async Task<bool> RefreshServerInfoAsync()
     {
         try

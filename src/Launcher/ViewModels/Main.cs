@@ -121,32 +121,11 @@ public partial class Main : ObservableObject
                 return;
             }
 
-            // Platform-specific logic to open a folder
             var startInfo = new ProcessStartInfo
             {
-                UseShellExecute = true
+                UseShellExecute = true,
+                FileName = Constants.LogsDirectory
             };
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                startInfo.FileName = "explorer.exe";
-                startInfo.Arguments = Constants.LogsDirectory;
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                startInfo.FileName = "open";
-                startInfo.Arguments = Constants.LogsDirectory;
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                startInfo.FileName = "xdg-open";
-                startInfo.Arguments = Constants.LogsDirectory;
-            }
-            else
-            {
-                App.AddNotification("Opening the logs folder is not supported on this operating system.", true);
-                return;
-            }
 
             Process.Start(startInfo);
         }

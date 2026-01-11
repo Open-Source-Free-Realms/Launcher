@@ -216,35 +216,16 @@ public partial class Login : Popup
     private async Task NotifyDirectX9MissingAsync()
     {
         App.AddNotification("DirectX 9 is not available. Cannot launch the client.", true);
+
         await Task.Delay(500);
 
         try
         {
-            // Platform-specific logic to open a url
             var startInfo = new ProcessStartInfo
             {
-                UseShellExecute = true
+                UseShellExecute = true,
+                FileName = Constants.DirectXDownloadUrl
             };
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                startInfo.FileName = Constants.DirectXDownloadUrl;
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                startInfo.FileName = "open";
-                startInfo.Arguments = Constants.DirectXDownloadUrl;
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                startInfo.FileName = "xdg-open";
-                startInfo.Arguments = Constants.DirectXDownloadUrl;
-            }
-            else
-            {
-                App.AddNotification("Failed to open the DirectX download page. This operating system is not supported.", true);
-                return;
-            }
 
             Process.Start(startInfo);
         }
