@@ -22,12 +22,12 @@ public partial class Main : Window
         ViewModel.OnLoad();
     }
 
-    protected override async void OnClosing(WindowClosingEventArgs e)
+    protected override void OnClosing(WindowClosingEventArgs e)
     {
         if (ViewModel.Servers.Any(s => s.IsDownloading))
         {
             e.Cancel = true;
-            await App.AddNotification(App.GetText("Text.Downloading.OnClose"), true);
+            App.AddNotification(App.GetText("Text.Downloading.OnClose"), true);
         }
         else
         {

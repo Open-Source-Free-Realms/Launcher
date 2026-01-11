@@ -97,7 +97,7 @@ public partial class App : Application
         catch (Exception ex)
         {
             app._logger.Error(ex, "Error checking for updates");
-            await AddNotification(GetText("Text.Main.UpdateError"), true);
+            AddNotification(GetText("Text.Main.UpdateError"), true);
         }
         finally
         {
@@ -117,7 +117,7 @@ public partial class App : Application
         return string.Format(text, args);
     }
 
-    public static async Task AddNotification(string message, bool isError = false)
+    public static void AddNotification(string message, bool isError = false)
     {
         if (Current is not App app || app._main is null)
             return;
@@ -129,7 +129,7 @@ public partial class App : Application
         };
 
         app._logger.Log(isError ? LogLevel.Error : LogLevel.Info, message);
-        await app._main.OnReceiveNotification(notice);
+        app._main.OnReceiveNotification(notice);
     }
 
     public static void ShowSettings()

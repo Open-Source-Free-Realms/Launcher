@@ -78,7 +78,7 @@ public partial class AddServer : Popup
 
             if (!result.Success || result.ServerManifest is null)
             {
-                await App.AddNotification(result.Error, true);
+                App.AddNotification(result.Error, true);
                 return false;
             }
 
@@ -86,11 +86,17 @@ public partial class AddServer : Popup
 
             // Validate the manifest data.
             if (string.IsNullOrEmpty(serverManifest.Name))
-                return await NotifyAndReturnFalse("Server name is missing in manifest.");
+            {
+                App.AddNotification("Server name is missing in manifest.", true);
+                return false;
+            }
 
             // Create a unique local directory for the server's files.
             if (!TryCreateSavePath(serverManifest.Name, out var savePath))
-                return await NotifyAndReturnFalse("Failed to create a save path for the server.");
+            {
+                App.AddNotification("Failed to create a save path for the server.", true);
+                return false;
+            }
 
             // If all checks pass, create the ServerInfo object and save it.
             var serverInfo = new ServerInfo
@@ -111,15 +117,9 @@ public partial class AddServer : Popup
         catch (Exception ex)
         {
             _logger.Error(ex, "An exception occurred while adding a server.");
-            await App.AddNotification($"An exception occurred: {ex.Message}", true);
+            App.AddNotification($"An exception occurred: {ex.Message}", true);
             return false;
         }
-    }
-
-    private static async Task<bool> NotifyAndReturnFalse(string message)
-    {
-        await App.AddNotification(message, true);
-        return false;
     }
 
     private static bool TryCreateSavePath(string name, out string path)

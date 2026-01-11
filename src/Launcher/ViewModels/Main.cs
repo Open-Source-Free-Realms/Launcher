@@ -121,7 +121,7 @@ public partial class Main : ObservableObject
         {
             if (!Directory.Exists(Constants.LogsDirectory))
             {
-                await App.AddNotification("Logs directory does not exist.", true);
+                App.AddNotification("Logs directory does not exist.", true);
                 return;
             }
 
@@ -148,7 +148,7 @@ public partial class Main : ObservableObject
             }
             else
             {
-                await App.AddNotification("Opening the logs folder is not supported on this operating system.", true);
+                App.AddNotification("Opening the logs folder is not supported on this operating system.", true);
                 return;
             }
 
@@ -157,7 +157,7 @@ public partial class Main : ObservableObject
         catch (Exception ex)
         {
             _logger.Error(ex, "Error opening logs directory");
-            await App.AddNotification($"Failed to open logs directory. Error: {ex.Message}", true);
+            App.AddNotification($"Failed to open logs directory. Error: {ex.Message}", true);
         }
     }
 
@@ -169,7 +169,7 @@ public partial class Main : ObservableObject
 
         if (ActiveServer.IsDownloading)
         {
-            await App.AddNotification("Cannot delete server while download is in progress.", true);
+            App.AddNotification("Cannot delete server while download is in progress.", true);
             return;
         }
 
@@ -177,21 +177,19 @@ public partial class Main : ObservableObject
         await App.ShowPopupAsync(new DeleteServer(ActiveServer.Info));
     }
 
-    public async Task OnReceiveNotification(Notification notification)
+    public void OnReceiveNotification(Notification notification)
     {
-        await Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            // Limit the number of visible notifications
-            if (Notifications.Count >= 3)
-                Notifications.RemoveAt(0);
-            Notifications.Add(notification);
-        });
+        // Limit the number of visible notifications
+        if (Notifications.Count >= 3)
+            Notifications.RemoveAt(0);
+
+        Notifications.Add(notification);
 
         // Wait for a few seconds before removing the notification
-        await Task.Delay(3000);
-
-        await Dispatcher.UIThread.InvokeAsync(() =>
+        Task.Run(async () =>
         {
+            await Task.Delay(3000);
+
             Notifications.Remove(notification);
         });
     }

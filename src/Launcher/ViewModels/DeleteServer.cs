@@ -56,7 +56,7 @@ public partial class DeleteServer : Popup
         {
             // If file deletion fails, notify the user and log the error.
             _logger.Error(ex, $"Error deleting server directory for: {Info.Name}");
-            await App.AddNotification($"Failed to delete server directory: {ex.Message}", true);
+            App.AddNotification($"Failed to delete server directory: {ex.Message}", true);
             return false;
         }
 

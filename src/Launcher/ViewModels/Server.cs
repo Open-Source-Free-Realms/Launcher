@@ -146,7 +146,7 @@ public partial class Server : ObservableObject
         catch (Exception ex)
         {
             _logger.Error(ex, $"Error refreshing server status for: {Info.Name}.");
-            await App.AddNotification($"Failed to refresh server status: {ex.Message}.", true);
+            App.AddNotification($"Failed to refresh server status: {ex.Message}.", true);
         }
         finally
         {
@@ -163,7 +163,7 @@ public partial class Server : ObservableObject
     {
         if (Process != null)
         {
-            await App.AddNotification("Unable to launch, the game is already open.", true);
+            App.AddNotification("Unable to launch, the game is already open.", true);
             _logger.Warn($"Unable to launch, the game is already open for server: {Info.Name}.");
             return;
         }
@@ -176,7 +176,7 @@ public partial class Server : ObservableObject
 
         if (!await VerifyClientFilesAsync(clientManifest).ConfigureAwait(false))
         {
-            await App.AddNotification("Failed to verify client files, please try again.", true);
+            App.AddNotification("Failed to verify client files, please try again.", true);
             _logger.Warn($"Failed to verify client files for server: {Info.Name}.");
             StatusMessage = string.Empty;
             return;
@@ -185,7 +185,7 @@ public partial class Server : ObservableObject
         if (!IsOnline)
         {
             StatusMessage = string.Empty;
-            await App.AddNotification("Cannot login: The server is offline.", true);
+            App.AddNotification("Cannot login: The server is offline.", true);
             return;
         }
 
@@ -206,7 +206,7 @@ public partial class Server : ObservableObject
 
             if (!Directory.Exists(folderPath))
             {
-                await App.AddNotification($"The client folder does not exist: {folderPath}.", true);
+                App.AddNotification($"The client folder does not exist: {folderPath}.", true);
                 return;
             }
 
@@ -233,7 +233,7 @@ public partial class Server : ObservableObject
             }
             else
             {
-                await App.AddNotification("Opening the client folder is not supported on this operating system.", true);
+                App.AddNotification("Opening the client folder is not supported on this operating system.", true);
                 return;
             }
 
@@ -242,7 +242,7 @@ public partial class Server : ObservableObject
         catch (Exception ex)
         {
             _logger.Error(ex, "Error opening client folder directory.");
-            await App.AddNotification($"Failed to open client folder directory. Error: {ex.Message}.", true);
+            App.AddNotification($"Failed to open client folder directory. Error: {ex.Message}.", true);
         }
     }
     private async Task<bool> RefreshServerInfoAsync()
@@ -252,11 +252,8 @@ public partial class Server : ObservableObject
             var result = await HttpHelper.GetServerManifestAsync(Info.Url).ConfigureAwait(false);
             if (!result.Success || result.ServerManifest is null)
             {
-                await UIThreadHelper.InvokeAsync(async () =>
-                {
-                    await App.AddNotification(result.Error, true);
-                    _logger.Error($"Failed to get server manifest for: {Info.Url}: {result.Error}.");
-                });
+                App.AddNotification(result.Error, true);
+                _logger.Error($"Failed to get server manifest for: {Info.Url}: {result.Error}.");
                 return false;
             }
             var serverManifest = result.ServerManifest;
@@ -275,11 +272,8 @@ public partial class Server : ObservableObject
         }
         catch (Exception ex)
         {
-            await UIThreadHelper.InvokeAsync(async () =>
-            {
-                await App.AddNotification($"An exception was thrown while getting server info. Exception: {ex.Message}.", true);
-                _logger.Error(ex, $"An exception was thrown while getting server info for: {Info.Url}.");
-            });
+            App.AddNotification($"An exception was thrown while getting server info. Exception: {ex.Message}.", true);
+            _logger.Error(ex, $"An exception was thrown while getting server info for: {Info.Url}.");
         }
         return false;
     }
@@ -291,18 +285,15 @@ public partial class Server : ObservableObject
             var result = await HttpHelper.GetClientManifestAsync(Info.Url).ConfigureAwait(false);
             if (!result.Success || result.ClientManifest is null)
             {
-                await UIThreadHelper.InvokeAsync(async () =>
-                {
-                    await App.AddNotification(result.Error, true);
-                    _logger.Error($"Failed to get client manifest for: {Info.Url}: {result.Error}.");
-                });
+                App.AddNotification(result.Error, true);
+                _logger.Error($"Failed to get client manifest for: {Info.Url}: {result.Error}.");
                 return null;
             }
             return result.ClientManifest;
         }
         catch (Exception ex)
         {
-            await App.AddNotification($"An exception was thrown while getting client info. Exception: {ex.Message}.", true);
+            App.AddNotification($"An exception was thrown while getting client info. Exception: {ex.Message}.", true);
             _logger.Error(ex, $"An exception was thrown while getting client info for: {Info.Url}.");
         }
         return null;
@@ -385,7 +376,7 @@ public partial class Server : ObservableObject
             if (failedFiles.Count > 10)
                 message.AppendLine($"...And {failedFiles.Count - 10} more.");
 
-            await App.AddNotification(message.ToString(), true);
+            App.AddNotification(message.ToString(), true);
         }
 
         _logger.Info($"Finished verifying client files for: {Info.Name}.");

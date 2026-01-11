@@ -128,13 +128,14 @@ public partial class Login : Popup
 
             if (httpResponse.StatusCode == HttpStatusCode.Unauthorized)
             {
-                await HandleUnauthorizedAsync();
+                App.AddNotification(App.GetText("Text.Login.Unauthorized"), true);
+                Password = string.Empty; // Clear password field on failure
                 return false;
             }
 
             if (!httpResponse.IsSuccessStatusCode)
             {
-                await App.AddNotification($"Failed to login. Http Error: {httpResponse.ReasonPhrase}.", true);
+                App.AddNotification($"Failed to login. Http Error: {httpResponse.ReasonPhrase}.", true);
                 _logger.Warn($"Login failed for server: '{_server.Info.Name}'. API returned status {httpResponse.StatusCode} {httpResponse.ReasonPhrase}.");
                 return false;
             }
@@ -142,7 +143,7 @@ public partial class Login : Popup
             var loginResponse = await httpResponse.Content.ReadFromJsonAsync<LoginResponse>().ConfigureAwait(false);
             if (loginResponse == null || string.IsNullOrEmpty(loginResponse.SessionId))
             {
-                await App.AddNotification("Invalid login API response.", true);
+                App.AddNotification("Invalid login API response.", true);
                 _logger.Warn($"Invalid login API response from server: '{_server.Info.Name}'. Response body was null or SessionId was missing.");
                 Password = string.Empty;
                 return false;
@@ -154,16 +155,10 @@ public partial class Login : Popup
         }
         catch (Exception ex)
         {
-            await App.AddNotification($"An exception was thrown while logging in: {ex.Message}.", true);
+            App.AddNotification($"An exception was thrown while logging in: {ex.Message}.", true);
             _logger.Error(ex, $"An exception was thrown while logging into server: {_server.Info.Name}.");
             return false;
         }
-    }
-
-    private async Task HandleUnauthorizedAsync()
-    {
-        await App.AddNotification(App.GetText("Text.Login.Unauthorized"), true);
-        Password = string.Empty; // Clear password field on failure
     }
 
     private async Task LaunchClientAsync(string sessionId, string? serverArguments)
@@ -190,7 +185,7 @@ public partial class Login : Popup
 
         if (!File.Exists(executablePath))
         {
-            await App.AddNotification($"Client executable not found: {executablePath}.", true);
+            App.AddNotification($"Client executable not found: {executablePath}.", true);
             _logger.Error($"Client executable not found for server: '{_server.Info.Name}' at path: {executablePath}.");
             return;
         }
@@ -211,7 +206,7 @@ public partial class Login : Popup
         }
         else
         {
-            await App.AddNotification("Launching the client is not supported on this OS.", true);
+            App.AddNotification("Launching the client is not supported on this OS.", true);
             return;
         }
 
@@ -225,14 +220,14 @@ public partial class Login : Popup
         }
         catch (Exception ex)
         {
-            await App.AddNotification($"Failed to start the client: {ex.Message}.", true);
+            App.AddNotification($"Failed to start the client: {ex.Message}.", true);
             _logger.Error(ex, $"Failed to start the client process for server: {_server.Info.Name}.");
         }
     }
 
     private async Task NotifyDirectX9MissingAsync()
     {
-        await App.AddNotification("DirectX 9 is not available. Cannot launch the client.", true);
+        App.AddNotification("DirectX 9 is not available. Cannot launch the client.", true);
         await Task.Delay(500);
 
         try
@@ -259,7 +254,7 @@ public partial class Login : Popup
             }
             else
             {
-                await App.AddNotification("Failed to open the DirectX download page. This operating system is not supported.", true);
+                App.AddNotification("Failed to open the DirectX download page. This operating system is not supported.", true);
                 return;
             }
 
@@ -268,7 +263,7 @@ public partial class Login : Popup
         catch (Exception ex)
         {
             _logger.Error(ex, "Failed to open the DirectX download page automatically.");
-            await App.AddNotification("Failed to open the DirectX download page. Please open this URL manually: " + Constants.DirectXDownloadUrl, true);
+            App.AddNotification("Failed to open the DirectX download page. Please open this URL manually: " + Constants.DirectXDownloadUrl, true);
         }
     }
 }
