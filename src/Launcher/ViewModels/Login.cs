@@ -103,8 +103,6 @@ public partial class Login : Popup
 
     public override async Task<bool> ProcessAsync()
     {
-        SaveRememberedCredentials();
-
         try
         {
             using var httpClient = HttpHelper.CreateHttpClient();
@@ -136,6 +134,8 @@ public partial class Login : Popup
                 Password = string.Empty;
                 return false;
             }
+
+            SaveRememberedCredentials();
 
             // If login is successful, launch the client
             await LaunchClientAsync(loginResponse.SessionId, loginResponse.LaunchArguments);
