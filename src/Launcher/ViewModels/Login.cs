@@ -122,7 +122,7 @@ public partial class Login : Popup
             if (!httpResponse.IsSuccessStatusCode)
             {
                 App.AddNotification($"Failed to login. Http Error: {httpResponse.ReasonPhrase}.", true);
-                _logger.Warn($"Login failed for server: '{_server.Info.Name}'. API returned status {httpResponse.StatusCode} {httpResponse.ReasonPhrase}.");
+                _logger.Warn("Login failed for server: '{Name}'. API returned status {StatusCode} {Reason}.", _server.Info.Name, httpResponse.StatusCode, httpResponse.ReasonPhrase);
                 return false;
             }
 
@@ -130,7 +130,7 @@ public partial class Login : Popup
             if (loginResponse == null || string.IsNullOrEmpty(loginResponse.SessionId))
             {
                 App.AddNotification("Invalid login API response.", true);
-                _logger.Warn($"Invalid login API response from server: '{_server.Info.Name}'. Response body was null or SessionId was missing.");
+                _logger.Warn("Invalid login API response from server: '{Name}'. Response body was null or SessionId was missing.", _server.Info.Name);
                 Password = string.Empty;
                 return false;
             }
@@ -144,7 +144,7 @@ public partial class Login : Popup
         catch (Exception ex)
         {
             App.AddNotification($"An exception was thrown while logging in: {ex.Message}.", true);
-            _logger.Error(ex, $"An exception was thrown while logging into server: {_server.Info.Name}.");
+            _logger.Error(ex, "An exception was thrown while logging into server: {Name}.", _server.Info.Name);
             return false;
         }
     }
@@ -174,7 +174,7 @@ public partial class Login : Popup
         if (!File.Exists(executablePath))
         {
             App.AddNotification($"Client executable not found: {executablePath}.", true);
-            _logger.Error($"Client executable not found for server: '{_server.Info.Name}' at path: {executablePath}.");
+            _logger.Error("Client executable not found for server: '{Name}' at path: {Path}.", _server.Info.Name, executablePath);
             return;
         }
 
@@ -209,7 +209,7 @@ public partial class Login : Popup
         catch (Exception ex)
         {
             App.AddNotification($"Failed to start the client: {ex.Message}.", true);
-            _logger.Error(ex, $"Failed to start the client process for server: {_server.Info.Name}.");
+            _logger.Error(ex, "Failed to start the client process for server: {Name}.", _server.Info.Name);
         }
     }
 

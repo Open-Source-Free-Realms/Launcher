@@ -48,7 +48,7 @@ public partial class Settings : ObservableObject
 
         if (!XmlHelper.TryDeserialize(_savePath, out Settings? settings))
         {
-            _logger.Error($"Failed to deserialize settings from '{_savePath}'.");
+            _logger.Error("Failed to deserialize settings from '{Path}'.", _savePath);
 
             return new Settings();
         }
@@ -63,7 +63,7 @@ public partial class Settings : ObservableObject
     {
         if (!XmlHelper.TrySerialize(Instance, _savePath))
         {
-            _logger.Error($"Failed to serialize and save settings to '{_savePath}'.");
+            _logger.Error("Failed to serialize and save settings to '{Path}'.", _savePath);
         }
     }
 

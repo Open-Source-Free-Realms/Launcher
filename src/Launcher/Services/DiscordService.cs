@@ -122,7 +122,7 @@ public static class DiscordService
                 {
                     if (result != Result.Ok)
                     {
-                        _logger.Warn($"Failed to update Discord activity: {result}");
+                        _logger.Warn("Failed to update Discord activity: {result}", result);
                     }
                 });
             }

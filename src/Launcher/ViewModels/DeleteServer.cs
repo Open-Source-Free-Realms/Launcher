@@ -45,7 +45,7 @@ public partial class DeleteServer : Popup
         catch (Exception ex)
         {
             // If file deletion fails, notify the user and log the error.
-            _logger.Error(ex, $"Error deleting server directory for: {Info.Name}");
+            _logger.Error(ex, "Error deleting server directory for: {Name}", Info.Name);
             App.AddNotification($"Failed to delete server directory: {ex.Message}", true);
             return false;
         }
@@ -77,7 +77,7 @@ public partial class DeleteServer : Popup
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, $"Failed to forcefully delete directory: {path}");
+                _logger.Error(ex, "Failed to forcefully delete directory: {Path}", path);
                 throw; // Re-throw the exception to be caught by the calling method.
             }
         });
