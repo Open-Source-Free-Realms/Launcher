@@ -62,14 +62,16 @@ public partial class Server : ObservableObject
 
     public Server()
     {
-#if DESIGNMODE
+#if DEBUG && DESIGNMODE
         if (Avalonia.Controls.Design.IsDesignMode)
         {
+            var faker = new Bogus.Faker();
+
             Info = new ServerInfo
             {
                 Url = "https://example.com",
-                Name = "Name",
-                Description = "Description",
+                Name = $"{faker.Name.FirstName()}'s Server",
+                Description = faker.Lorem.Paragraphs(5),
                 SavePath = "Name",
                 LoginServer = "127.0.0.1:20042",
                 LoginApiUrl = "https://example.com"

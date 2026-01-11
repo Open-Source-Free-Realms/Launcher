@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bogus" Version="35.6.5" Condition="'$(Configuration)' == 'Debug'" />
     <PackageReference Include="HashDepot" Version="3.1.0" />
     <PackageReference Include="System.Private.Uri" Version="4.3.2" />
     <PackageReference Include="Velopack" Version="0.0.1362-gfa48e3c" />

@@ -45,13 +45,13 @@ public partial class Main : ObservableObject
 
     public Main()
     {
-#if DESIGNMODE
+#if DEBUG && DESIGNMODE
         if (Avalonia.Controls.Design.IsDesignMode)
         {
             Servers.Clear();
-            var demoServer = new Server();
-            Servers.Add(demoServer);
-            ActiveServer = demoServer;
+
+            for (var i = 0; i < 20; i++)
+                Servers.Add(new Server());
         }
 #endif
 
