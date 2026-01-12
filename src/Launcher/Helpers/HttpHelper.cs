@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -61,15 +62,37 @@ public static class HttpHelper
 
         using var contentStream = await response.Content.ReadAsStreamAsync();
 
-        var xmlDocument = XDocument.Load(contentStream);
-
-        if (!int.TryParse(xmlDocument.Root?.Attribute("version")?.Value, out int version) || version != ServerManifest.ManifestVersion)
+        try
         {
-            var error = $"""
-                         Failed to get server manifest, invalid version.
-                         """;
+            var xmlDocument = XDocument.Load(contentStream);
 
-            _logger.Error(error);
+            if (!int.TryParse(xmlDocument.Root?.Attribute("version")?.Value, out int version))
+            {
+                var error = "Failed to get server manifest, unknown version.";
+
+                _logger.Error(error);
+
+                return (false, error, null);
+            }
+
+            if (version != ServerManifest.ManifestVersion)
+            {
+                var error = $"""
+                             Failed to get server manifest, invalid version.
+                             Server Version: {version}
+                             Launcher Version: {ServerManifest.ManifestVersion}
+                             """;
+
+                _logger.Error(error);
+
+                return (false, error, null);
+            }
+        }
+        catch (Exception ex)
+        {
+            var error = "Failed to get server manifest, unknown version.";
+
+            _logger.Error(ex, error);
 
             return (false, error, null);
         }
@@ -123,15 +146,37 @@ public static class HttpHelper
 
         using var contentStream = await response.Content.ReadAsStreamAsync();
 
-        var xmlDocument = XDocument.Load(contentStream);
-
-        if (!int.TryParse(xmlDocument.Root?.Attribute("version")?.Value, out int version) || version != ClientManifest.ManifestVersion)
+        try
         {
-            var error = $"""
-                         Failed to get client manifest, invalid version.
-                         """;
+            var xmlDocument = XDocument.Load(contentStream);
 
-            _logger.Error(error);
+            if (!int.TryParse(xmlDocument.Root?.Attribute("version")?.Value, out int version))
+            {
+                var error = "Failed to get client manifest, unknown version.";
+
+                _logger.Error(error);
+
+                return (false, error, null);
+            }
+
+            if (version != ClientManifest.ManifestVersion)
+            {
+                var error = $"""
+                             Failed to get client manifest, invalid version.
+                             Server Version: {version}
+                             Launcher Version: {ClientManifest.ManifestVersion}
+                             """;
+
+                _logger.Error(error);
+
+                return (false, error, null);
+            }
+        }
+        catch (Exception ex)
+        {
+            var error = "Failed to get client manifest, unknown version.";
+
+            _logger.Error(ex, error);
 
             return (false, error, null);
         }
@@ -149,7 +194,6 @@ public static class HttpHelper
 
             return (false, error, null);
         }
-
 
         return (true, string.Empty, clientManifest);
     }

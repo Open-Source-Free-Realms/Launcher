@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -105,9 +104,11 @@ public partial class Server : ObservableObject
     [RelayCommand(AllowConcurrentExecutions = false)]
     public async Task RefreshServerStatusAsync()
     {
-        Status = App.GetText("Text.ServerStatus.Refreshing");
-        ServerStatusFill = new SolidColorBrush(Color.FromRgb(204, 204, 0));
         IsRefreshing = true;
+
+        Status = App.GetText("Text.ServerStatus.Refreshing");
+
+        ServerStatusFill = new SolidColorBrush(Color.FromRgb(204, 204, 0));
 
         try
         {
@@ -122,6 +123,7 @@ public partial class Server : ObservableObject
                     : "Text.ServerStatus.Online");
 
                 OnlinePlayers = serverStatus.OnlinePlayers;
+
                 ServerStatusFill = new SolidColorBrush(
                     serverStatus.IsLocked
                         ? Color.FromRgb(242, 63, 67)
@@ -130,14 +132,16 @@ public partial class Server : ObservableObject
             else
             {
                 Status = App.GetText("Text.ServerStatus.Offline");
+
                 OnlinePlayers = 0;
                 ServerStatusFill = new SolidColorBrush(Color.FromRgb(242, 63, 67));
             }
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, "Error refreshing server status for: {Name}.", Info.Name);
-            App.AddNotification($"Failed to refresh server status: {ex.Message}.", true);
+            _logger.Error(ex, "Error refreshing server status for: '{Name}'.", Info.Name);
+
+            App.AddNotification("Unable to refresh server status.", true);
         }
         finally
         {
@@ -151,11 +155,14 @@ public partial class Server : ObservableObject
         if (Process != null)
         {
             App.AddNotification("Unable to launch, the game is already open.", true);
-            _logger.Warn("Unable to launch, the game is already open for server: {Name}.", Info.Name);
+
+            _logger.Warn("Unable to launch, the game is already open for server: '{Name}'.", Info.Name);
+
             return;
         }
 
         var clientManifest = await GetClientManifestAsync();
+
         if (clientManifest is null)
             return;
 
@@ -163,37 +170,36 @@ public partial class Server : ObservableObject
 
         if (!await VerifyClientFilesAsync(clientManifest))
         {
-            App.AddNotification("Failed to verify client files, please try again.", true);
-            _logger.Warn("Failed to verify client files for server: {Name}.", Info.Name);
             StatusMessage = string.Empty;
+
             return;
         }
 
         if (!IsOnline)
         {
             StatusMessage = string.Empty;
-            App.AddNotification("Cannot login: The server is offline.", true);
+
+            App.AddNotification("Cannot login, the server is offline.", true);
+
             return;
         }
 
-        // All checks passed, show the login popup
         StatusMessage = string.Empty;
+
+        // All checks passed, show the login popup
         App.ShowPopup(new Login(this));
     }
 
     [RelayCommand]
-    public async Task OpenClientFolder()
+    public async Task OpenFolder()
     {
+        var folderPath = Path.Combine(Constants.SavePath, Info.SavePath);
+
+        if (!Directory.Exists(folderPath))
+            return;
+
         try
         {
-            var folderPath = Path.Combine(Constants.SavePath, Info.SavePath);
-
-            if (!Directory.Exists(folderPath))
-            {
-                App.AddNotification($"The client folder does not exist: {folderPath}.", true);
-                return;
-            }
-
             var startInfo = new ProcessStartInfo
             {
                 FileName = folderPath,
@@ -205,7 +211,8 @@ public partial class Server : ObservableObject
         catch (Exception ex)
         {
             _logger.Error(ex, "Error opening client folder directory.");
-            App.AddNotification($"Failed to open client folder directory. Error: {ex.Message}.", true);
+
+            App.AddNotification("Unable to open server directory.", true);
         }
     }
 
@@ -217,7 +224,10 @@ public partial class Server : ObservableObject
 
             if (!result.Success || result.ServerManifest is null)
             {
-                App.AddNotification(result.Error, true);
+                App.AddNotification($"""
+                                     Failed to get server info.
+                                     {result.Error}
+                                     """, true);
 
                 _logger.Error("Failed to get server manifest for: {Url}: {Error}.", Info.Url, result.Error);
 
@@ -238,9 +248,11 @@ public partial class Server : ObservableObject
         }
         catch (Exception ex)
         {
-            App.AddNotification($"An exception was thrown while getting server info. Exception: {ex.Message}.", true);
+            App.AddNotification("An error occurred while getting server info.", true);
+
             _logger.Error(ex, "An exception was thrown while getting server info for: {Url}.", Info.Url);
         }
+
         return false;
     }
 
@@ -252,7 +264,10 @@ public partial class Server : ObservableObject
 
             if (!result.Success || result.ClientManifest is null)
             {
-                App.AddNotification(result.Error, true);
+                App.AddNotification($"""
+                                     Failed to get client info.
+                                     {result.Error}
+                                     """, true);
 
                 _logger.Error("Failed to get client manifest for: {Url}: {Error}.", Info.Url, result.Error);
 
@@ -263,9 +278,11 @@ public partial class Server : ObservableObject
         }
         catch (Exception ex)
         {
-            App.AddNotification($"An exception was thrown while getting client info. Exception: {ex.Message}.", true);
+            App.AddNotification("An error occurred while getting client info.", true);
+
             _logger.Error(ex, "An exception was thrown while getting client info for: {Url}.", Info.Url);
         }
+
         return null;
     }
 
@@ -329,7 +346,8 @@ public partial class Server : ObservableObject
         if (!failedFiles.IsEmpty)
         {
             var message = new StringBuilder();
-            message.AppendLine($"Failed to download: {failedFiles.Count} file(s):");
+
+            message.AppendLine($"Failed to download {failedFiles.Count} file(s):");
             message.AppendLine(string.Join("\n", failedFiles.Take(10)));
 
             if (failedFiles.Count > 10)
@@ -346,6 +364,7 @@ public partial class Server : ObservableObject
     private async Task<bool> DownloadFileAsync(string path, string fileName)
     {
         var downloadFilePath = Path.Combine(path, fileName);
+
         try
         {
             var clientFileUri = UriHelper.JoinUriPaths(Info.Url, "client", path, fileName);
@@ -363,6 +382,7 @@ public partial class Server : ObservableObject
             Directory.CreateDirectory(fileDirectory);
 
             await using var fileStream = await downloadService.DownloadFileTaskAsync(clientFileUri);
+
             if (fileStream is null || fileStream.Length == 0)
             {
                 _logger.Error("Failed to get client file or received empty stream: {Path}.", downloadFilePath);
@@ -370,6 +390,7 @@ public partial class Server : ObservableObject
             }
 
             await using var writeStream = File.Create(filePath);
+
             await fileStream.CopyToAsync(writeStream);
 
             return true;
@@ -377,6 +398,7 @@ public partial class Server : ObservableObject
         catch (Exception ex)
         {
             _logger.Error(ex, "Error downloading: {Path}.", downloadFilePath);
+
             return false;
         }
     }
@@ -406,10 +428,12 @@ public partial class Server : ObservableObject
                 try
                 {
                     await using var readStream = File.OpenRead(filePath);
+
                     // First, check if file size matches. This is a quick check before hashing.
                     if (file.Size == readStream.Length)
                     {
-                        ulong hash = await Task.Run(() => XXHash.Hash64(readStream));
+                        var hash = await Task.Run(() => XXHash.Hash64(readStream));
+
                         // If hash also matches, the file is valid.
                         if (file.Hash == hash)
                             continue;

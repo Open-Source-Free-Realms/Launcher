@@ -53,6 +53,7 @@ public partial class AddServer : Popup
     public override Task<bool> ProcessAsync()
     {
         ProgressDescription = App.GetText("Text.Add_Server.Loading");
+
         return OnAddServerAsync();
     }
 
@@ -67,7 +68,11 @@ public partial class AddServer : Popup
 
             if (!result.Success || result.ServerManifest is null)
             {
-                App.AddNotification(result.Error, true);
+                App.AddNotification($"""
+                                     Could not add the server.
+                                     {result.Error}
+                                     """, true);
+
                 return false;
             }
 
@@ -76,14 +81,22 @@ public partial class AddServer : Popup
             // Validate the manifest data.
             if (string.IsNullOrEmpty(serverManifest.Name))
             {
-                App.AddNotification("Server name is missing in manifest.", true);
+                App.AddNotification("""
+                                    Could not add the server.
+                                    Server name is missing in manifest.
+                                    """, true);
+
                 return false;
             }
 
             // Create a unique local directory for the server's files.
             if (!TryCreateSavePath(serverManifest.Name, out var savePath))
             {
-                App.AddNotification("Failed to create a save path for the server.", true);
+                App.AddNotification("""
+                                    Could not add the server.
+                                    Failed to create a save path for the server.
+                                    """, true);
+
                 return false;
             }
 
@@ -108,8 +121,10 @@ public partial class AddServer : Popup
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, "An exception occurred while adding a server.");
-            App.AddNotification($"An exception occurred: {ex.Message}", true);
+            _logger.Error(ex, "An exception occurred while adding server.");
+
+            App.AddNotification("An error occurred while adding server.", true);
+
             return false;
         }
     }

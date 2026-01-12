@@ -113,14 +113,11 @@ public partial class Main : ObservableObject
     [RelayCommand]
     public async Task OpenLogs()
     {
+        if (!Directory.Exists(Constants.LogsDirectory))
+            return;
+
         try
         {
-            if (!Directory.Exists(Constants.LogsDirectory))
-            {
-                App.AddNotification("Logs directory does not exist.", true);
-                return;
-            }
-
             var startInfo = new ProcessStartInfo
             {
                 UseShellExecute = true,
@@ -131,8 +128,9 @@ public partial class Main : ObservableObject
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, "Error opening logs directory");
-            App.AddNotification($"Failed to open logs directory. Error: {ex.Message}", true);
+            _logger.Error(ex, "Error opening logs directory.");
+
+            App.AddNotification("Unable to open logs directory.", true);
         }
     }
 

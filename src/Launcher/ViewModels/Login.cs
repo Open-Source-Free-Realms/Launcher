@@ -98,6 +98,7 @@ public partial class Login : Popup
     {
         _server.Info.Username = RememberUsername && !string.IsNullOrEmpty(Username) ? Username : null;
         _server.Info.Password = RememberPassword && !string.IsNullOrEmpty(Password) ? Password : null;
+
         Settings.Instance.Save();
     }
 
@@ -105,33 +106,45 @@ public partial class Login : Popup
     {
         try
         {
-            using var httpClient = HttpHelper.CreateHttpClient();
-            var loginRequest = new LoginRequest { Username = Username, Password = Password };
             ProgressDescription = App.GetText("Text.Login.Loading");
+
+            using var httpClient = HttpHelper.CreateHttpClient();
+
+            var loginRequest = new LoginRequest
+            {
+                Username = Username,
+                Password = Password
+            };
 
             // Send login request to the API
             var httpResponse = await httpClient.PostAsJsonAsync(_server.Info.LoginApiUrl, loginRequest);
 
-            if (httpResponse.StatusCode == HttpStatusCode.Unauthorized)
+            if (!httpResponse.IsSuccessStatusCode)
             {
-                App.AddNotification(App.GetText("Text.Login.Unauthorized"), true);
-                Password = string.Empty; // Clear password field on failure
+                App.AddNotification("Login failed. Please check your username and password and try again", true);
+
+                _logger.Warn("Login failed for server: '{Name}'. API returned {StatusCode}: {Reason}.", _server.Info.Name, httpResponse.StatusCode, httpResponse.ReasonPhrase);
+
                 return false;
             }
 
-            if (!httpResponse.IsSuccessStatusCode)
+            if (httpResponse.StatusCode == HttpStatusCode.Unauthorized)
             {
-                App.AddNotification($"Failed to login. Http Error: {httpResponse.ReasonPhrase}.", true);
-                _logger.Warn("Login failed for server: '{Name}'. API returned status {StatusCode} {Reason}.", _server.Info.Name, httpResponse.StatusCode, httpResponse.ReasonPhrase);
+                App.AddNotification(App.GetText("Text.Login.Unauthorized"), true);
+
+                Password = string.Empty; // Clear password field on failure
+
                 return false;
             }
 
             var loginResponse = await httpResponse.Content.ReadFromJsonAsync<LoginResponse>();
+
             if (loginResponse == null || string.IsNullOrEmpty(loginResponse.SessionId))
             {
-                App.AddNotification("Invalid login API response.", true);
+                App.AddNotification("Login failed. Please check your username and password and try again.", true);
+
                 _logger.Warn("Invalid login API response from server: '{Name}'. Response body was null or SessionId was missing.", _server.Info.Name);
-                Password = string.Empty;
+
                 return false;
             }
 
@@ -139,12 +152,15 @@ public partial class Login : Popup
 
             // If login is successful, launch the client
             await LaunchClientAsync(loginResponse.SessionId, loginResponse.LaunchArguments);
+
             return true;
         }
         catch (Exception ex)
         {
-            App.AddNotification($"An exception was thrown while logging in: {ex.Message}.", true);
-            _logger.Error(ex, "An exception was thrown while logging into server: {Name}.", _server.Info.Name);
+            App.AddNotification("Login failed. Please check your username and password and try again", true);
+
+            _logger.Error(ex, "An exception occurred logging into server: '{Name}'.", _server.Info.Name);
+
             return false;
         }
     }
@@ -173,8 +189,10 @@ public partial class Login : Popup
 
         if (!File.Exists(executablePath))
         {
-            App.AddNotification($"Client executable not found: {executablePath}.", true);
+            App.AddNotification("Unable to launch the game. The executable file could not be found.", true);
+
             _logger.Error("Client executable not found for server: '{Name}' at path: {Path}.", _server.Info.Name, executablePath);
+
             return;
         }
 
@@ -194,7 +212,8 @@ public partial class Login : Popup
         }
         else
         {
-            App.AddNotification("Launching the client is not supported on this OS.", true);
+            App.AddNotification("Unable to launch the game, your operating system is not supported.", true);
+
             return;
         }
 
@@ -208,14 +227,15 @@ public partial class Login : Popup
         }
         catch (Exception ex)
         {
-            App.AddNotification($"Failed to start the client: {ex.Message}.", true);
+            App.AddNotification("An error occurred while launching the game. Please try again.", true);
+
             _logger.Error(ex, "Failed to start the client process for server: {Name}.", _server.Info.Name);
         }
     }
 
     private async Task NotifyDirectX9MissingAsync()
     {
-        App.AddNotification("DirectX 9 is not available. Cannot launch the client.", true);
+        App.AddNotification("Unable to launch the game, DirectX 9 is not available.", true);
 
         await Task.Delay(500);
 
@@ -232,7 +252,11 @@ public partial class Login : Popup
         catch (Exception ex)
         {
             _logger.Error(ex, "Failed to open the DirectX download page automatically.");
-            App.AddNotification("Failed to open the DirectX download page. Please open this URL manually: " + Constants.DirectXDownloadUrl, true);
+
+            App.AddNotification($"""
+                                 Could not open the DirectX download page.
+                                 Please open this URL manually: {Constants.DirectXDownloadUrl}
+                                 """, true);
         }
     }
 }

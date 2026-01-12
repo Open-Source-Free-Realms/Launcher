@@ -58,9 +58,8 @@ public static class ServerStatusHelper
                         return serverStatus;
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine($"Error querying server status: {ex}");
             }
         }
 
