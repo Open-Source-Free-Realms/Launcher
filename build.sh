@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # Find the absolute path of the script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -45,4 +46,4 @@ dotnet publish ./src/Launcher.slnx -c Release --self-contained -r "$RID" -o "$PU
 
 echo ""
 echo "Building Velopack Release v$BUILD_VERSION"
-vpk pack --packTitle "OSFR Launcher" --packAuthors "OSFR Team" -u OSFRLauncher -e Launcher.exe -o "$RELEASE_DIR" -p "$PUBLISH_DIR" -v $BUILD_VERSION
+vpk pack --packTitle "OSFR Launcher" --packAuthors "OSFR Team" -u OSFRLauncher -e Launcher -o "$RELEASE_DIR" -p "$PUBLISH_DIR" -v $BUILD_VERSION
