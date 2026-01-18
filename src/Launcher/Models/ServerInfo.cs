@@ -20,8 +20,8 @@ public sealed class ServerInfo : ObservableObject
         set => SetProperty(ref description, value);
     }
 
+    public required string WebApiUrl { get; set; }
     public required string LoginServer { get; set; }
-    public required string LoginApiUrl { get; set; }
 
     /// <summary>
     /// This is generated once the server is added.

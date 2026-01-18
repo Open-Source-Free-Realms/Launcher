@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 using Launcher.Helpers;
 using Launcher.Models;
@@ -65,19 +66,11 @@ public partial class Login : Popup
         };
     }
 
-    private void AddSecureWarning()
-    {
-        if (Uri.TryCreate(_server.Info.LoginApiUrl, UriKind.Absolute, out var loginApiUrl)
-            && loginApiUrl.Scheme != Uri.UriSchemeHttps)
-        {
-            Warning = App.GetText("Text.Login.SecureApiWarning");
-        }
-    }
-
     // Handles changes to the "Remember Username" checkbox
     partial void OnRememberUsernameChanged(bool value)
     {
         _server.Info.RememberUsername = value;
+
         if (!value)
             _server.Info.Username = null;
 
@@ -88,18 +81,17 @@ public partial class Login : Popup
     partial void OnRememberPasswordChanged(bool value)
     {
         _server.Info.RememberPassword = value;
+
         if (!value)
             _server.Info.Password = null;
 
         Settings.Instance.Save();
     }
 
-    private void SaveRememberedCredentials()
+    [RelayCommand]
+    public void Register()
     {
-        _server.Info.Username = RememberUsername && !string.IsNullOrEmpty(Username) ? Username : null;
-        _server.Info.Password = RememberPassword && !string.IsNullOrEmpty(Password) ? Password : null;
-
-        Settings.Instance.Save();
+        App.ShowPopup(new Register(_server));
     }
 
     public override async Task<bool> ProcessAsync()
@@ -116,23 +108,27 @@ public partial class Login : Popup
                 Password = Password
             };
 
+            var baseUri = new Uri(_server.Info.WebApiUrl);
+
+            var loginUri = new Uri(baseUri, "login");
+
             // Send login request to the API
-            var httpResponse = await httpClient.PostAsJsonAsync(_server.Info.LoginApiUrl, loginRequest);
-
-            if (!httpResponse.IsSuccessStatusCode)
-            {
-                App.AddNotification("Login failed. Please check your username and password and try again", true);
-
-                _logger.Warn("Login failed for server: '{Name}'. API returned {StatusCode}: {Reason}.", _server.Info.Name, httpResponse.StatusCode, httpResponse.ReasonPhrase);
-
-                return false;
-            }
+            var httpResponse = await httpClient.PostAsJsonAsync(loginUri, loginRequest);
 
             if (httpResponse.StatusCode == HttpStatusCode.Unauthorized)
             {
                 App.AddNotification(App.GetText("Text.Login.Unauthorized"), true);
 
                 Password = string.Empty; // Clear password field on failure
+
+                return false;
+            }
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                App.AddNotification("Login failed. Please check your username and password and try again", true);
+
+                _logger.Warn("Login failed for server: '{Name}'. API returned {StatusCode}: {Reason}.", _server.Info.Name, httpResponse.StatusCode, httpResponse.ReasonPhrase);
 
                 return false;
             }
@@ -163,6 +159,23 @@ public partial class Login : Popup
 
             return false;
         }
+    }
+
+    private void AddSecureWarning()
+    {
+        if (Uri.TryCreate(_server.Info.WebApiUrl, UriKind.Absolute, out var webApiUrl)
+            && webApiUrl.Scheme != Uri.UriSchemeHttps)
+        {
+            Warning = App.GetText("Text.Server.SecureApiWarning");
+        }
+    }
+
+    private void SaveRememberedCredentials()
+    {
+        _server.Info.Username = RememberUsername && !string.IsNullOrEmpty(Username) ? Username : null;
+        _server.Info.Password = RememberPassword && !string.IsNullOrEmpty(Password) ? Password : null;
+
+        Settings.Instance.Save();
     }
 
     private async Task LaunchClientAsync(string sessionId, string? serverArguments)

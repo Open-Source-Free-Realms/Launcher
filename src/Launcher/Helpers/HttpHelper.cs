@@ -78,7 +78,7 @@ public static class HttpHelper
             if (version != ServerManifest.ManifestVersion)
             {
                 var error = $"""
-                             Failed to get server manifest, invalid version.
+                             Server manifest is out of date.
                              Server Version: {version}
                              Launcher Version: {ServerManifest.ManifestVersion}
                              """;
@@ -162,7 +162,7 @@ public static class HttpHelper
             if (version != ClientManifest.ManifestVersion)
             {
                 var error = $"""
-                             Failed to get client manifest, invalid version.
+                             Client manifest is out of date.
                              Server Version: {version}
                              Launcher Version: {ClientManifest.ManifestVersion}
                              """;

@@ -4,7 +4,7 @@ namespace Launcher.Models;
 
 public sealed class ServerManifest
 {
-    public const int ManifestVersion = 1;
+    public const int ManifestVersion = 2;
 
     public const string FileName = $"{nameof(ServerManifest)}.xml";
     public const string SchemaName = $"{nameof(ServerManifest)}.xsd";
@@ -15,8 +15,6 @@ public sealed class ServerManifest
     public required string Name { get; set; }
     public required string Description { get; set; }
 
+    public required string WebApiUrl { get; set; }
     public required string LoginServer { get; set; }
-    public required string LoginApiUrl { get; set; }
-
-    public string? RegisterUrl { get; set; }
 }

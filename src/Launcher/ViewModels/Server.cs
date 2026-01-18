@@ -73,7 +73,7 @@ public partial class Server : ObservableObject
                 Description = faker.Lorem.Paragraphs(5),
                 SavePath = "Name",
                 LoginServer = "127.0.0.1:20042",
-                LoginApiUrl = "https://example.com"
+                WebApiUrl = "https://example.com"
             };
         }
 #endif
@@ -179,7 +179,7 @@ public partial class Server : ObservableObject
         {
             StatusMessage = string.Empty;
 
-            App.AddNotification("Cannot login, the server is offline.", true);
+            App.AddNotification("Unable to login, the server is offline.", true);
 
             return;
         }
@@ -239,8 +239,8 @@ public partial class Server : ObservableObject
             Info.Name = serverManifest.Name;
             Info.Description = serverManifest.Description;
 
+            Info.WebApiUrl = serverManifest.WebApiUrl;
             Info.LoginServer = serverManifest.LoginServer;
-            Info.LoginApiUrl = serverManifest.LoginApiUrl;
 
             Settings.Instance.Save();
 

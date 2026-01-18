@@ -37,10 +37,18 @@
   <x:String x:Key="Text.Login.Unauthorized" xml:space="preserve">Incorrect username or password.</x:String>
   <x:String x:Key="Text.Login.RememberUsername" xml:space="preserve">Remember Username</x:String>
   <x:String x:Key="Text.Login.RememberPassword" xml:space="preserve">Remember Password</x:String>
-  <x:String x:Key="Text.Login.SecureApiWarning" xml:space="preserve">This server does not use HTTPS. Proceed at your own risk.</x:String>
   <x:String x:Key="Text.Login.Loading" xml:space="preserve">Logging In...</x:String>
 
+  <!-- Register -->
+  <x:String x:Key="Text.Register" xml:space="preserve">Register</x:String>
+  <x:String x:Key="Text.Register.Username" xml:space="preserve">Username:</x:String>
+  <x:String x:Key="Text.Register.Password" xml:space="preserve">Password:</x:String>
+  <x:String x:Key="Text.Register.Success" xml:space="preserve">Registration complete! You can now log in.</x:String>
+  <x:String x:Key="Text.Register.Conflict" xml:space="preserve">This username is already taken. Please choose a different one.</x:String>
+  <x:String x:Key="Text.Register.Loading" xml:space="preserve">Registering your account...</x:String>
+
   <!-- Server Operations -->
+  <x:String x:Key="Text.Server.SecureApiWarning" xml:space="preserve">This server does not use HTTPS. Proceed at your own risk.</x:String>
   <x:String x:Key="Text.Server.PreparingGameFiles" xml:space="preserve">Preparing Game Files: ({0}/{1})</x:String>
   <x:String x:Key="Text.Server.VerifyClientFiles" xml:space="preserve">Verifying Client Files...</x:String>
   <x:String x:Key="Text.ServerStatus" xml:space="preserve">Server Status: </x:String>
