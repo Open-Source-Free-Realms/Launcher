@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Platforms>x64;arm64</Platforms>
     <TargetFramework>net9.0</TargetFramework>
     <!-- Ignore warnings to leave the Discord Game SDK unchanged. -->
     <NoWarn>CS8600,CS8601,CS8602,CS8605,CS8618,CS8625</NoWarn>

@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Nullable>enable</Nullable>
-    <Platforms>x64;arm64</Platforms>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
     <ApplicationIcon>App.ico</ApplicationIcon>
