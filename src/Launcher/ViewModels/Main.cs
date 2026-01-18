@@ -110,7 +110,7 @@ public partial class Main : ObservableObject
     public void AddServer() => App.ShowPopup(new AddServer());
 
     [RelayCommand]
-    public async Task OpenLogs()
+    public void OpenLogs()
     {
         if (!Directory.Exists(Constants.LogsDirectory))
             return;

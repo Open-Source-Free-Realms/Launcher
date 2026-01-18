@@ -191,7 +191,7 @@ public partial class Server : ObservableObject
     }
 
     [RelayCommand]
-    public async Task OpenFolder()
+    public void OpenFolder()
     {
         var folderPath = Path.Combine(Constants.SavePath, Info.SavePath);
 
