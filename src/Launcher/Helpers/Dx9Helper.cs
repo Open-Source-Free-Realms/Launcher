@@ -1,32 +1,54 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.IO;
+using System.Runtime.InteropServices;
+
+namespace Launcher.Helpers;
 
 public static partial class Dx9Helper
 {
-    [LibraryImport("d3d9", EntryPoint = "Direct3DCreate9")]
-    private static partial nint Direct3DCreate9(uint sdkVersion);
+    private static readonly string[] RequiredDlls = ["d3d9.dll", "d3dx9_31.dll"];
 
-    private const uint D3D_SDK_VERSION = 0x20;
-
-    public static bool IsAvailable()
+    public static bool IsInstalled()
     {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            return false;
-
         try
         {
-            var ptr = Direct3DCreate9(D3D_SDK_VERSION);
+            string? systemPath = null;
 
-            if (ptr != nint.Zero)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                Marshal.Release(ptr);
+                string winDir = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
+                systemPath = Path.Combine(winDir, "System32");
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ||
+                     RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                if (!string.IsNullOrEmpty(WineHelper.GetPath()))
+                    return false;
 
-                return true;
+                var winePrefix = Environment.GetEnvironmentVariable("WINEPREFIX") ??
+                                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".wine");
+
+                systemPath = Path.Combine(winePrefix, "drive_c", "windows", "system32");
+            }
+            else
+            {
+                return false;
+            }
+
+            if (!Directory.Exists(systemPath))
+                return false;
+
+            foreach (var requiredDll in RequiredDlls)
+            {
+                if (!File.Exists(Path.Combine(systemPath, requiredDll)))
+                    return false;
             }
         }
         catch
         {
+            return false;
         }
 
-        return false;
+        return true;
     }
 }

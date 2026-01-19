@@ -180,7 +180,7 @@ public partial class Login : Popup
 
     private async Task LaunchClientAsync(string sessionId, string? serverArguments)
     {
-        if (!Dx9Helper.IsAvailable())
+        if (!Dx9Helper.IsInstalled())
         {
             await NotifyDirectX9MissingAsync();
             return;
@@ -215,7 +215,16 @@ public partial class Login : Popup
         // Platform-specific process startup logic
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
-            _server.Process.StartInfo.FileName = "wine";
+            var winePath = WineHelper.GetPath();
+
+            if (!string.IsNullOrEmpty(winePath))
+            {
+                App.AddNotification("Unable to launch the game, wine is not installed.", true);
+
+                return;
+            }
+
+            _server.Process.StartInfo.FileName = winePath;
             _server.Process.StartInfo.Arguments = $"{Constants.ClientExecutableName} {arguments}";
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
