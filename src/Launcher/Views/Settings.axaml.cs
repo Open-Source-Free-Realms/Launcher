@@ -11,7 +11,10 @@ public partial class Settings : Window
         DataContext = ViewModel;
 
         InitializeComponent();
+
+        WindowStartupLocation = WindowStartupLocation.CenterOwner;
     }
+
     protected override void OnClosing(WindowClosingEventArgs e)
     {
         ViewModels.Settings.Instance.Save();

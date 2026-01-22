@@ -62,7 +62,7 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 FormatString="F0"
-                                Maximum="10"
+                                Maximum="{Binding MaxDownloadThreads}"
                                 Minimum="2"
                                 ToolTip.Tip="{StaticResource Text.Settings.General.ParallelDownloads.Tooltip}"
                                 Value="{Binding DownloadThreads, Mode=TwoWay}">

@@ -28,7 +28,8 @@ public partial class Settings : ObservableObject
     private bool parallelDownload = true;
 
     [ObservableProperty]
-    private int downloadThreads = 4;
+    private int downloadThreads = Math.Max(1, MaxDownloadThreads / 2);
+    public static int MaxDownloadThreads => Environment.ProcessorCount;
 
     [ObservableProperty]
     private LocaleType locale = LocaleType.en_US;
