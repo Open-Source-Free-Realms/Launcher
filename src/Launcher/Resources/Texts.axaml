@@ -43,6 +43,8 @@
   <x:String x:Key="Text.Register" xml:space="preserve">Register</x:String>
   <x:String x:Key="Text.Register.Username" xml:space="preserve">Username:</x:String>
   <x:String x:Key="Text.Register.Password" xml:space="preserve">Password:</x:String>
+  <x:String x:Key="Text.Register.ConfirmPassword" xml:space="preserve">Confirm Password:</x:String>
+  <x:String x:Key="Text.Register.ConfirmPassword.Error" xml:space="preserve">Passwords do not match.</x:String>
   <x:String x:Key="Text.Register.Success" xml:space="preserve">Registration complete! You can now log in.</x:String>
   <x:String x:Key="Text.Register.Conflict" xml:space="preserve">This username is already taken. Please choose a different one.</x:String>
   <x:String x:Key="Text.Register.Loading" xml:space="preserve">Registering your account...</x:String>

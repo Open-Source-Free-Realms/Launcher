@@ -61,6 +61,27 @@
                Text="{Binding Password, Mode=TwoWay}" />
     </StackPanel>
 
+    <!-- Confirm Password -->
+    <StackPanel Margin="0,10,0,0" HorizontalAlignment="Center">
+
+      <TextBlock HorizontalAlignment="Center"
+                 FontFamily="{StaticResource FontDefault}"
+                 FontSize="18"
+                 Text="{StaticResource Text.Register.ConfirmPassword}" />
+
+      <Image Source="/Assets/fr_asset4.png" Stretch="None" />
+
+      <TextBox Width="256"
+               Height="22"
+               Margin="0,-38,0,0"
+               CaretBrush="Black"
+               FontSize="13"
+               FontWeight="SemiBold"
+               Foreground="Black"
+               PasswordChar="•"
+               Text="{Binding ConfirmPassword, Mode=TwoWay}" />
+    </StackPanel>
+
     <!-- Buttons -->
     <StackPanel Margin="0,10,0,0"
                 HorizontalAlignment="Center"

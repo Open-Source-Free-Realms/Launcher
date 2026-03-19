@@ -31,9 +31,16 @@ public partial class Register : Popup
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Password is required.")]
+    [NotifyPropertyChangedFor(nameof(ConfirmPassword))]
     [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be between 6 and 100 characters long.")]
     [RegularExpression(@"^[\x00-\x7F]+$", ErrorMessage = "Password can only contain ASCII characters.")]
     private string password = string.Empty;
+
+    [Required]
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [CustomValidation(typeof(Register), nameof(ValidateConfirmPassword))]
+    private string confirmPassword = string.Empty;
 
     [ObservableProperty]
     private string statusMessage = string.Empty;
@@ -48,6 +55,17 @@ public partial class Register : Popup
         {
             DataContext = this
         };
+    }
+
+    public static ValidationResult? ValidateConfirmPassword(string confirmPassword, ValidationContext context)
+    {
+        if (context.ObjectInstance is not Register register)
+            throw new InvalidOperationException();
+
+        if (!register.Password.Equals(confirmPassword))
+            return new ValidationResult(App.GetText("Text.Register.ConfirmPassword.Error"));
+
+        return ValidationResult.Success;
     }
 
     public override async Task<bool> ProcessAsync()
