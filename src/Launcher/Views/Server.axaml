@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:m="using:Launcher.Models"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:md="https://github.com/whistyun/Markdown.Avalonia"
+             xmlns:md="clr-namespace:LiveMarkdown.Avalonia;assembly=LiveMarkdown.Avalonia"
              xmlns:vm="using:Launcher.ViewModels"
              d:DesignHeight="550"
              d:DesignWidth="650"
@@ -87,7 +87,7 @@
               CornerRadius="5"
               Opacity="0.050">
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" Opacity="100">
-          <md:MarkdownScrollViewer Markdown="{Binding Info.Description}" />
+          <md:MarkdownRenderer MarkdownBuilder="{Binding MarkdownBuilder}" />
         </ScrollViewer>
       </Border>
     </Border>

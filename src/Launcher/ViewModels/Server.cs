@@ -20,6 +20,8 @@ using HashDepot;
 using Launcher.Helpers;
 using Launcher.Models;
 
+using LiveMarkdown.Avalonia;
+
 using NLog;
 
 namespace Launcher.ViewModels;
@@ -59,6 +61,9 @@ public partial class Server : ObservableObject
     [ObservableProperty]
     private bool isDownloading = false;
 
+    [ObservableProperty]
+    private ObservableStringBuilder markdownBuilder = new();
+
     public Server()
     {
 #if DEBUG && DESIGNMODE
@@ -87,6 +92,9 @@ public partial class Server : ObservableObject
 
     public async Task<bool> OnShowAsync()
     {
+        MarkdownBuilder.Clear();
+        MarkdownBuilder.Append(Info.Description);
+
         if (!await RefreshServerInfoAsync())
             return false;
 

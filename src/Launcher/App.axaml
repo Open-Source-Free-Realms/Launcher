@@ -12,6 +12,7 @@
         <ResourceInclude Source="/Resources/Colors.axaml" />
         <ResourceInclude Source="/Resources/Texts.axaml" />
         <ResourceInclude Source="/Resources/Theme.axaml" />
+        <ResourceInclude Source="avares://LiveMarkdown.Avalonia/Defaults.axaml" />
       </ResourceDictionary.MergedDictionaries>
 
       <!-- Additional Resources -->
@@ -22,6 +23,7 @@
   <Application.Styles>
     <FluentTheme />
     <StyleInclude Source="/Resources/Styles.axaml" />
+    <StyleInclude Source="avares://LiveMarkdown.Avalonia/Styles.axaml" />
   </Application.Styles>
 
 </Application>
