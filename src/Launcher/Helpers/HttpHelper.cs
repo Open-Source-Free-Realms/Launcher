@@ -25,6 +25,8 @@ public static class HttpHelper
             AllowAutoRedirect = true
         }));
 
+        httpClient.Timeout = TimeSpan.FromSeconds(10);
+
         httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent);
 
         return httpClient;
