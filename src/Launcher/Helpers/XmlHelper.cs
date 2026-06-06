@@ -9,6 +9,8 @@ namespace Launcher.Helpers;
 
 public static class XmlHelper
 {
+    private static XmlSerializerNamespaces EmptyNamespace = new([XmlQualifiedName.Empty]);
+
     public static bool TryDeserialize<T>(string path, [NotNullWhen(true)] out T? value) where T : class
     {
         try
@@ -35,7 +37,7 @@ public static class XmlHelper
 
             using var streamWriter = new StreamWriter(path);
 
-            xmlSerializer.Serialize(streamWriter, value);
+            xmlSerializer.Serialize(streamWriter, value, EmptyNamespace);
         }
         catch
         {
