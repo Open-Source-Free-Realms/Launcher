@@ -18,7 +18,7 @@ public static class StringConverter
             if (value is not LocaleType localeType)
                 return null;
 
-            return Locale.Supported.Find(x => x.Type == localeType);
+            return Locale.Locales.Find(x => x.Type == localeType);
         }
 
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

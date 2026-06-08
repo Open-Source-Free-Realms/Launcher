@@ -180,6 +180,23 @@ public partial class Server : ObservableObject
         {
             StatusMessage = string.Empty;
 
+                return;
+            }
+
+            if (!clientManifest.Languages.Contains(Settings.Instance.Locale))
+            {
+                StatusMessage = string.Empty;
+
+                var selectedLanguage = Locale.LocaleMap[Settings.Instance.Locale];
+                var supportedLanguages = clientManifest.Languages.Select(l => Locale.LocaleMap[l]);
+
+                App.AddNotification($"""
+                                     The selected language "{selectedLanguage}" is not supported by this server.
+                                     Please choose a supported language and try again.
+                                     Supported languages:
+                                     {string.Join(Environment.NewLine, supportedLanguages)}
+                                     """, true);
+
             return;
         }
 

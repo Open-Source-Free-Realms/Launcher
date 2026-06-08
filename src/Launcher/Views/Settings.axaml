@@ -23,10 +23,7 @@
         mc:Ignorable="d">
 
   <TabControl>
-    <TabItem>
-      <TabItem.Header>
-        <TextBlock Text="{StaticResource Text.Settings}" />
-      </TabItem.Header>
+    <TabItem Header="{StaticResource Text.Settings}">
 
       <Grid Margin="10"
             ColumnDefinitions="Auto,*"
@@ -96,13 +93,13 @@
         <!-- Locale ComboBox -->
         <ComboBox Grid.Row="3"
                   Grid.Column="1"
-                  Width="120"
+                  Width="250"
                   Margin="-12,2,0,0"
                   Padding="8,0"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Center"
                   DisplayMemberBinding="{Binding Name, x:DataType=m:Locale}"
-                  ItemsSource="{Binding Source={x:Static m:Locale.Supported}}"
+                  ItemsSource="{Binding Source={x:Static m:Locale.Locales}}"
                   SelectedItem="{Binding Locale, Mode=TwoWay, Converter={x:Static c:StringConverter.ToLocale}}"
                   ToolTip.Tip="{StaticResource Text.Settings.General.Locale.Tooltip}" />
 
