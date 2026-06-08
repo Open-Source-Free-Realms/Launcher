@@ -50,7 +50,7 @@ public static class HttpHelper
             return (false, error, null);
         }
 
-        if (response.Content.Headers.ContentType?.MediaType is not MediaTypeNames.Text.Xml and not MediaTypeNames.Application.Xml)
+        if (response.Content.Headers.ContentType?.MediaType is not (MediaTypeNames.Text.Xml or MediaTypeNames.Application.Xml))
         {
             var error = $"""
                          Failed to get server manifest, invalid format.
@@ -134,7 +134,7 @@ public static class HttpHelper
             return (false, error, null);
         }
 
-        if (response.Content.Headers.ContentType?.MediaType is not MediaTypeNames.Text.Xml or MediaTypeNames.Application.Xml)
+        if (response.Content.Headers.ContentType?.MediaType is not (MediaTypeNames.Text.Xml or MediaTypeNames.Application.Xml))
         {
             var error = $"""
                          Failed to get client manifest, invalid format.
