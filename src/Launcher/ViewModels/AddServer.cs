@@ -66,7 +66,7 @@ public partial class AddServer : Popup
             // Fetch the server manifest from the provided URL.
             var result = await HttpHelper.GetServerManifestAsync(ServerUrl);
 
-            if (!result.Success || result.ServerManifest is null)
+            if (result.Result != ManifestResult.Success || result.ServerManifest is null)
             {
                 App.AddNotification($"""
                                      Could not add the server.

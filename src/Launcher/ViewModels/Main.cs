@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
+using Avalonia.Platform.Storage;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -22,6 +22,8 @@ namespace Launcher.ViewModels;
 
 public partial class Main : ObservableObject
 {
+    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
     [ObservableProperty]
     private Popup? popup;
 
@@ -32,12 +34,7 @@ public partial class Main : ObservableObject
     private string message = string.Empty;
 
     [ObservableProperty]
-    private bool isRefreshing;
-
-    [ObservableProperty]
     private SemanticVersion version = App.CurrentVersion;
-
-    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
     public AvaloniaList<Server> Servers { get; } = [];
     public AvaloniaList<Notification> Notifications { get; } = [];
@@ -104,33 +101,39 @@ public partial class Main : ObservableObject
     public Task CheckForUpdates() => App.CheckForUpdatesAsync();
 
     [RelayCommand]
-    public void ShowSettings() => App.ShowSettings();
+    public void ShowSettings()
+    {
+        var window = App.GetWindow();
+
+        var dialog = new Views.Settings();
+        dialog.ShowDialog(window);
+    }
 
     [RelayCommand]
     public void AddServer() => App.ShowPopup(new AddServer());
 
     [RelayCommand]
-    public void OpenLogs()
+    public async Task OpenLogsAsync()
     {
-        if (!Directory.Exists(Constants.LogsDirectory))
-            return;
+        bool result;
 
         try
         {
-            var startInfo = new ProcessStartInfo
-            {
-                UseShellExecute = true,
-                FileName = Constants.LogsDirectory
-            };
+            var window = App.GetWindow();
 
-            Process.Start(startInfo);
+            var directoryInfo = new DirectoryInfo(Constants.LogsDirectory);
+
+            result = await window.Launcher.LaunchDirectoryInfoAsync(directoryInfo);
         }
         catch (Exception ex)
         {
             _logger.Error(ex, "Error opening logs directory.");
 
-            App.AddNotification("Unable to open logs directory.", true);
+            result = false;
         }
+
+        if (!result)
+            App.AddNotification("Unable to open logs directory.", true);
     }
 
     [RelayCommand]

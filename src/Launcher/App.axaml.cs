@@ -24,7 +24,9 @@ namespace Launcher;
 public partial class App : Application
 {
     private readonly Logger _logger;
-    private Main? _main;
+
+    private Main _main = null!;
+    private Window _window = null!;
 
     private const string GitHubRepoUrl = "https://github.com/Open-Source-Free-Realms/Launcher";
     private static readonly UpdateManager _updateManager = new(new GithubSource(GitHubRepoUrl, null, false));
@@ -47,7 +49,9 @@ public partial class App : Application
             return;
 
         var main = new Views.Main();
+
         _main = main.ViewModel;
+        _window = main;
 
         applicationLifetime.MainWindow = main;
 
@@ -59,14 +63,13 @@ public partial class App : Application
     [RelayCommand(AllowConcurrentExecutions = false)]
     public static async Task CheckForUpdatesAsync()
     {
-        if (Current is not App app || app._main is null)
-            return;
+        if (Current is not App app)
+            throw new InvalidOperationException();
 
         try
         {
             if (_updateManager.IsInstalled)
             {
-                app._main.IsRefreshing = true;
                 app._main.Message = GetText("Text.Main.CheckingForUpdates");
 
                 var updateInfo = await _updateManager.CheckForUpdatesAsync();
@@ -100,17 +103,20 @@ public partial class App : Application
             app._logger.Error(ex, "Error checking for updates");
             AddNotification(GetText("Text.Main.UpdateError"), true);
         }
-        finally
-        {
-            if (app._main != null)
-                app._main.IsRefreshing = false;
-        }
+    }
+
+    public static Window GetWindow()
+    {
+        if (Current is not App app)
+            throw new InvalidOperationException();
+
+        return app._window;
     }
 
     public static string GetText(string key, params object?[] args)
     {
         if (Current is not App)
-            return key;
+            throw new InvalidOperationException();
 
         if (Current.FindResource(key) is not string text)
             return $"#{key}";
@@ -120,8 +126,8 @@ public partial class App : Application
 
     public static void AddNotification(string message, bool isError = false)
     {
-        if (Current is not App app || app._main is null)
-            return;
+        if (Current is not App app)
+            throw new InvalidOperationException();
 
         var notice = new Notification
         {
@@ -133,28 +139,10 @@ public partial class App : Application
         app._main.OnReceiveNotification(notice);
     }
 
-    public static void ShowSettings()
-    {
-        if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop
-            && desktop.MainWindow is not null)
-        {
-            var dialog = new Views.Settings();
-            dialog.ShowDialog(desktop.MainWindow);
-        }
-    }
-
-    public static void ClearServerSelection()
-    {
-        if (Current is not App app || app._main is null)
-            return;
-
-        app._main.ActiveServer = null;
-    }
-
     public static void ShowPopup(Popup popup, bool process = false)
     {
-        if (Current is not App app || app._main is null)
-            return;
+        if (Current is not App app)
+            throw new InvalidOperationException();
 
         if (app._main.Popup?.InProgress ?? false)
             return;
@@ -167,9 +155,12 @@ public partial class App : Application
 
     public static async void ProcessPopup()
     {
+        if (Current is not App app)
+            throw new InvalidOperationException();
+
         try
         {
-            if (Current is not App app || app._main is null || app._main.Popup is null)
+            if (app._main.Popup is null)
                 return;
 
             if (!app._main.Popup.Validate())
@@ -194,10 +185,7 @@ public partial class App : Application
     public static void CancelPopup()
     {
         if (Current is not App app)
-            return;
-
-        if (app._main is null)
-            return;
+            throw new InvalidOperationException();
 
         if (app._main.Popup?.InProgress ?? true)
             return;

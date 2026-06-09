@@ -263,13 +263,9 @@ public partial class Login : Popup
 
         try
         {
-            var startInfo = new ProcessStartInfo
-            {
-                UseShellExecute = true,
-                FileName = Constants.DirectXDownloadUrl
-            };
+            var window = App.GetWindow();
 
-            Process.Start(startInfo);
+            await window.Launcher.LaunchUriAsync(new Uri(Constants.DirectXDownloadUrl));
         }
         catch (Exception ex)
         {

@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia.Media;
+using Avalonia.Platform.Storage;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -31,8 +32,16 @@ public partial class Server : ObservableObject
     private readonly Main _main = null!;
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
+    private static SolidColorBrush WhiteBrush = new(Colors.White);
+    private static SolidColorBrush GreenBrush = new(Color.FromRgb(35, 165, 90));
+    private static SolidColorBrush YellowBrush = new(Color.FromRgb(204, 204, 0));
+    private static SolidColorBrush RedBrush = new(Color.FromRgb(242, 63, 67));
+
     [ObservableProperty]
     private ServerInfo info = null!;
+
+    [ObservableProperty]
+    private bool isEnabled;
 
     [ObservableProperty]
     private string statusMessage = string.Empty;
@@ -47,16 +56,10 @@ public partial class Server : ObservableObject
     private bool isOnline;
 
     [ObservableProperty]
-    private Server? activeServer;
-
-    [ObservableProperty]
-    private bool isRefreshing = false;
-
-    [ObservableProperty]
     private Process? process;
 
     [ObservableProperty]
-    private IBrush? serverStatusFill;
+    private IBrush? serverStatusFill = WhiteBrush;
 
     [ObservableProperty]
     private bool isDownloading = false;
@@ -90,17 +93,12 @@ public partial class Server : ObservableObject
         _main = main;
     }
 
-    public async Task<bool> OnShowAsync()
+    public async Task OnShowAsync()
     {
         MarkdownBuilder.Clear();
         MarkdownBuilder.Append(Info.Description);
 
-        if (!await RefreshServerInfoAsync())
-            return false;
-
-        await RefreshServerStatusAsync();
-
-        return true;
+        await RefreshCommand.ExecuteAsync(null);
     }
 
     public void ClientProcessExited(object? sender, EventArgs e)
@@ -109,14 +107,81 @@ public partial class Server : ObservableObject
         Process = null;
     }
 
-    [RelayCommand(AllowConcurrentExecutions = false)]
-    public async Task RefreshServerStatusAsync()
+    [RelayCommand]
+    private async Task OpenUriAsync(LinkClickedEventArgs args)
     {
-        IsRefreshing = true;
+        if (args.HRef is { IsAbsoluteUri: true, Scheme: "http" or "https" } url)
+        {
+            var window = App.GetWindow();
 
+            await window.Launcher.LaunchUriAsync(url);
+        }
+    }
+
+    [RelayCommand(AllowConcurrentExecutions = false)]
+    public async Task RefreshAsync()
+    {
         Status = App.GetText("Text.ServerStatus.Refreshing");
 
-        ServerStatusFill = new SolidColorBrush(Color.FromRgb(204, 204, 0));
+        ServerStatusFill = YellowBrush;
+
+        if (!string.IsNullOrEmpty(Info.Url))
+        {
+        try
+        {
+                var result = await HttpHelper.GetServerManifestAsync(Info.Url);
+
+                if (result.Result != ManifestResult.Success || result.ServerManifest is null)
+                {
+                    App.AddNotification($"""
+                                         Failed to get server info.
+                                         {result.Error}
+                                         """, true);
+
+                    _logger.Error("Failed to get server manifest for: {Url}: {Error}.", Info.Url, result.Error);
+
+                    switch (result.Result)
+                    {
+                        case ManifestResult.Outdated:
+                            ServerStatusFill = RedBrush;
+                            Status = App.GetText("Text.ServerStatus.Outdated");
+                            break;
+
+                        default:
+                            ServerStatusFill = RedBrush;
+                            Status = App.GetText("Text.ServerStatus.Offline");
+                            break;
+                    }
+
+                    IsEnabled = false;
+
+                    return;
+                }
+
+                var serverManifest = result.ServerManifest;
+
+                Info.Name = serverManifest.Name;
+                Info.Description = serverManifest.Description;
+
+                Info.WebApiUrl = serverManifest.WebApiUrl;
+                Info.LoginServer = serverManifest.LoginServer;
+
+                Settings.Instance.Save();
+            }
+            catch (Exception ex)
+            {
+                ServerStatusFill = RedBrush;
+                Status = App.GetText("Text.ServerStatus.Offline");
+
+                App.AddNotification("An error occurred while getting server info.", true);
+
+                _logger.Error(ex, "An exception was thrown while getting server info for: {Url}.", Info.Url);
+
+                IsEnabled = false;
+
+                return;
+            }
+        }
 
         try
         {
@@ -132,30 +197,30 @@ public partial class Server : ObservableObject
 
                 OnlinePlayers = serverStatus.OnlinePlayers;
 
-                ServerStatusFill = new SolidColorBrush(
-                    serverStatus.IsLocked
-                        ? Color.FromRgb(242, 63, 67)
-                        : Color.FromRgb(35, 165, 90));
+                ServerStatusFill = serverStatus.IsLocked
+                    ? RedBrush
+                    : GreenBrush;
             }
             else
             {
                 Status = App.GetText("Text.ServerStatus.Offline");
 
                 OnlinePlayers = 0;
-                ServerStatusFill = new SolidColorBrush(Color.FromRgb(242, 63, 67));
+                ServerStatusFill = RedBrush;
             }
         }
         catch (Exception ex)
         {
+            ServerStatusFill = RedBrush;
+            Status = App.GetText("Text.ServerStatus.Offline");
+
             _logger.Error(ex, "Error refreshing server status for: '{Name}'.", Info.Name);
 
             App.AddNotification("Unable to refresh server status.", true);
         }
-        finally
-        {
-            IsRefreshing = false;
+
+        IsEnabled = true;
         }
-    }
 
     [RelayCommand(AllowConcurrentExecutions = false)]
     public async Task PlayAsync()
@@ -169,6 +234,8 @@ public partial class Server : ObservableObject
             return;
         }
 
+        if (!string.IsNullOrEmpty(Info.Url))
+        {
         var clientManifest = await GetClientManifestAsync();
 
         if (clientManifest is null)
@@ -199,6 +266,7 @@ public partial class Server : ObservableObject
 
             return;
         }
+        }
 
         if (!IsOnline)
         {
@@ -216,78 +284,41 @@ public partial class Server : ObservableObject
     }
 
     [RelayCommand]
-    public void OpenFolder()
+    public async Task OpenFolderAsync()
     {
-        var folderPath = Path.Combine(Constants.SavePath, Info.SavePath);
-
-        if (!Directory.Exists(folderPath))
-            return;
+        bool result;
 
         try
         {
-            var startInfo = new ProcessStartInfo
-            {
-                FileName = folderPath,
-                UseShellExecute = true
-            };
+            var window = App.GetWindow();
 
-            Process.Start(startInfo);
+            var folderPath = Path.Combine(Constants.SavePath, Info.SavePath);
+
+            var directoryInfo = new DirectoryInfo(folderPath);
+
+            result = await window.Launcher.LaunchDirectoryInfoAsync(directoryInfo);
         }
         catch (Exception ex)
         {
             _logger.Error(ex, "Error opening client folder directory.");
 
+            result = false;
+        }
+
+        if (!result)
             App.AddNotification("Unable to open server directory.", true);
-        }
-    }
-
-    private async Task<bool> RefreshServerInfoAsync()
-    {
-        try
-        {
-            var result = await HttpHelper.GetServerManifestAsync(Info.Url);
-
-            if (!result.Success || result.ServerManifest is null)
-            {
-                App.AddNotification($"""
-                                     Failed to get server info.
-                                     {result.Error}
-                                     """, true);
-
-                _logger.Error("Failed to get server manifest for: {Url}: {Error}.", Info.Url, result.Error);
-
-                return false;
-            }
-
-            var serverManifest = result.ServerManifest;
-
-            Info.Name = serverManifest.Name;
-            Info.Description = serverManifest.Description;
-
-            Info.WebApiUrl = serverManifest.WebApiUrl;
-            Info.LoginServer = serverManifest.LoginServer;
-
-            Settings.Instance.Save();
-
-            return true;
-        }
-        catch (Exception ex)
-        {
-            App.AddNotification("An error occurred while getting server info.", true);
-
-            _logger.Error(ex, "An exception was thrown while getting server info for: {Url}.", Info.Url);
-        }
-
-        return false;
     }
 
     private async Task<ClientManifest?> GetClientManifestAsync()
     {
+        if (string.IsNullOrEmpty(Info.Url))
+            return null;
+
         try
         {
             var result = await HttpHelper.GetClientManifestAsync(Info.Url);
 
-            if (!result.Success || result.ClientManifest is null)
+            if (result.Result != ManifestResult.Success || result.ClientManifest is null)
             {
                 App.AddNotification($"""
                                      Failed to get client info.
@@ -388,6 +419,9 @@ public partial class Server : ObservableObject
 
     private async Task<bool> DownloadFileAsync(string path, string fileName)
     {
+        if (string.IsNullOrEmpty(Info.Url))
+            return false;
+
         var downloadFilePath = Path.Combine(path, fileName);
 
         try

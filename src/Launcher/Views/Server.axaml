@@ -29,10 +29,10 @@
       <Button Grid.Column="0"
               VerticalAlignment="Center"
               Classes="no_background"
-              Command="{Binding RefreshServerStatusCommand}">
+              Command="{Binding RefreshCommand}">
         <Path Width="18"
               Height="18"
-              Classes.rotating="{Binding IsRefreshing}"
+              Classes.rotating="{Binding RefreshCommand.IsRunning}"
               Data="{StaticResource Icons.Loading}"
               Stretch="Fill" />
       </Button>
@@ -60,7 +60,7 @@
         <TextBlock FontFamily="{StaticResource FontDefault}"
                    FontSize="15"
                    Foreground="{Binding ServerStatusFill}"
-                   Text="{Binding Status, Mode=OneWay}" />
+                   Text="{Binding Status, Mode=TwoWay}" />
       </StackPanel>
 
       <StackPanel Grid.Column="1"
@@ -87,7 +87,7 @@
               CornerRadius="5"
               Opacity="0.050">
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" Opacity="100">
-          <md:MarkdownRenderer MarkdownBuilder="{Binding MarkdownBuilder}" />
+          <md:MarkdownRenderer LinkCommand="{Binding OpenUriCommand}" MarkdownBuilder="{Binding MarkdownBuilder}" />
         </ScrollViewer>
       </Border>
     </Border>
@@ -99,6 +99,7 @@
       <Button Classes="no_background"
               Command="{Binding PlayCommand}"
               Cursor="Hand"
+              IsEnabled="{Binding IsEnabled}"
               IsVisible="{Binding PlayCommand.IsRunning, Converter={x:Static BoolConverters.Not}}">
         <Image Width="165"
                Source="/Assets/fr_asset3.png"

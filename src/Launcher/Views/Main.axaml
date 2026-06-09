@@ -67,7 +67,7 @@
                 ToolTip.Tip="{StaticResource Text.Main.CheckingForUpdatesToolTip}">
           <Path Width="16"
                 Height="16"
-                Classes.rotating="{Binding IsRefreshing}"
+                Classes.rotating="{Binding CheckForUpdatesCommand.IsRunning}"
                 Data="{StaticResource Icons.Loading}"
                 Stretch="Fill" />
         </Button>
@@ -305,7 +305,7 @@
 
                   <!-- Message Text -->
                   <TextBox Grid.Row="1"
-                           MaxHeight="100"
+                           MaxHeight="200"
                            Margin="8"
                            Padding="3"
                            VerticalContentAlignment="Top"

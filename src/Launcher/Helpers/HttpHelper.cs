@@ -32,7 +32,7 @@ public static class HttpHelper
         return httpClient;
     }
 
-    public static async Task<(bool Success, string Error, ServerManifest? ServerManifest)> GetServerManifestAsync(string serverUrl)
+    public static async Task<(ManifestResult Result, string Error, ServerManifest? ServerManifest)> GetServerManifestAsync(string serverUrl)
     {
         var serverManifestUri = UriHelper.JoinUriPaths(serverUrl, ServerManifest.FileName.ToLower());
 
@@ -47,7 +47,7 @@ public static class HttpHelper
 
             _logger.Error(error);
 
-            return (false, error, null);
+            return (ManifestResult.HttpError, error, null);
         }
 
         if (response.Content.Headers.ContentType?.MediaType is not (MediaTypeNames.Text.Xml or MediaTypeNames.Application.Xml))
@@ -59,7 +59,7 @@ public static class HttpHelper
 
             _logger.Error(error);
 
-            return (false, error, null);
+            return (ManifestResult.InvalidFormat, error, null);
         }
 
         using var contentStream = await response.Content.ReadAsStreamAsync();
@@ -74,7 +74,7 @@ public static class HttpHelper
 
                 _logger.Error(error);
 
-                return (false, error, null);
+                return (ManifestResult.InvalidVersion, error, null);
             }
 
             if (version != ServerManifest.ManifestVersion)
@@ -87,7 +87,7 @@ public static class HttpHelper
 
                 _logger.Error(error);
 
-                return (false, error, null);
+                return (ManifestResult.Outdated, error, null);
             }
         }
         catch (Exception ex)
@@ -96,7 +96,7 @@ public static class HttpHelper
 
             _logger.Error(ex, error);
 
-            return (false, error, null);
+            return (ManifestResult.InvalidVersion, error, null);
         }
 
         contentStream.Position = 0;
@@ -110,13 +110,13 @@ public static class HttpHelper
 
             _logger.Error(error);
 
-            return (false, error, null);
+            return (ManifestResult.DeserializeError, error, null);
         }
 
-        return (true, string.Empty, serverManifest);
+        return (ManifestResult.Success, string.Empty, serverManifest);
     }
 
-    public static async Task<(bool Success, string Error, ClientManifest? ClientManifest)> GetClientManifestAsync(string serverUrl)
+    public static async Task<(ManifestResult Result, string Error, ClientManifest? ClientManifest)> GetClientManifestAsync(string serverUrl)
     {
         var clientManifestUri = UriHelper.JoinUriPaths(serverUrl, ClientManifest.FileName.ToLower());
 
@@ -131,7 +131,7 @@ public static class HttpHelper
 
             _logger.Error(error);
 
-            return (false, error, null);
+            return (ManifestResult.HttpError, error, null);
         }
 
         if (response.Content.Headers.ContentType?.MediaType is not (MediaTypeNames.Text.Xml or MediaTypeNames.Application.Xml))
@@ -143,7 +143,7 @@ public static class HttpHelper
 
             _logger.Error(error);
 
-            return (false, error, null);
+            return (ManifestResult.InvalidFormat, error, null);
         }
 
         using var contentStream = await response.Content.ReadAsStreamAsync();
@@ -158,7 +158,7 @@ public static class HttpHelper
 
                 _logger.Error(error);
 
-                return (false, error, null);
+                return (ManifestResult.InvalidVersion, error, null);
             }
 
             if (version != ClientManifest.ManifestVersion)
@@ -171,7 +171,7 @@ public static class HttpHelper
 
                 _logger.Error(error);
 
-                return (false, error, null);
+                return (ManifestResult.Outdated, error, null);
             }
         }
         catch (Exception ex)
@@ -180,7 +180,7 @@ public static class HttpHelper
 
             _logger.Error(ex, error);
 
-            return (false, error, null);
+            return (ManifestResult.InvalidVersion, error, null);
         }
 
         contentStream.Position = 0;
@@ -194,9 +194,9 @@ public static class HttpHelper
 
             _logger.Error(error);
 
-            return (false, error, null);
+            return (ManifestResult.DeserializeError, error, null);
         }
 
-        return (true, string.Empty, clientManifest);
+        return (ManifestResult.Success, string.Empty, clientManifest);
     }
 }
