@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -46,7 +47,19 @@ public static class ServerStatusHelper
 
             try
             {
-                using var udpClient = new UdpClient(serverAddress, serverPort);
+                if (!IPAddress.TryParse(serverAddress, out var ipAddress))
+                {
+                    var addresses = await Dns.GetHostAddressesAsync(serverAddress);
+
+                    if (addresses.Length == 0)
+                        return ServerStatus.Offline;
+
+                    ipAddress = addresses[0];
+                }
+
+                using var udpClient = new UdpClient();
+
+                udpClient.Connect(ipAddress, serverPort);
 
                 byte[] buf = [0x00, UdpPacketTypeServerStatus];
 
