@@ -12,7 +12,7 @@ public static class Constants
     public const string ServersDirectory = "Servers";
 
     public const string ClientExecutableName = "FreeRealms.exe";
-    public const string DirectXDownloadUrl = "https://www.microsoft.com/en-us/download/details.aspx?id=8109";
+    public const string DirectXDownloadUrl = "https://www.microsoft.com/download/details.aspx?id=35";
 
 
     public static readonly string LogsDirectory = Path.Combine(AppContext.BaseDirectory, "logs");
