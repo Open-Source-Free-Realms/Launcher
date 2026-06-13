@@ -101,9 +101,6 @@
   <Style Selector="Button.flat.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Background" Value="{StaticResource Color.FlatButton.PrimaryBackgroundHovered}" />
   </Style>
-  <Style Selector="Button.flat.primary:disabled /template/ ContentPresenter#PART_ContentPresenter">
-    <Setter Property="Background" Value="Transparent" />
-  </Style>
   <Style Selector="Button.no_background">
     <Setter Property="Background" Value="Transparent" />
   </Style>
