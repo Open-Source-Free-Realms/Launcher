@@ -14,8 +14,6 @@ using Launcher.ViewModels;
 
 using NLog;
 
-using NuGet.Versioning;
-
 using Velopack;
 using Velopack.Sources;
 
@@ -41,6 +39,10 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+
+#if DEBUG
+        this.AttachDeveloperTools();
+#endif
     }
 
     public override void OnFrameworkInitializationCompleted()

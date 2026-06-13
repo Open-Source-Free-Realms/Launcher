@@ -16,7 +16,7 @@ using Launcher.Services;
 
 using NLog;
 
-using NuGet.Versioning;
+using Velopack;
 
 namespace Launcher.ViewModels;
 

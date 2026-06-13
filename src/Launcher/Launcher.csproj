@@ -29,18 +29,18 @@
   <ItemGroup>
     <PackageReference Include="Bogus" Version="35.6.5" Condition="'$(Configuration)' == 'Debug'" />
     <PackageReference Include="HashDepot" Version="3.2.0" />
-    <PackageReference Include="LiveMarkdown.Avalonia" Version="2.0.1" />
-    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="10.0.8" />
+    <PackageReference Include="LiveMarkdown.Avalonia" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="10.0.9" />
     <PackageReference Include="NaturalSort.Extension" Version="4.4.1" />
-    <PackageReference Include="Velopack" Version="0.0.1362-gfa48e3c" />
-    <PackageReference Include="Downloader" Version="5.5.0" />
+    <PackageReference Include="Velopack" Version="1.2.0" />
+    <PackageReference Include="Downloader" Version="5.8.0" />
     <PackageReference Include="NLog" Version="6.1.3" />
     <PackageReference Include="NLog.Extensions.Logging" Version="6.1.3" />
-    <PackageReference Include="Avalonia" Version="12.0.3" />
-    <PackageReference Include="Avalonia.Desktop" Version="12.0.3" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="12.0.3" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="12.0.3" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.16" Condition="'$(Configuration)' == 'Debug'" />
+    <PackageReference Include="Avalonia" Version="12.0.4" />
+    <PackageReference Include="Avalonia.Desktop" Version="12.0.4" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="12.0.4" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="12.0.4" />
+    <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.2" Condition="'$(Configuration)' == 'Debug'" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
   </ItemGroup>
 
