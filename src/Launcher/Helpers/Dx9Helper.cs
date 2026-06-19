@@ -22,7 +22,7 @@ public static partial class Dx9Helper
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ||
                      RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                if (!string.IsNullOrEmpty(WineHelper.GetPath()))
+                if (string.IsNullOrEmpty(WineHelper.GetPath()))
                     return false;
 
                 var winePrefix = Environment.GetEnvironmentVariable("WINEPREFIX") ??

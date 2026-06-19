@@ -217,7 +217,7 @@ public partial class Login : Popup
         {
             var winePath = WineHelper.GetPath();
 
-            if (!string.IsNullOrEmpty(winePath))
+            if (string.IsNullOrEmpty(winePath))
             {
                 App.AddNotification("Unable to launch the game, wine is not installed.", true);
 
